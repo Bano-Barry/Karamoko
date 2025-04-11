@@ -1,14 +1,46 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Accueil</title>
-    {% load static %} <!-- Charger les tags statiques -->
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-</head>
-<body>
-    <h1>Bienvenue sur la plateforme de réseautage et suivi scolaire</h1>
-    <p>Connectez les parents, élèves et répétiteurs facilement.</p>
-</body>
-</html>
+<!-- templates/index.html -->
+
+{% extends "_base.html" %}
+{% load static %}
+
+{% block content %}
+    <!-- Hero Section -->
+    <header class="h-screen bg-cover bg-center text-white flex flex-col items-center justify-center relative" style="background-image: url('{% static "images/suivi_scolaire.png" %}');">
+        <!-- Overlay pour améliorer la lisibilité -->
+        <div class="absolute inset-0"></div>
+
+        <!-- Contenu de la hero section -->
+        <div class="relative z-10 flex items-center justify-center h-full px-4">
+            <!-- Section gauche -->
+            <div class="w-full md:w-1/2 text-center">
+            <h1 class="text-4xl md:text-5xl font-bold mb-4">
+                Trouvez le répétiteur idéal pour vos enfants
+            </h1>
+            <p class="text-lg md:text-xl mb-6">
+                Connectez-vous avec des encadreurs qualifiés pour accompagner vos enfants dans leur réussite scolaire. Des solutions adaptées à chaque besoin.
+            </p>
+            <!-- Boutons -->
+            <div class="flex space-x-4 justify-center">
+                <a href="/encadreurs/" class="bg-blue-500 text-white px-6 py-3 rounded-md text-md font-medium hover:bg-blue-400">
+                Contacter un encadreur
+                </a>
+                <a href="/postuler/" class="bg-blue-500 text-white px-6 py-3 rounded-md text-md font-medium hover:bg-blue-400">
+                Postuler maintenant
+                </a>
+            </div>
+            </div>
+
+            <!-- Section droite -->
+            <div class="w-1/2 hidden md:block">
+            {% comment %} <!-- Contenu spécial à droite -->
+            <div class="bg-white bg-opacity-80 p-6 rounded-md shadow-md">
+                <h2 class="text-2xl font-bold mb-4 text-gray-800">Section spéciale</h2>
+                <p class="text-gray-700">
+                Ajoutez ici un contenu spécial ou une image pour attirer l'attention.
+                </p>
+            </div> {% endcomment %}
+            </div>
+        </div>
+    </header>
+  <h1 class="text-3xl text-green-800">Django + Tailwind CSS + Flowbite</h1>
+{% endblock content %}

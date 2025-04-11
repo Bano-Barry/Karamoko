@@ -1,0 +1,78 @@
+<!-- templates/_base.html -->
+
+{% load compress %}
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Karamoko</title>
+
+    {% compress css %}
+    <link rel="stylesheet" href="{% static 'src/output.css' %}">
+    {% endcompress %}
+</head>
+
+<body class="bg-blue-50">
+    <!-- Navbar -->
+    <nav class="fixed top-0 left-0 w-full  text-white z-50 backdrop-blur-md">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <!-- Logo -->
+            <a href="/" class="text-2xl font-bold">
+                <img src="{% static 'images/logo.jpg' %}" alt="Karamoko Logo" class="h-10">
+            </a>
+
+            <!-- Navigation Links -->
+            <ul class="hidden md:flex space-x-8 text-white font-medium">
+                <li><a href="/encadreurs/" class="hover:text-orange-500 uppercase hover:underline hover:underline-offset-3">Encadreurs</a></li>
+                <li><a href="/services/" class="hover:text-orange-500 uppercase hover:underline hover:underline-offset-3">Services</a></li>
+                <li><a href="/about/" class="hover:text-orange-500 uppercase hover:underline hover:underline-offset-3">About</a></li>
+            </ul>
+
+            <!-- Login Button -->
+            <div>
+                <a href="/login/" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-400">
+                    Login
+                </a>
+            </div>
+
+            <!-- Mobile Menu Button -->
+            <button id="mobile-menu-button" class="md:hidden text-white focus:outline-none">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16m-7 6h7"></path>
+                </svg>
+            </button>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-black bg-opacity-90 text-white shadow-md">
+            <ul class="space-y-2 text-white font-medium p-4">
+                <li><a href="/encadreurs/" class="block hover:text-orange-500 uppercase">Encadreurs</a></li>
+                <li><a href="/services/" class="block hover:text-orange-500 uppercase">Services</a></li>
+                <li><a href="/about/" class="block hover:text-orange-500 uppercase">About</a></li>
+                <li><a href="/login/" class="block bg-orange-500 text-white px-4 py-2 rounded-md hover:bg-orange-400 uppercase">Login</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container-fluid mx-auto mt-4">
+        {% block content %}
+        {% endblock content %}
+    </div>
+
+    <script>
+        // Mobile menu toggle
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+    </script>
+</body>
+
+</html>

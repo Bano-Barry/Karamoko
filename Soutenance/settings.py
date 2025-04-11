@@ -37,7 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'core', 
+    'core', # Ajout de l'application core
+    'compressor',  # Ajout de django-compressor
 ]
 
 MIDDLEWARE = [
@@ -121,6 +122,15 @@ STATICFILES_DIRS = [BASE_DIR / 'static']  # Inclure le dossier static
 # Media files (Uploaded by users)
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'  # Chemin vers le dossier media
+
+# Django Compressor settings
+# https://django-compressor.readthedocs.io/en/latest/settings.html
+COMPRESS_ROOT = BASE_DIR / 'static'
+
+COMPRESS_ENABLED = True
+
+STATICFILES_FINDERS = ('compressor.finders.CompressorFinder',)
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
