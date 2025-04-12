@@ -1,0 +1,25 @@
+<h1>Liste des Répétiteurs</h1>
+<table>
+    <thead>
+        <tr>
+            <th>Nom</th>
+            <th>Email</th>
+            <th>Contact</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for repetiteur in repetiteurs %}
+        <tr>
+            <td>{{ repetiteur.nom }}</td>
+            <td>{{ repetiteur.email }}</td>
+            <td>{{ repetiteur.contact }}</td>
+            <td>
+                <a href="{% url 'repetiteur_update' repetiteur.id %}">Modifier</a>
+                <a href="{% url 'repetiteur_delete' repetiteur.id %}">Supprimer</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<a href="{% url 'repetiteur_create' %}">Ajouter un Répétiteur</a>

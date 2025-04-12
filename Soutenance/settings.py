@@ -38,6 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'core', # Ajout de l'application core
+    'repetiteurs',  # Ajout de l'application repetiteurs
+    'souscripteurs',  # Ajout de l'application souscripteurs
     'compressor',  # Ajout de django-compressor
 ]
 

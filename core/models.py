@@ -1,5 +1,8 @@
 from django.db import models
 
+from repetiteurs.models import Repetiteur
+from souscripteurs.models import Souscripteur
+
 class TypeFormation(models.Model):
     nom = models.CharField(max_length=100)
 
@@ -21,18 +24,6 @@ class Niveau(models.Model):
         return self.nom
 
 
-class Repetiteur(models.Model):
-    nom = models.CharField(max_length=100)
-    email = models.EmailField(unique=True)
-    contact = models.CharField(max_length=15, blank=True, null=True)  # Nouveau champ pour le téléphone
-    avatar = models.ImageField(upload_to='avatars/repetiteurs/', blank=True, null=True)  # Nouveau champ pour l'avatar
-    competences = models.ManyToManyField(Competence)
-    formations = models.ManyToManyField(TypeFormation)
-
-    def __str__(self):
-        return self.nom
-
-
 class Cours(models.Model):
     titre = models.CharField(max_length=200)
     niveau = models.ForeignKey(Niveau, on_delete=models.CASCADE)
@@ -40,17 +31,6 @@ class Cours(models.Model):
 
     def __str__(self):
         return self.titre
-
-
-class Souscripteur(models.Model):
-    nom = models.CharField(max_length=100)
-    email = models.EmailField(unique=True)
-    contact = models.CharField(max_length=15, blank=True, null=True)  # Nouveau champ pour le téléphone
-    avatar = models.ImageField(upload_to='avatars/souscripteurs/', blank=True, null=True)  # Nouveau champ pour l'avatar
-
-    def __str__(self):
-        return self.nom
-
 
 class PlanTarifaire(models.Model):
     nom = models.CharField(max_length=100)
