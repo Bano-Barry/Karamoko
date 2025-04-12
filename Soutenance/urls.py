@@ -21,7 +21,7 @@ from django.conf.urls.static import static
 from core import views
 
 urlpatterns = [
-    path('admin-karamoko/', admin.site.urls),
+    path('admin/', admin.site.urls),
     path('', views.home, name='home'),  # Page d'accueil
 ]
 
