@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'core', # Ajout de l'application core
     'repetiteurs',  # Ajout de l'application repetiteurs
     'souscripteurs',  # Ajout de l'application souscripteurs
+    'dashboard',  # Ajout de l'application dashboard
     'compressor',  # Ajout de django-compressor
 ]
 

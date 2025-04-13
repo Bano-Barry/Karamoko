@@ -3,8 +3,15 @@ from .models import Repetiteur
 from .forms import RepetiteurForm
 
 def repetiteur_list(request):
-    repetiteurs = Repetiteur.objects.all()
-    return render(request, 'repetiteurs/list.html', {'repetiteurs': repetiteurs})
+    context = {
+        'breadcrumb': [
+            {'name': 'Dashboard', 'url': 'dashboard_home'},
+            {'name': 'Répétiteurs', 'url': 'repetiteur_list'},
+            {'name': 'Liste des Répétiteurs', 'url': None},  # Pas de lien pour l'élément actif
+        ],
+        'repetiteurs': Repetiteur.objects.all(),
+    }
+    return render(request, 'repetiteurs/list.html', context)
 
 def repetiteur_create(request):
     if request.method == 'POST':
@@ -14,11 +21,28 @@ def repetiteur_create(request):
             return redirect('repetiteur_list')
     else:
         form = RepetiteurForm()
-    return render(request, 'repetiteurs/create.html', {'form': form})
+    
+    context = {
+        'breadcrumb': [
+            {'name': 'Dashboard', 'url': 'dashboard_home'},
+            {'name': 'Répétiteurs', 'url': 'repetiteur_list'},
+            {'name': 'Créer un Répétiteur', 'url': None},  # Pas de lien pour l'élément actif
+        ],
+        'form': form,
+    }
+    return render(request, 'repetiteurs/create.html', context)
 
 def repetiteur_detail(request, id):
     repetiteur = get_object_or_404(Repetiteur, id=id)
-    return render(request, 'repetiteurs/detail.html', {'repetiteur': repetiteur})
+    context = {
+        'breadcrumb': [
+            {'name': 'Dashboard', 'url': 'dashboard_home'},
+            {'name': 'Répétiteurs', 'url': 'repetiteur_list'},
+            {'name': 'Détails du Répétiteur', 'url': None},  # Pas de lien pour l'élément actif
+        ],
+        'repetiteur': repetiteur,
+    }
+    return render(request, 'repetiteurs/detail.html', context)
 
 def repetiteur_update(request, pk):
     repetiteur = get_object_or_404(Repetiteur, pk=pk)
@@ -29,7 +53,16 @@ def repetiteur_update(request, pk):
             return redirect('repetiteur_list')
     else:
         form = RepetiteurForm(instance=repetiteur)
-    return render(request, 'repetiteurs/update.html', {'form': form})
+    
+    context = {
+        'breadcrumb': [
+            {'name': 'Dashboard', 'url': 'dashboard_home'},
+            {'name': 'Répétiteurs', 'url': 'repetiteur_list'},
+            {'name': 'Modifier un Répétiteur', 'url': None},  # Pas de lien pour l'élément actif
+        ],
+        'form': form,
+    }
+    return render(request, 'repetiteurs/update.html', context)
 
 def repetiteur_delete(request, pk):
     repetiteur = get_object_or_404(Repetiteur, pk=pk)

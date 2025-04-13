@@ -4,10 +4,16 @@ from django.shortcuts import render, get_object_or_404, redirect
 from .models import Souscripteur
 from .forms import SouscripteurForm
 
-# Create your views here.
-def index(request):
-    souscripteurs = Souscripteur.objects.all()
-    return render(request, 'souscripteurs/list.html', {'souscripteurs': souscripteurs})
+def souscripteur_list(request):
+    context = {
+        'breadcrumb': [
+            {'name': 'Dashboard', 'url': 'dashboard_home'},
+            {'name': 'Souscripteurs', 'url': 'souscripteur_list'},
+            {'name': 'Liste des Souscripteurs', 'url': None},
+        ],
+        'souscripteurs': Souscripteur.objects.all(),
+    }
+    return render(request, 'souscripteurs/list.html', context)
 
 def create_souscripteur(request):
     if request.method == 'POST':
