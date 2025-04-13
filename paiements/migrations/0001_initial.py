@@ -9,36 +9,31 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
-        ('core', '0001_initial'),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Competence',
+            name='MethodePaiement',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('nom', models.CharField(max_length=100)),
             ],
         ),
         migrations.CreateModel(
-            name='Repetiteur',
+            name='PlanTarifaire',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('nom', models.CharField(max_length=100)),
-                ('prenom', models.CharField(default='', max_length=100)),
-                ('email', models.EmailField(max_length=254, unique=True)),
-                ('contact', models.CharField(blank=True, max_length=15, null=True)),
-                ('avatar', models.ImageField(blank=True, null=True, upload_to='avatars/repetiteurs/')),
-                ('competences', models.ManyToManyField(related_name='repetiteurs', to='repetiteurs.competence')),
+                ('prix', models.DecimalField(decimal_places=2, max_digits=10)),
             ],
         ),
         migrations.CreateModel(
-            name='Cours',
+            name='Paiement',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('titre', models.CharField(max_length=200)),
-                ('niveau', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='cours', to='core.niveau')),
-                ('repetiteur', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='cours', to='repetiteurs.repetiteur')),
+                ('montant', models.DecimalField(decimal_places=2, max_digits=10)),
+                ('date', models.DateTimeField(auto_now_add=True)),
+                ('methode', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='paiements', to='paiements.methodepaiement')),
             ],
         ),
     ]

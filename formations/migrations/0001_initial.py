@@ -12,14 +12,18 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='Souscripteur',
+            name='Formation',
+            fields=[
+                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('titre', models.CharField(max_length=200)),
+            ],
+        ),
+        migrations.CreateModel(
+            name='TypeFormation',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('nom', models.CharField(max_length=100)),
-                ('prenom', models.CharField(default='', max_length=100)),
-                ('email', models.EmailField(max_length=254, unique=True)),
-                ('contact', models.CharField(blank=True, max_length=15, null=True)),
-                ('avatar', models.ImageField(blank=True, null=True, upload_to='avatars/souscripteurs/')),
+                ('description', models.TextField(blank=True, null=True)),
             ],
         ),
     ]
