@@ -61,7 +61,9 @@
             <ul class="space-y-2 font-medium">
                 <!-- Section Principale -->
                 <li>
-                    <a href="{% url 'dashboard_home' %}" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                    <a href="{% url 'dashboard_home' %}" 
+                       class="flex items-center p-2 rounded-lg group 
+                              {% if request.resolver_match.url_name == 'dashboard_home' %}bg-gray-200 dark:bg-gray-700{% else %}text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700{% endif %}">
                         <svg class="w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 21">
                             <path d="M16.975 11H10V4.025a1 1 0 0 0-1.066-.998 8.5 8.5 0 1 0 9.039 9.039.999.999 0 0 0-1-1.066h.002Z"/>
                             <path d="M12.5 0c-.157 0-.311.01-.565.027A1 1 0 0 0 11 1.02V10h8.975a1 1 0 0 0 1-.935c.013-.188.028-.374.028-.565A8.51 8.51 0 0 0 12.5 0Z"/>
@@ -75,17 +77,19 @@
 
                 <!-- Section Répétiteurs -->
                 <li>
-                    <a href="{% url 'repetiteur_list' %}" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                    <a href="{% url 'repetiteur_list' %}" 
+                       class="flex items-center p-2 rounded-lg group 
+                              {% if request.resolver_match.url_name == 'repetiteur_list' %}bg-gray-200 dark:bg-gray-700{% else %}text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700{% endif %}">
                         <svg class="w-5 h-5 text-blue-500 transition duration-75 dark:text-blue-400 group-hover:text-blue-900 dark:group-hover:text-blue-200" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M12 2a7 7 0 1 1-7 7 7 7 0 0 1 7-7zm0 12a9 9 0 0 0-9 9h2a7 7 0 0 1 14 0h2a9 9 0 0 0-9-9z"/>
                         </svg>
                         <span class="ms-3">Répétiteurs</span>
                     </a>
                 </li>
                 <li>
-                    <a href="{% url 'souscripteur_list' %}" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                    <a href="{% url 'souscripteur_list' %}" 
+                       class="flex items-center p-2 rounded-lg group 
+                              {% if request.resolver_match.url_name == 'souscripteur_list' %}bg-gray-200 dark:bg-gray-700{% else %}text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700{% endif %}">
                         <svg class="w-5 h-5 text-green-500 transition duration-75 dark:text-green-400 group-hover:text-green-900 dark:group-hover:text-green-200" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M12 2a7 7 0 1 1-7 7 7 7 0 0 1 7-7zm0 12a9 9 0 0 0-9 9h2a7 7 0 0 1 14 0h2a9 9 0 0 0-9-9z"/>
                         </svg>
                         <span class="ms-3">Souscripteurs</span>
                     </a>
@@ -121,17 +125,19 @@
 
                 <!-- Section Formations -->
                 <li>
-                    <a href="{% url 'formation_list' %}" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                    <a href="{% url 'formation_list' %}" 
+                       class="flex items-center p-2 rounded-lg group 
+                              {% if request.resolver_match.url_name == 'formation_list' %}bg-gray-200 dark:bg-gray-700{% else %}text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700{% endif %}">
                         <svg class="w-5 h-5 text-indigo-500 transition duration-75 dark:text-indigo-400 group-hover:text-indigo-900 dark:group-hover:text-indigo-200" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M12 2a7 7 0 1 1-7 7 7 7 0 0 1 7-7zm0 12a9 9 0 0 0-9 9h2a7 7 0 0 1 14 0h2a9 9 0 0 0-9-9z"/>
                         </svg>
                         <span class="ms-3">Formations</span>
                     </a>
                 </li>
                 <li>
-                    <a href="{% url 'typeformation_list' %}" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                    <a href="{% url 'typeformation_list' %}" 
+                       class="flex items-center p-2 rounded-lg group 
+                              {% if request.resolver_match.url_name == 'typeformation_list' %}bg-gray-200 dark:bg-gray-700{% else %}text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700{% endif %}">
                         <svg class="w-5 h-5 text-teal-500 transition duration-75 dark:text-teal-400 group-hover:text-teal-900 dark:group-hover:text-teal-200" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M12 2a7 7 0 1 1-7 7 7 7 0 0 1 7-7zm0 12a9 9 0 0 0-9 9h2a7 7 0 0 1 14 0h2a9 9 0 0 0-9-9z"/>
                         </svg>
                         <span class="ms-3">Types de Formation</span>
                     </a>
