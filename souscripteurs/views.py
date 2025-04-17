@@ -1,48 +1,81 @@
-from django.shortcuts import render
-from django.http import HttpResponse, Http404
-from django.shortcuts import render, get_object_or_404, redirect
+from django.urls import reverse_lazy
+from django.views.generic import ListView, CreateView, DetailView, UpdateView, DeleteView
 from .models import Souscripteur
 from .forms import SouscripteurForm
 
-def souscripteur_list(request):
-    context = {
-        'breadcrumb': [
+# Liste des souscripteurs
+class SouscripteurListView(ListView):
+    model = Souscripteur
+    template_name = 'souscripteurs/list.html'
+    context_object_name = 'souscripteurs'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['breadcrumb'] = [
             {'name': 'Dashboard', 'url': 'dashboard_home'},
             {'name': 'Souscripteurs', 'url': 'souscripteur_list'},
             {'name': 'Liste des Souscripteurs', 'url': None},
-        ],
-        'souscripteurs': Souscripteur.objects.all(),
-    }
-    return render(request, 'souscripteurs/list.html', context)
+        ]
+        return context
 
-def create_souscripteur(request):
-    if request.method == 'POST':
-        form = SouscripteurForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('index')
-    else:
-        form = SouscripteurForm()
-    return render(request, 'souscripteurs/create.html', {'form': form})
+# Détail d'un souscripteur
+class SouscripteurDetailView(DetailView):
+    model = Souscripteur
+    template_name = 'souscripteurs/detail.html'
+    context_object_name = 'souscripteur'
 
-def detail_souscripteur(request, id):
-    souscripteur = get_object_or_404(Souscripteur, id=id)
-    return render(request, 'souscripteurs/detail.html', {'souscripteur': souscripteur})
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['breadcrumb'] = [
+            {'name': 'Dashboard', 'url': 'dashboard_home'},
+            {'name': 'Souscripteurs', 'url': 'souscripteur_list'},
+            {'name': 'Détail du Souscripteur', 'url': None},
+        ]
+        return context
 
-def update_souscripteur(request, id):
-    souscripteur = get_object_or_404(Souscripteur, id=id)
-    if request.method == 'POST':
-        form = SouscripteurForm(request.POST, instance=souscripteur)
-        if form.is_valid():
-            form.save()
-            return redirect('detail_souscripteur', id=id)
-    else:
-        form = SouscripteurForm(instance=souscripteur)
-    return render(request, 'souscripteurs/update.html', {'form': form, 'souscripteur': souscripteur})
+# Création d'un souscripteur
+class SouscripteurCreateView(CreateView):
+    model = Souscripteur
+    template_name = 'souscripteurs/create.html'
+    form_class = SouscripteurForm
+    success_url = reverse_lazy('souscripteur_list')
 
-def delete_souscripteur(request, id):
-    souscripteur = get_object_or_404(Souscripteur, id=id)
-    if request.method == 'POST':
-        souscripteur.delete()
-        return redirect('index')
-    return render(request, 'souscripteurs/delete.html', {'souscripteur': souscripteur})
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['breadcrumb'] = [
+            {'name': 'Dashboard', 'url': 'dashboard_home'},
+            {'name': 'Souscripteurs', 'url': 'souscripteur_list'},
+            {'name': 'Créer un Souscripteur', 'url': None},
+        ]
+        return context
+
+# Mise à jour d'un souscripteur
+class SouscripteurUpdateView(UpdateView):
+    model = Souscripteur
+    template_name = 'souscripteurs/create.html'
+    form_class = SouscripteurForm
+    success_url = reverse_lazy('souscripteur_list')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['breadcrumb'] = [
+            {'name': 'Dashboard', 'url': 'dashboard_home'},
+            {'name': 'Souscripteurs', 'url': 'souscripteur_list'},
+            {'name': 'Modifier un Souscripteur', 'url': None},
+        ]
+        return context
+
+# Suppression d'un souscripteur
+class SouscripteurDeleteView(DeleteView):
+    model = Souscripteur
+    template_name = 'souscripteurs/delete.html'
+    success_url = reverse_lazy('souscripteur_list')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['breadcrumb'] = [
+            {'name': 'Dashboard', 'url': 'dashboard_home'},
+            {'name': 'Souscripteurs', 'url': 'souscripteur_list'},
+            {'name': 'Supprimer un Souscripteur', 'url': None},
+        ]
+        return context

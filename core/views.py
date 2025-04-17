@@ -1,6 +1,70 @@
 from django.shortcuts import render
+from django.urls import reverse_lazy
+from django.views.generic import ListView, CreateView, UpdateView, DeleteView
+
+from core.forms import NiveauForm
+from .models import Niveau
 
 def home(request):
     return render(request, 'vitrine/home.html')
 
-# Create your views here.
+# Liste des niveaux
+class NiveauListView(ListView):
+    model = Niveau
+    template_name = 'core/niveau_list.html'
+    context_object_name = 'niveaux'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['breadcrumb'] = [
+            {'name': 'Dashboard', 'url': 'dashboard_home'},
+            {'name': 'Niveaux', 'url': None},
+        ]
+        return context
+
+# Création d'un niveau
+class NiveauCreateView(CreateView):
+    model = Niveau
+    template_name = 'core/niveau_form.html'
+    form_class = NiveauForm
+    success_url = reverse_lazy('core:niveau_list')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['breadcrumb'] = [
+            {'name': 'Dashboard', 'url': 'dashboard_home'},
+            {'name': 'Niveaux', 'url': 'core:niveau_list'},
+            {'name': 'Créer', 'url': None},
+        ]
+        return context
+
+# Mise à jour d'un niveau
+class NiveauUpdateView(UpdateView):
+    model = Niveau
+    template_name = 'core/niveau_form.html'
+    form_class = NiveauForm
+    success_url = reverse_lazy('core:niveau_list')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['breadcrumb'] = [
+            {'name': 'Dashboard', 'url': 'dashboard_home'},
+            {'name': 'Niveaux', 'url': 'core:niveau_list'},
+            {'name': 'Modifier', 'url': None},
+        ]
+        return context
+
+# Suppression d'un niveau
+class NiveauDeleteView(DeleteView):
+    model = Niveau
+    template_name = 'core/niveau_confirm_delete.html'
+    success_url = reverse_lazy('core:niveau_list')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['breadcrumb'] = [
+            {'name': 'Dashboard', 'url': 'dashboard_home'},
+            {'name': 'Niveaux', 'url': 'core:niveau_list'},
+            {'name': 'Supprimer', 'url': None},
+        ]
+        return context

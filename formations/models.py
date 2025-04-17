@@ -1,5 +1,4 @@
 from django.db import models
-from repetiteurs.models import Repetiteur
 
 # Modèle représentant un type de formation
 class TypeFormation(models.Model):

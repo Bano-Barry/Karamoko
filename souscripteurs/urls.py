@@ -1,10 +1,11 @@
 from django.urls import path
 from . import views
 
+
 urlpatterns = [
-    path('', views.souscripteur_list, name='souscripteur_list'),
-    path('create/', views.create_souscripteur, name='create_souscripteur'),
-    path('<int:id>/', views.detail_souscripteur, name='detail_souscripteur'),
-    path('<int:id>/update/', views.update_souscripteur, name='update_souscripteur'),
-    path('<int:id>/delete/', views.delete_souscripteur, name='delete_souscripteur'),
+    path('', views.SouscripteurListView.as_view(), name='souscripteur_list'),
+    path('<int:pk>/', views.SouscripteurDetailView.as_view(), name='souscripteur_detail'), 
+    path('create/', views.SouscripteurCreateView.as_view(), name='souscripteur_create'),
+    path('<int:pk>/update/', views.SouscripteurUpdateView.as_view(), name='souscripteur_update'),
+    path('<int:pk>/delete/', views.SouscripteurDeleteView.as_view(), name='souscripteur_delete'),
 ]

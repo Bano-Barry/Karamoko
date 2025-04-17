@@ -1,5 +1,6 @@
 from django.db import models
 from core.models import Niveau
+from formations.models import Formation
 
 class Competence(models.Model):
     nom = models.CharField(max_length=100)
@@ -15,9 +16,10 @@ class Repetiteur(models.Model):
     contact = models.CharField(max_length=15, blank=True, null=True)
     avatar = models.ImageField(upload_to='avatars/repetiteurs/', blank=True, null=True)
     competences = models.ManyToManyField('repetiteurs.Competence', related_name="repetiteurs")
+    formations = models.ManyToManyField('formations.Formation', related_name="repetiteurs")
 
     def __str__(self):
-        return self.nom
+        return f"{self.nom} {self.prenom}"  # Combine le nom et le prénom
 
 
 class Cours(models.Model):

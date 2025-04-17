@@ -1,0 +1,66 @@
+{% extends 'dashboard/base.html' %}
+
+{% block content %}
+<div class="flex justify-between items-center my-8 max-w-4xl mx-auto">
+    <h1 class="text-2xl font-bold text-gray-800 dark:text-white">Liste des Cours</h1>
+    <a href="{% url 'cours_create' %}" class="px-4 py-2 text-white bg-blue-600 hover:bg-blue-700 rounded-lg shadow">
+        + Ajouter un Cours
+    </a>
+</div>
+
+<div class="overflow-x-auto relative shadow-md sm:rounded-lg max-w-4xl mx-auto">
+    <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 text-center">
+            <tr>
+                <th scope="col" class="px-6 py-3">#</th>
+                <th scope="col" class="px-6 py-3">Titre</th>
+                <th scope="col" class="px-6 py-3">Niveau</th>
+                <th scope="col" class="px-6 py-3">Répétiteur</th>
+                <th scope="col" class="px-6 py-3">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for cours in cours %}
+            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 text-center">
+                <td class="px-6 py-4">{{ forloop.counter }}</td>
+                <td class="px-6 py-4">{{ cours.titre }}</td>
+                <td class="px-6 py-4">{{ cours.niveau.nom }}</td>
+                <td class="px-6 py-4">{{ cours.repetiteur.nom }} {{ cours.repetiteur.prenom }} </td>
+                <td class="px-6 py-4 flex justify-center space-x-4">
+                    <a href="{% url 'cours_update' cours.id %}" class="text-blue-600 hover:underline">Modifier</a>
+                    <a href="#" data-modal-target="delete-modal-{{ cours.id }}" data-modal-toggle="delete-modal-{{ cours.id }}" class="text-red-600 hover:underline">Supprimer</a>
+                </td>
+            </tr>
+            <!-- Modal pour la suppression -->
+            <div id="delete-modal-{{ cours.id }}" tabindex="-1" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
+                <div class="relative w-full max-w-md max-h-full">
+                    <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                        <div class="p-4 border-b rounded-t dark:border-gray-600">
+                            <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
+                                Êtes-vous sûr de vouloir supprimer ce cours ?
+                            </h3>
+                        </div>
+                        <div class="p-6 space-y-6">
+                            <p class="text-sm text-gray-500 dark:text-gray-400">
+                                Cette action est irréversible. Cliquez sur "Confirmer" pour supprimer.
+                            </p>
+                        </div>
+                        <div class="flex justify-end space-x-4 p-4 border-t border-gray-200 dark:border-gray-600">
+                            <button data-modal-hide="delete-modal-{{ cours.id }}" class="px-4 py-2 text-orange-700 bg-gray-200 hover:bg-orange-300 rounded-lg shadow dark:bg-orange-700 dark:text-gray-300 dark:hover:bg-orange-600">
+                                Annuler
+                            </button>
+                            <form method="POST" action="{% url 'cours_delete' cours.id %}">
+                                {% csrf_token %}
+                                <button type="submit" class="px-4 py-2 text-white bg-red-600 hover:bg-red-700 rounded-lg shadow">
+                                    Confirmer
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

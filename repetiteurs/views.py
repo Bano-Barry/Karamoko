@@ -1,6 +1,8 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Repetiteur
-from .forms import RepetiteurForm
+from django.urls import reverse_lazy
+from django.views.generic import ListView, CreateView, UpdateView, DeleteView
+from .models import Competence, Repetiteur, Cours
+from .forms import CompetenceForm, RepetiteurForm, CoursForm
 
 def repetiteur_list(request):
     context = {
@@ -70,3 +72,126 @@ def repetiteur_delete(request, pk):
         repetiteur.delete()
         return redirect('repetiteur_list')
     return render(request, 'repetiteurs/delete.html', {'repetiteur': repetiteur})
+
+# Liste des compétences
+class CompetenceListView(ListView):
+    model = Competence
+    template_name = 'repetiteurs/competence_list.html'
+    context_object_name = 'competences'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['breadcrumb'] = [
+            {'name': 'Dashboard', 'url': 'dashboard_home'},
+            {'name': 'Compétences', 'url': None},
+        ]
+        return context
+
+# Création d'une compétence
+class CompetenceCreateView(CreateView):
+    model = Competence
+    template_name = 'repetiteurs/competence_form.html'
+    form_class = CompetenceForm
+    success_url = reverse_lazy('competence_list')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['breadcrumb'] = [
+            {'name': 'Dashboard', 'url': 'dashboard_home'},
+            {'name': 'Compétences', 'url': 'competence_list'},
+            {'name': 'Créer', 'url': None},
+        ]
+        return context
+
+# Mise à jour d'une compétence
+class CompetenceUpdateView(UpdateView):
+    model = Competence
+    template_name = 'repetiteurs/competence_form.html'
+    form_class = CompetenceForm
+    success_url = reverse_lazy('competence_list')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['breadcrumb'] = [
+            {'name': 'Dashboard', 'url': 'dashboard_home'},
+            {'name': 'Compétences', 'url': 'competence_list'},
+            {'name': 'Modifier', 'url': None},
+        ]
+        return context
+
+# Suppression d'une compétence
+class CompetenceDeleteView(DeleteView):
+    model = Competence
+    template_name = 'repetiteurs/competence_confirm_delete.html'
+    success_url = reverse_lazy('competence_list')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['breadcrumb'] = [
+            {'name': 'Dashboard', 'url': 'dashboard_home'},
+            {'name': 'Compétences', 'url': 'competence_list'},
+            {'name': 'Supprimer', 'url': None},
+        ]
+        return context
+
+# Liste des cours
+class CoursListView(ListView):
+    model = Cours
+    template_name = 'repetiteurs/cours_list.html'
+    context_object_name = 'cours'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['breadcrumb'] = [
+            {'name': 'Dashboard', 'url': 'dashboard_home'},
+            {'name': 'Cours', 'url': None},
+        ]
+        return context
+
+# Création d'un cours
+class CoursCreateView(CreateView):
+    model = Cours
+    template_name = 'repetiteurs/cours_form.html'
+    form_class = CoursForm
+    success_url = reverse_lazy('cours_list')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['breadcrumb'] = [
+            {'name': 'Dashboard', 'url': 'dashboard_home'},
+            {'name': 'Cours', 'url': 'cours_list'},
+            {'name': 'Créer', 'url': None},
+        ]
+        return context
+
+# Mise à jour d'un cours
+class CoursUpdateView(UpdateView):
+    model = Cours
+    template_name = 'repetiteurs/cours_form.html'
+    form_class = CoursForm
+    success_url = reverse_lazy('cours_list')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['breadcrumb'] = [
+            {'name': 'Dashboard', 'url': 'dashboard_home'},
+            {'name': 'Cours', 'url': 'cours_list'},
+            {'name': 'Modifier', 'url': None},
+        ]
+        return context
+
+# Suppression d'un cours
+class CoursDeleteView(DeleteView):
+    model = Cours
+    template_name = 'repetiteurs/cours_confirm_delete.html'
+    success_url = reverse_lazy('cours_list')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['breadcrumb'] = [
+            {'name': 'Dashboard', 'url': 'dashboard_home'},
+            {'name': 'Cours', 'url': 'cours_list'},
+            {'name': 'Supprimer', 'url': None},
+        ]
+        return context
+

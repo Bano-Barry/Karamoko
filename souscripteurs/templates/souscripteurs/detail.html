@@ -1,0 +1,40 @@
+<!-- filepath: c:\Users\Bano\Documents\University\Soutenance\KaramokoSoutenance\souscripteurs\templates\souscripteurs\detail.html -->
+{% extends 'dashboard/base.html' %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto mt-8 bg-white p-6 rounded-lg shadow-md dark:bg-gray-800">
+    <h1 class="text-2xl font-bold text-gray-800 dark:text-white mb-6">Détails du Souscripteur</h1>
+    <div class="flex items-center space-x-6">
+        <!-- Photo de profil -->
+        <div class="flex-shrink-0">
+            {% if souscripteur.avatar %}
+            <img src="{{ souscripteur.avatar.url }}" alt="Photo de {{ souscripteur.nom }}" class="w-32 h-32 rounded-full border-2 border-gray-300 dark:border-gray-600">
+            {% else %}
+            <div class="w-32 h-32 rounded-full bg-orange-200 flex items-center justify-center text-gray-500 dark:bg-orange-700 dark:text-gray-400">
+                <span class="text-lg font-medium">Aucune photo</span>
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- Informations personnelles -->
+        <div class="flex-1">
+            <div class="mb-4">
+                <h2 class="text-lg font-semibold text-gray-800 dark:text-white">Nom :</h2>
+                <p class="text-gray-700 dark:text-gray-300">{{ souscripteur.nom }}</p>
+            </div>
+            <div class="mb-4">
+                <h2 class="text-lg font-semibold text-gray-800 dark:text-white">Prénom :</h2>
+                <p class="text-gray-700 dark:text-gray-300">{{ souscripteur.prenom }}</p>
+            </div>
+            <div class="mb-4">
+                <h2 class="text-lg font-semibold text-gray-800 dark:text-white">Email :</h2>
+                <p class="text-gray-700 dark:text-gray-300">{{ souscripteur.email }}</p>
+            </div>
+            <div class="mb-4">
+                <h2 class="text-lg font-semibold text-gray-800 dark:text-white">Contact :</h2>
+                <p class="text-gray-700 dark:text-gray-300">{{ souscripteur.contact }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
