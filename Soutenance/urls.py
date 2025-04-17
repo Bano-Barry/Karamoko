@@ -10,6 +10,8 @@ urlpatterns = [
     path('dashboard/', include('dashboard.urls')),  # URL pour le dashboard
     path('dashboard/repetiteurs/', include('repetiteurs.urls')),
     path('dashboard/souscripteurs/', include('souscripteurs.urls')),
+    path('dashboard/', include('formations.urls')), # URL pour les formations
+    path('dashboard/', include('paiements.urls')),  # URL pour les paiements
 ]
 
 if settings.DEBUG:
