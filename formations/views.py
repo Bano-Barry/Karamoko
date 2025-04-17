@@ -1,6 +1,8 @@
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
+
+from formations.forms import FormationForm, TypeFormationForm
 from .models import TypeFormation, Formation
 
 # Vues pour TypeFormation
@@ -20,7 +22,8 @@ class TypeFormationListView(ListView):
 class TypeFormationCreateView(CreateView):
     model = TypeFormation
     template_name = 'formations/typeformation_form.html'
-    fields = ['nom']
+    # fields = ['nom']
+    form_class = TypeFormationForm
     success_url = reverse_lazy('typeformation_list')
 
     def get_context_data(self, **kwargs):
@@ -35,7 +38,8 @@ class TypeFormationCreateView(CreateView):
 class TypeFormationUpdateView(UpdateView):
     model = TypeFormation
     template_name = 'formations/typeformation_form.html'
-    fields = ['nom', 'description']
+    # fields = ['nom', 'description']
+    form_class = TypeFormationForm
     success_url = reverse_lazy('typeformation_list')
 
     def get_context_data(self, **kwargs):
@@ -78,7 +82,7 @@ class FormationListView(ListView):
 class FormationCreateView(CreateView):
     model = Formation
     template_name = 'formations/formation_form.html'
-    fields = ['titre', 'type_formation', 'repetiteurs']
+    form_class = FormationForm
     success_url = reverse_lazy('formation_list')
 
     def get_context_data(self, **kwargs):
@@ -93,7 +97,7 @@ class FormationCreateView(CreateView):
 class FormationUpdateView(UpdateView):
     model = Formation
     template_name = 'formations/formation_form.html'
-    fields = ['titre', 'type_formation', 'repetiteurs']
+    form_class = FormationForm
     success_url = reverse_lazy('formation_list')
 
     def get_context_data(self, **kwargs):

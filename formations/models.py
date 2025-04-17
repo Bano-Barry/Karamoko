@@ -18,10 +18,6 @@ class Formation(models.Model):
         on_delete=models.CASCADE, 
         related_name="formations"
     )  # Type de formation associé
-    repetiteurs = models.ManyToManyField(
-        Repetiteur, 
-        related_name="formations"
-    )  # Liste des répétiteurs associés à la formation
 
     def __str__(self):
         return self.titre
