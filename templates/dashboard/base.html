@@ -189,7 +189,7 @@
 
                 <!-- Section Souscriptions -->
                 <li>
-                    <a href="#" 
+                    <a href="{% url 'souscription_list' %}" 
                        class="flex items-center p-2 rounded-lg group 
                               {% if request.resolver_match.url_name == 'souscription_list' %}bg-gray-200 dark:bg-gray-700{% else %}text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700{% endif %}">
                         <svg class="w-5 h-5 text-lime-500 transition duration-75 dark:text-lime-400 group-hover:text-lime-900 dark:group-hover:text-lime-200" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">

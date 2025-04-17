@@ -13,6 +13,7 @@ urlpatterns = [
     path('dashboard/souscripteurs/', include('souscripteurs.urls')),
     path('dashboard/', include('formations.urls')), # URL pour les formations
     path('dashboard/', include('paiements.urls')),  # URL pour les paiements
+    path('dashboard/', include('souscriptions.urls')), #URL pour les souscriptions
 ]
 
 if settings.DEBUG:
