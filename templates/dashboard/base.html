@@ -27,6 +27,20 @@
                     </a>
                 </div>
                 <div class="flex items-center">
+                    <!-- Bouton pour basculer entre le mode clair et sombre -->
+                    <div class="relative">
+                        <!-- Bouton principal pour basculer entre les modes -->
+                        <button id="theme-toggle" type="button" class="flex items-center space-x-2 px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-gray-600 focus:outline-none focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600 rounded-lg shadow-md transition duration-300">
+                            <svg id="theme-toggle-light-icon" class="w-6 h-6 hidden" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M10 2a1 1 0 011 1v2a1 1 0 11-2 0V3a1 1 0 011-1zM10 15a1 1 0 011 1v2a1 1 0 11-2 0v-2a1 1 0 011-1zM4.22 4.22a1 1 0 011.42 0l1.42 1.42a1 1 0 11-1.42 1.42L4.22 5.64a1 1 0 010-1.42zM14.14 14.14a1 1 0 011.42 0l1.42 1.42a1 1 0 11-1.42 1.42l-1.42-1.42a1 1 0 010-1.42zM3 10a1 1 0 011-1h2a1 1 0 110 2H4a1 1 0 01-1-1zM15 10a1 1 0 011-1h2a1 1 0 110 2h-2a1 1 0 01-1-1zM4.22 15.78a1 1 0 010-1.42l1.42-1.42a1 1 0 111.42 1.42l-1.42 1.42a1 1 0 01-1.42 0zM14.14 5.64a1 1 0 010-1.42l1.42-1.42a1 1 0 111.42 1.42l-1.42 1.42a1 1 0 01-1.42 0z"></path>
+                            </svg>
+                            <svg id="theme-toggle-dark-icon" class="w-6 h-6 hidden" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" d="M17.293 13.293A8 8 0 116.707 2.707a8.001 8.001 0 0010.586 10.586zM10 18a8 8 0 100-16 8 8 0 000 16z" clip-rule="evenodd"></path>
+                            </svg>
+                            <span id="theme-toggle-text" class="text-sm font-medium">Light</span>
+                        </button>
+                    </div>
+                    <!-- Menu utilisateur -->
                     <div class="flex items-center ms-3">
                         <button type="button" class="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600" aria-expanded="false" data-dropdown-toggle="dropdown-user">
                             <span class="sr-only">Open user menu</span>
@@ -255,5 +269,6 @@
         </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
+    <script src="{% static 'js/theme-toggle.js' %}"></script>
 </body>
 </html>
