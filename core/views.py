@@ -4,9 +4,21 @@ from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 
 from core.forms import NiveauForm
 from .models import Niveau
+from repetiteurs.models import Repetiteur
 
 def home(request):
     return render(request, 'vitrine/home.html')
+
+def encadreurs(request):
+    repetiteurs = Repetiteur.objects.all()
+    return render(request, 'vitrine/encadreurs.html', {'repetiteurs': repetiteurs})
+
+def services(request):
+    return render(request, 'vitrine/services.html')
+
+def about(request):
+    return render(request, 'vitrine/about.html')
+
 
 # Liste des niveaux
 class NiveauListView(ListView):
