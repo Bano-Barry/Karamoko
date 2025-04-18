@@ -9,38 +9,220 @@
         <!-- Overlay pour améliorer la lisibilité -->
         <div class="absolute inset-0"></div>
 
-        <!-- Contenu de la hero section -->
+       <!-- Contenu de la hero section -->
         <div class="relative z-10 flex items-center justify-center h-full px-4">
             <!-- Section gauche -->
             <div class="w-full md:w-1/2 text-center">
-            <h1 class="text-4xl md:text-5xl font-bold mb-4">
-                Trouvez le répétiteur idéal pour vos enfants
-            </h1>
-            <p class="text-lg md:text-xl mb-6">
-                Connectez-vous avec des encadreurs qualifiés pour accompagner vos enfants dans leur réussite scolaire. Des solutions adaptées à chaque besoin.
-            </p>
-            <!-- Boutons -->
-            <div class="flex space-x-4 justify-center">
-                <a href="/encadreurs/" class="bg-blue-500 text-white px-6 py-3 rounded-md text-md font-medium hover:bg-blue-400">
-                Contacter un encadreur
-                </a>
-                <a href="/postuler/" class="bg-blue-500 text-white px-6 py-3 rounded-md text-md font-medium hover:bg-blue-400">
-                Postuler maintenant
-                </a>
-            </div>
-            </div>
-
-            <!-- Section droite -->
-            <div class="w-1/2 hidden md:block">
-            {% comment %} <!-- Contenu spécial à droite -->
-            <div class="bg-white bg-opacity-80 p-6 rounded-md shadow-md">
-                <h2 class="text-2xl font-bold mb-4 text-gray-800">Section spéciale</h2>
-                <p class="text-gray-700">
-                Ajoutez ici un contenu spécial ou une image pour attirer l'attention.
+                <h1 class="text-4xl md:text-5xl font-bold mb-4">
+                    Trouvez le répétiteur idéal pour vos enfants
+                </h1>
+                <p class="text-lg md:text-xl mb-6">
+                    Connectez-vous avec des encadreurs qualifiés pour accompagner vos enfants dans leur réussite scolaire. Des solutions adaptées à chaque besoin.
                 </p>
-            </div> {% endcomment %}
+                <!-- Boutons -->
+                <div class="flex space-x-4 justify-center">
+                    <a href="{% url 'encadreurs' %}" class="bg-orange-500 text-white px-6 py-3 rounded-full text-md font-medium hover:bg-orange-600 transition duration-300">
+                        Contacter un encadreur
+                    </a>
+                    <a href="#" class="bg-blue-700 text-white px-6 py-3 rounded-full text-md font-medium hover:bg-blue-800 transition duration-300">
+                        Postuler maintenant
+                    </a>
+                </div>
             </div>
         </div>
     </header>
-  <h1 class="text-3xl text-green-800">Django + Tailwind CSS + Flowbite</h1>
+    <!-- Section des problématiques principales -->
+    <section class="py-16 ">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl md:text-4xl text-orange-500 font-bold text-center mb-12">Les Problématiques que Nous Résolvons</h2>
+            <p class="text-lg md:text-xl text-center mb-8">
+                Découvrez les défis auxquels sont confrontées les familles et comment nous pouvons vous aider à les surmonter.
+            </p>
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                
+                <!-- Card 1 -->
+                <div class="max-w-sm mx-auto bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700 text-center">
+                    <img class="rounded-t-lg mx-auto  " src="{% static 'images/problem2.png' %}" alt="Problem 1" />
+                    <div class="p-5">
+                        <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Accès Limité aux Encadreurs</h5>
+                        <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">
+                            Trouver des encadreurs qualifiés et disponibles peut être un défi pour de nombreuses familles.
+                        </p>
+                    </div>
+                </div>
+                <!-- Card 2 -->
+                <div class="max-w-sm mx-auto bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700 text-center">
+                    <img class="rounded-t-lg mx-auto  " src="{% static 'images/problem1.avif' %}" alt="Problem 2" />
+                    <div class="p-5">
+                        <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Manque de Suivi</h5>
+                        <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">
+                            Les parents ont souvent du mal à suivre les progrès scolaires de leurs enfants de manière efficace.
+                        </p>
+                    </div>
+                </div>
+                <!-- Card 3 -->
+                <div class="max-w-sm mx-auto bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700 text-center">
+                    <img class="rounded-t-lg mx-auto  " src="{% static 'images/problem3.png' %}" alt="Problem 3" />
+                    <div class="p-5">
+                        <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Manque de Flexibilité</h5>
+                        <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">
+                            Les horaires rigides des cours traditionnels ne conviennent pas toujours aux emplois du temps des familles.
+                        </p>
+                    </div>
+                </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Section Encadreurs -->
+    <section class="relative py-16 bg-cover bg-center text-white" style="background-image: url('{% static "images/encadreurs_africains.png" %}'); height: 80vh;">
+        <div class="absolute inset-0 "></div>
+        <div class="container mx-auto px-4 relative z-10 h-full flex items-center">
+            <div class="w-full md:w-1/2 text-left">
+                <h2 class="text-3xl md:text-4xl text-orange-500 font-bold mb-4">
+                    Nos Encadreurs Qualifiés
+                </h2>
+                <p class="text-lg md:text-xl mb-6">
+                    Découvrez une équipe d'encadreurs guinéens passionnés et expérimentés, prêts à accompagner vos enfants vers l'excellence académique. Nous mettons un point d'honneur à offrir un encadrement personnalisé et adapté à chaque élève.
+                </p>
+                <!-- Bouton -->
+                <a href="{% url 'encadreurs' %}" class="bg-blue-700 text-white px-6 py-3 rounded-full text-md font-medium hover:bg-blue-800">
+                    Voir les Encadreurs
+                </a>
+            </div>
+        </div>
+    </section>
+    <!-- Section Témoignages -->
+    <section class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl md:text-4xl text-orange-500 font-bold text-center mb-12">Ce que disent nos utilisateurs</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Témoignage 1 -->
+                <div class="bg-gray-100 p-6 rounded-lg shadow-md text-center">
+                    <div class="mb-4">
+                        <img src="{% static 'images/user1.jpg' %}" alt="User 1" class="mx-auto  rounded-full">
+                    </div>
+                    <p class="text-gray-700 italic mb-4">
+                        "Grâce à cette plateforme, j'ai trouvé un excellent répétiteur pour mon fils. Ses notes se sont nettement améliorées en quelques mois."
+                    </p>
+                    <h4 class="text-lg font-semibold">Aïssata D.</h4>
+                    <p class="text-gray-500 text-sm">Parent d'élève</p>
+                </div>
+                <!-- Témoignage 2 -->
+                <div class="bg-gray-100 p-6 rounded-lg shadow-md text-center">
+                    <div class="mb-4">
+                        <img src="{% static 'images/user2.jpg' %}" alt="User 2" class="mx-auto  rounded-full">
+                    </div>
+                    <p class="text-gray-700 italic mb-4">
+                        "En tant qu'encadreur, cette plateforme m'a permis de trouver des élèves motivés et de partager ma passion pour l'enseignement."
+                    </p>
+                    <h4 class="text-lg font-semibold">Mamadou K.</h4>
+                    <p class="text-gray-500 text-sm">Encadreur</p>
+                </div>
+                <!-- Témoignage 3 -->
+                <div class="bg-gray-100 p-6 rounded-lg shadow-md text-center">
+                    <div class="mb-4">
+                        <img src="{% static 'images/user3.jpg' %}" alt="User 3" class="mx-auto  rounded-full">
+                    </div>
+                    <p class="text-gray-700 italic mb-4">
+                        "La flexibilité des horaires et la qualité des encadreurs ont vraiment fait la différence pour ma fille."
+                    </p>
+                    <h4 class="text-lg font-semibold">Fatou B.</h4>
+                    <p class="text-gray-500 text-sm">Parent d'élève</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Section Présentation des Meilleures Écoles -->
+    <section class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl md:text-4xl text-orange-500 font-bold text-center mb-12">Nos Partenaires : Les Meilleures Écoles de Guinée</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- École 1 -->
+                <div class="max-w-sm mx-auto bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700 text-center">
+                    <img class="rounded-t-lg mx-auto w-24 h-24 " src="{% static 'images/ecole1.png' %}" alt="École 1" />
+                    <div class="p-5">
+                        <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">École Primaire Excellence</h5>
+                        <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">
+                            Une école réputée pour son engagement envers l'excellence académique et le développement des talents.
+                        </p>
+                        <a href="https://www.google.com/maps?q=École+Primaire+Excellence" target="_blank" class=" inline-block bg-blue-700 text-white px-6 py-2 rounded-full text-sm font-medium hover:bg-blue-800">
+                            En savoir plus
+                        </a>
+                    </div>
+                </div>
+                <!-- École 2 -->
+                <div class="max-w-sm mx-auto bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700 text-center">
+                    <img class="rounded-t-lg mx-auto w-24 h-24 " src="{% static 'images/ecole2.png' %}" alt="École 2" />
+                    <div class="p-5">
+                        <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Lycée Moderne Conakry</h5>
+                        <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">
+                            Un établissement moderne offrant un enseignement de qualité et des infrastructures de pointe.
+                        </p>
+                        <a href="https://www.google.com/maps?q=Lycée+Moderne+Conakry" target="_blank" class=" inline-block bg-blue-700 text-white px-6 py-2 rounded-full text-sm font-medium hover:bg-blue-800">
+                            En savoir plus
+                        </a>
+                    </div>
+                </div>
+                <!-- École 3 -->
+                <div class="max-w-sm mx-auto bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700 text-center">
+                    <img class="rounded-t-lg mx-auto w-24 h-24 " src="{% static 'images/ecole3.png' %}" alt="École 3" />
+                    <div class="p-5">
+                        <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Institut Scientifique de Guinée</h5>
+                        <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">
+                            Spécialisé dans les sciences et la technologie, cet institut forme les leaders de demain.
+                        </p>
+                        <a href="https://www.google.com/maps?q=Institut+Scientifique+de+Guinée" target="_blank" class="mt-4 inline-block bg-blue-700 text-white px-6 py-2 rounded-full text-sm font-medium hover:bg-blue-800">
+                            En savoir plus
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Section Contact -->
+    <section class="py-16 bg-gray-100">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl md:text-4xl text-orange-500 font-bold text-center mb-12">Contactez-nous</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Formulaire de contact -->
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <form action="#" method="post">
+                        {% csrf_token %}
+                        <div class="mb-4">
+                            <label for="name" class="block text-gray-700 font-medium mb-2">Nom</label>
+                            <input type="text" id="name" name="name" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                        </div>
+                        <div class="mb-4">
+                            <label for="email" class="block text-gray-700 font-medium mb-2">Email</label>
+                            <input type="email" id="email" name="email" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                        </div>
+                        <div class="mb-4">
+                            <label for="message" class="block text-gray-700 font-medium mb-2">Message</label>
+                            <textarea id="message" name="message" rows="4" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required></textarea>
+                        </div>
+                        <button type="submit" class="bg-blue-700 text-white px-6 py-3 rounded-full text-md font-medium hover:bg-blue-800">
+                            Envoyer
+                        </button>
+                    </form>
+                </div>
+                <!-- Informations de contact -->
+                <div class="flex flex-col justify-center">
+                    <p class="text-lg text-gray-700 mb-4">
+                        Vous avez des questions ou souhaitez en savoir plus ? N'hésitez pas à nous contacter via le formulaire ou à utiliser les informations ci-dessous.
+                    </p>
+                    <p class="text-gray-700">
+                        <strong>Email :</strong> contact@karamoko.com
+                    </p>
+                    <p class="text-gray-700">
+                        <strong>Téléphone :</strong> +224 627 11 63 54 / 621 07 63 16
+                    </p>
+                    <p class="text-gray-700">
+                        <strong>Adresses :</strong> Kaloum, Conakry, Guinea | Hamdallaye, Dabola, Guinea | Yof, Dakar, Sénégal
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
 {% endblock content %}

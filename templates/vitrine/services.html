@@ -1,0 +1,42 @@
+{% extends "_base.html" %}
+{% load static %}
+
+{% block content %}
+<section class="py-16 bg-gray-50">
+    <div class="container mx-auto px-4">
+        <h1 class="text-4xl font-bold text-center text-orange-500 mb-12">Nos Services</h1>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <!-- Service 1 -->
+            <div class="bg-white border border-gray-200 rounded-lg shadow-lg p-6 text-center">
+                <div class="flex justify-center mb-4">
+                    <img src="{% static 'images/connection-icon.png' %}" alt="Connexion" class="h-16 w-16">
+                </div>
+                <h2 class="text-2xl font-bold text-gray-800 mb-2">Connexion avec des Encadreurs</h2>
+                <p class="text-gray-600">
+                    Trouvez facilement des encadreurs qualifiés et expérimentés pour accompagner vos enfants dans leur réussite scolaire.
+                </p>
+            </div>
+            <!-- Service 2 -->
+            <div class="bg-white border border-gray-200 rounded-lg shadow-lg p-6 text-center">
+                <div class="flex justify-center mb-4">
+                    <img src="{% static 'images/payment-icon.png' %}" alt="Paiements" class="h-16 w-16">
+                </div>
+                <h2 class="text-2xl font-bold text-gray-800 mb-2">Suivi des Séances et Paiements</h2>
+                <p class="text-gray-600">
+                    Gérez vos séances et paiements en ligne grâce à une plateforme intuitive et sécurisée.
+                </p>
+            </div>
+            <!-- Service 3 -->
+            <div class="bg-white border border-gray-200 rounded-lg shadow-lg p-6 text-center">
+                <div class="flex justify-center mb-4">
+                    <img src="{% static 'images/pricing-icon.png' %}" alt="Tarifs" class="h-16 w-16">
+                </div>
+                <h2 class="text-2xl font-bold text-gray-800 mb-2">Plans Tarifaires Adaptés</h2>
+                <p class="text-gray-600">
+                    Choisissez parmi une variété de plans tarifaires flexibles, adaptés à vos besoins et à votre budget.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

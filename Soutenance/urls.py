@@ -5,9 +5,8 @@ from django.conf.urls.static import static
 from core import views
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('', views.home, name='home'),  # Page d'accueil
-    path('core/', include('core.urls')),  # URL pour les niveaux
+    path('admin/', admin.site.urls), # URL pour l'admin
+    path('', include('core.urls')),  # URL pour le site vitrine et niveaux
     path('dashboard/', include('dashboard.urls')),  # URL pour le dashboard
     path('dashboard/repetiteurs/', include('repetiteurs.urls')),
     path('dashboard/souscripteurs/', include('souscripteurs.urls')),

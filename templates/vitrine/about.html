@@ -1,0 +1,101 @@
+{% extends "_base.html" %}
+{% load static %}
+{% block content %}
+<section class="py-16 bg-gray-50">
+    <div class="container mx-auto px-4">
+        <!-- Titre principal -->
+        <h1 class="text-4xl font-bold text-center text-blue-700 mb-12">À propos de Karamoko</h1>
+
+        <!-- Section Slogan avec image -->
+        <div class="mb-12 text-center">
+            <p class="text-xl italic text-gray-600 mb-6">"Karamoko, au centre de l’apprentissage et du réseautage scolaire."</p>
+            <img src="{% static 'images/about-slogan.jpg' %}" alt="Slogan Karamoko" class="mx-auto rounded-lg shadow-lg w-full md:w-2/3">
+        </div>
+
+        <!-- Section Mission avec icône -->
+        <div class="mb-12 flex flex-col md:flex-row items-center">
+            <div class="w-full md:w-1/2 mb-6 md:mb-0">
+                <img src="{% static 'images/mission.jpg' %}" alt="Mission Karamoko" class="rounded-lg shadow-lg">
+            </div>
+            <div class="w-full md:w-1/2 md:pl-8">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">Notre Mission</h2>
+                <p class="text-gray-600 leading-relaxed">
+                    Karamoko est une plateforme de mise en relation entre parents, élèves et enseignants (répétiteurs). 
+                    Notre objectif est de rendre l’apprentissage plus structuré, sécurisé et accessible en garantissant la fiabilité des répétiteurs et en offrant un suivi pédagogique efficace.
+                </p>
+            </div>
+        </div>
+
+        <!-- Section Valeurs avec icônes -->
+        <div class="mb-12">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4 text-center">Nos Valeurs</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="text-center">
+                    <img src="{% static 'images/accessibility-icon.png' %}" alt="Accessibilité" class="h-16 w-16 mx-auto mb-4">
+                    <h3 class="text-lg font-bold text-gray-800">Accessibilité</h3>
+                    <p class="text-gray-600">Simplifier la recherche d’un répétiteur qualifié.</p>
+                </div>
+                <div class="text-center">
+                    <img src="{% static 'images/reliability-icon.png' %}" alt="Fiabilité" class="h-16 w-16 mx-auto mb-4">
+                    <h3 class="text-lg font-bold text-gray-800">Fiabilité</h3>
+                    <p class="text-gray-600">Vérifier l’identité et les compétences des enseignants.</p>
+                </div>
+                <div class="text-center">
+                    <img src="{% static 'images/innovation-icon.png' %}" alt="Innovation" class="h-16 w-16 mx-auto mb-4">
+                    <h3 class="text-lg font-bold text-gray-800">Innovation</h3>
+                    <p class="text-gray-600">Digitaliser et structurer l’accompagnement scolaire.</p>
+                </div>
+                <div class="text-center">
+                    <img src="{% static 'images/tracking-icon.png' %}" alt="Suivi" class="h-16 w-16 mx-auto mb-4">
+                    <h3 class="text-lg font-bold text-gray-800">Suivi</h3>
+                    <p class="text-gray-600">Offrir aux parents un espace dédié au suivi des progrès des élèves.</p>
+                </div>
+                <div class="text-center">
+                    <img src="{% static 'images/credibility-icon.png' %}" alt="Crédibilité" class="h-16 w-16 mx-auto mb-4">
+                    <h3 class="text-lg font-bold text-gray-800">Crédibilité</h3>
+                    <p class="text-gray-600">Construire une communauté d’enseignants reconnus et compétents.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section Cible avec image -->
+        <div class="mb-12 flex flex-col md:flex-row items-center">
+            <div class="w-full md:w-1/2 mb-6 md:mb-0">
+                <img src="{% static 'images/target-audience.jpg' %}" alt="Public cible" class="rounded-lg shadow-lg">
+            </div>
+            <div class="w-full md:w-1/2 md:pl-8">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">Notre Public</h2>
+                <p class="text-gray-600 leading-relaxed">
+                    Karamoko s’adresse principalement à :
+                </p>
+                <ul class="list-disc list-inside text-gray-600 leading-relaxed">
+                    <li>Les <strong>parents</strong> cherchant un enseignant qualifié pour leurs enfants.</li>
+                    <li>Les <strong>élèves</strong> en quête d’un encadrement académique ou religieux.</li>
+                    <li>Les <strong>enseignants/répétiteurs</strong> souhaitant proposer leurs services et développer leur crédibilité.</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Section Problèmes Résolus -->
+        <div class="mb-12">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4 text-center">Les Problèmes que Nous Résolvons</h2>
+            <ul class="list-disc list-inside text-gray-600 leading-relaxed">
+                <li>Accès rapide et sécurisé aux enseignants qualifiés.</li>
+                <li>Un outil de suivi pédagogique pour mesurer les progrès des élèves.</li>
+                <li>Un espace de confiance assurant la qualité et la crédibilité des enseignants.</li>
+            </ul>
+        </div>
+
+        <!-- Section Contact avec bouton -->
+        <div class="text-center">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4">Nous Contacter</h2>
+            <p class="text-gray-600 leading-relaxed mb-4">
+                Vous avez des questions ou souhaitez en savoir plus ? N’hésitez pas à nous contacter.
+            </p>
+            <a href="#" class="bg-blue-700 text-white px-6 py-3 rounded-lg text-md font-medium hover:bg-blue-800 transition duration-300">
+                Contactez-nous
+            </a>
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,48 @@
+{% extends "_base.html" %}
+
+{% load static %}
+
+{% block content %}
+<section class="py-16 bg-gray-50">
+    <div class="container mx-auto px-4">
+        <h1 class="text-4xl font-bold text-center text-orange-500 mb-12">Nos Encadreurs Qualifiés</h1>
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+            {% for repetiteur in repetiteurs %}
+            <!-- Card Encadreur -->
+            <div class="w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700">
+                <div class="flex flex-col items-center pb-10">
+                    <!-- Avatar -->
+                    {% if repetiteur.avatar %}
+                    <img class="w-24 h-24 mb-3 rounded-full shadow-lg" src="{{ repetiteur.avatar.url }}" alt="{{ repetiteur.nom }} image"/>
+                    {% else %}
+                    <img class="w-24 h-24 mb-3 rounded-full shadow-lg" src="{% static 'images/default-avatar.png' %}" alt="Default avatar"/>
+                    {% endif %}
+                    <!-- Nom -->
+                    <h5 class="mb-1 text-xl font-medium text-gray-900 dark:text-white">{{ repetiteur.prenom }} {{ repetiteur.nom }}</h5>
+                    <!-- Compétences -->
+                    <!-- Compétences -->
+                    <span class="text-sm text-gray-500 dark:text-gray-400 mb-2">
+                        <strong>Compétences :</strong>
+                        {% for competence in repetiteur.competences.all %}
+                            {{ competence.nom }}{% if not forloop.last %}, {% endif %}
+                        {% endfor %}
+                    </span>
+                    <!-- Formations -->
+                    <span class="text-sm text-gray-500 dark:text-gray-400 mb-4">
+                        <strong>Cours proposés :</strong>
+                        {% for formation in repetiteur.formations.all %}
+                            {{ formation.titre }}{% if not forloop.last %}, {% endif %}
+                        {% endfor %}
+                    </span>
+                    <!-- Actions -->
+                    <div class="flex mt-4 md:mt-6">
+                        <a href="{% url 'repetiteur_detail' repetiteur.id %}" class="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Voir Profil</a>
+                        <a href="#" class="py-2 px-4 ms-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Message</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}
