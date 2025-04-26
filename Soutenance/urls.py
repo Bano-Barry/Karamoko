@@ -6,6 +6,7 @@ from core import views
 
 urlpatterns = [
     path('admin/', admin.site.urls), # URL pour l'admin
+    path('karamoko/', include('authentication.urls')),  # URL pour l'authentification
     path('', include('core.urls')),  # URL pour le site vitrine et niveaux
     path('dashboard/', include('dashboard.urls')),  # URL pour le dashboard
     path('dashboard/repetiteurs/', include('repetiteurs.urls')),
