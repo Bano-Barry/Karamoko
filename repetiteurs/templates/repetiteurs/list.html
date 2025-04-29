@@ -25,9 +25,9 @@
             {% for repetiteur in repetiteurs %}
             <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 text-center">
                 <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ forloop.counter }}</td>
-                <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ repetiteur.nom }}</td>
-                <td class="px-6 py-4">{{ repetiteur.email }}</td>
-                <td class="px-6 py-4">{{ repetiteur.contact }}</td>
+                <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ repetiteur.user.username }}</td>
+                <td class="px-6 py-4">{{ repetiteur.user.email }}</td>
+                <td class="px-6 py-4">{{ repetiteur.user.phone }}</td>
                 <td class="px-6 py-4 flex justify-center space-x-4">
                     <a href="{% url 'repetiteur_detail' repetiteur.id %}" class="text-blue-600 hover:underline flex items-center">
                         <svg class="w-5 h-5 mr-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">

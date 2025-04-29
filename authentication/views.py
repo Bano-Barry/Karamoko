@@ -1,6 +1,9 @@
 from django.contrib.auth.views import LoginView, LogoutView
 from django.shortcuts import render, redirect
 from django.contrib.auth import login
+
+from repetiteurs.models import Repetiteur
+from souscripteurs.models import Souscripteur
 from .forms import CustomUserCreationForm, CustomLoginForm
 
 # Vue personnalisée pour la connexion qui utilise un formulaire personnalisé et redirige les utilisateurs authentifiés
@@ -19,6 +22,15 @@ def register(request):
         form = CustomUserCreationForm(request.POST)  # Associe le formulaire avec les données POST
         if form.is_valid():  # Vérifie si le formulaire est valide
             user = form.save()  # Enregistre le nouvel utilisateur
+            # Vérifie le rôle choisi et crée l'enregistrement correspondant
+            if user.role == 'repetiteur':
+                repetiteur = Repetiteur.objects.create(user=user)  # Crée un répétiteur lié à l'utilisateur
+                print(f"Répétiteur créé : {repetiteur}")
+            elif user.role == 'parent':
+                souscripteur = Souscripteur.objects.create(user=user)  # Crée un souscripteur lié à l'utilisateur
+                print(f"Souscripteur créé : {souscripteur}")
+            else:  # Si le rôle n'est pas reconnu, on ne fait rien
+                pass
             login(request, user)  # Connecte le nouvel utilisateur
             return redirect('dashboard_home')  # Redirige vers le tableau de bord après l'enregistrement
     else:

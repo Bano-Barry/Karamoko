@@ -1,4 +1,5 @@
 from django.db import models
+from authentication.models import CustomUser
 from core.models import Niveau
 from formations.models import Formation
 
@@ -10,16 +11,13 @@ class Competence(models.Model):
 
 
 class Repetiteur(models.Model):
-    nom = models.CharField(max_length=100)
-    prenom = models.CharField(max_length=100, default="")
-    email = models.EmailField(unique=True)
-    contact = models.CharField(max_length=15, blank=True, null=True)
-    avatar = models.ImageField(upload_to='avatars/repetiteurs/', blank=True, null=True)
-    competences = models.ManyToManyField('repetiteurs.Competence', related_name="repetiteurs")
-    formations = models.ManyToManyField('formations.Formation', related_name="repetiteurs")
+    user = models.OneToOneField(CustomUser, on_delete=models.SET_NULL, null=True, related_name="repetiteur")
+    biographie = models.TextField(blank=True, null=True)
+    competences = models.ManyToManyField('repetiteurs.Competence', null=True, blank=True, related_name="repetiteurs")
+    formations = models.ManyToManyField('formations.Formation', null=True, blank=True, related_name="repetiteurs")
 
     def __str__(self):
-        return f"{self.nom} {self.prenom}"  # Combine le nom et le prénom
+        return f"{self.user.last_name} {self.user.first_name}"  # Combine le nom et le prénom
 
 
 class Cours(models.Model):

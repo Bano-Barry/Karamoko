@@ -1,102 +1,73 @@
 {% load static %}
-<!-- filepath: c:\Users\Bano\Documents\University\Soutenance\KaramokoSoutenance\templates\authentication\login.html -->
+{% load widget_tweaks %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Connexion | Karamoko</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            height: 100vh;
-        }
-        .container {
-            display: flex;
-            flex: 1;
-        }
-        .image-section {
-            flex: 1;
-            background: url('/static/images/login-image.jpeg') no-repeat center center;
-            background-size: cover;
-        }
-        .form-section {
-            flex: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 2rem;
-            background-color:rgb(59, 140, 233);
-        }
-        .form-container {
-            width: 100%;
-            max-width: 400px;
-            background: white;
-            padding: 2rem;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-        .form-container h2 {
-            text-align: center;
-            margin-bottom: 1.5rem;
-            font-size: 1.5rem;
-            color: #333;
-        }
-        .form-container form {
-            display: flex;
-            flex-direction: column;
-        }
-        .form-container form input {
-            margin-bottom: 1rem;
-            padding: 0.75rem;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            font-size: 1rem;
-        }
-        .form-container form button {
-            padding: 0.75rem;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            font-size: 1rem;
-            cursor: pointer;
-        }
-        .form-container form button:hover {
-            background-color: #0056b3;
-        }
-    </style>
+    <!-- Inclusion du fichier CSS généré par Tailwind -->
+    <link href="{% static 'src/output.css' %}" rel="stylesheet">
 </head>
-<body>
-    <div class="container">
+<body class="flex h-screen">
+    <div class="flex flex-1">
         <!-- Section Image -->
-        <div class="image-section"></div>
+        <div class="hidden md:flex flex-1 bg-cover bg-center" style="background-image: url('{% static 'images/login-image.jpeg' %}');">
+            <!-- Cette section affiche une image de fond pour les écrans moyens et plus grands -->
+        </div>
 
         <!-- Section Formulaire -->
-        <div class="form-section">
-            <div class="form-container">
-            <div style="text-align: center; margin-bottom: 1.5rem;">
-                <a href="{% url 'home' %}">
-                    <img src="{% static 'images/logo.jpg' %}" alt="Karamoko Logo" style="width: 100px; height: auto; margin-bottom: 0.5rem;">
-                </a>
-            </div>
-            <h2>Connexion</h2>
-            <form method="post">
-                {% csrf_token %}
-                {{ form.username }}
-                {% if form.username.errors %}
-                <div class="error">{{ form.username.errors }}</div>
-                {% endif %}
-                {{ form.password.errors }}
-                {% if form.password.errors %}
-                <div class="error">{{ form.password.errors }}</div>
-                {% endif %}
-                {{ form.password }}
-                <button type="submit">Se connecter</button>
-            </form>
+        <div class="flex flex-1 items-center justify-center bg-blue-500">
+            <div class="w-full max-w-md bg-white p-6 rounded-lg shadow-lg">
+                <!-- Logo -->
+                <div class="text-center mb-3">
+                    <a href="{% url 'home' %}">
+                        <img src="{% static 'images/logo.jpg' %}" alt="Karamoko Logo" class="w-24 mx-auto mb-2">
+                    </a>
+                </div>
+                <!-- Titre -->
+                <h2 class="text-center text-2xl font-bold tracking-tight text-gray-900 mb-6">Connexion</h2>
+                <!-- Formulaire -->
+                <form method="post" class="space-y-6">
+                    {% csrf_token %}
+                    <!-- Champ pour le nom d'utilisateur -->
+                    <div>
+                        <label for="username" class="block text-sm font-medium text-gray-900">Nom d'utilisateur</label>
+                        <div class="mt-2">
+                            {{ form.username|add_class:"block w-full rounded-md bg-white px-4 py-2 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm" }}
+                            {% if form.username.errors %}
+                            <p class="text-red-500 text-sm mt-1">{{ form.username.errors }}</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <!-- Champ pour le mot de passe -->
+                    <div>
+                        <div class="flex items-center justify-between">
+                            <label for="password" class="block text-sm font-medium text-gray-900">Mot de passe</label>
+                            <div class="text-sm">
+                                <a href="#" class="font-semibold text-indigo-600 hover:text-indigo-500">Mot de passe oublié ?</a>
+                            </div>
+                        </div>
+                        <div class="mt-2">
+                            {{ form.password|add_class:"block w-full rounded-md bg-white px-4 py-2 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm" }}
+                            {% if form.password.errors %}
+                            <p class="text-red-500 text-sm mt-1">{{ form.password.errors }}</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <!-- Bouton de soumission -->
+                    <div>
+                        <button type="submit" class="flex w-full justify-center rounded-md bg-blue-600 px-4 py-2 text-sm font-semibold text-black shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+                            Se connecter
+                        </button>
+                    </div>
+                </form>
+                <!-- Lien pour s'inscrire -->
+                <p class="mt-10 text-center text-sm text-gray-500">
+                    Pas encore membre ?
+                    <a href="{% url 'register' %}" class="font-semibold text-orange-600 hover:text-orange-500">Créer un compte</a>
+                </p>
             </div>
         </div>
     </div>

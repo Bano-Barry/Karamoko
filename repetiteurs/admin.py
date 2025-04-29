@@ -11,10 +11,10 @@ class CompetenceAdmin(admin.ModelAdmin):
 # Enregistrement du modèle Repetiteur
 @admin.register(Repetiteur)
 class RepetiteurAdmin(admin.ModelAdmin):
-    list_display = ('id', 'nom', 'email', 'contact')  # Affiche l'ID, le nom, l'email et le contact
-    search_fields = ('nom', 'email', 'contact')  # Barre de recherche sur le nom, l'email et le contact
+    list_display = ('id', 'user__username', 'user__email', 'user__phone')  # Affiche l'ID, le nom, l'email et le contact
+    search_fields = ('user__username', 'user__email', 'user__phone')  # Barre de recherche sur le nom, l'email et le contact
     list_filter = ('competences',)  # Ajoute un filtre par compétences
-    ordering = ('nom',)  # Trie les résultats par nom
+    ordering = ('user__username',)  # Trie les résultats par nom
     filter_horizontal = ('competences',)  # Ajoute une interface pour gérer les relations ManyToMany
 
 # Enregistrement du modèle Cours
