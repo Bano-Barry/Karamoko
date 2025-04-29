@@ -7,8 +7,8 @@
     <div class="flex items-center space-x-6">
         <!-- Photo de profil -->
         <div class="flex-shrink-0">
-            {% if souscripteur.user.avatar %}
-            <img src="{{ souscripteur.user.avatar.url }}" alt="Photo de {{ souscripteur.user.get_full_name }}" class="w-32 h-32 rounded-full border-2 border-gray-300 dark:border-gray-600">
+            {% if souscripteur.avatar %}
+            <img src="{{ souscripteur.avatar.url }}" alt="Photo de {{ souscripteur.user.get_full_name }}" class="w-32 h-32 rounded-full border-2 border-gray-300 dark:border-gray-600">
             {% else %}
             <div class="w-32 h-32 rounded-full bg-orange-200 flex items-center justify-center text-gray-500 dark:bg-orange-700 dark:text-gray-400">
                 <span class="text-lg font-medium">Aucune photo</span>

@@ -7,8 +7,8 @@
 
     <!-- Photo de profil -->
     <div class="flex justify-center mb-6">
-        {% if repetiteur.user.avatar %}
-        <img src="{{ repetiteur.user.avatar.url }}" alt="Photo de {{ repetiteur.user.get_full_name }}" class="w-32 h-32 rounded-full border-2 border-gray-300 dark:border-gray-600">
+        {% if repetiteur.avatar %}
+        <img src="{{ repetiteur.avatar.url }}" alt="Photo de {{ repetiteur.user.get_full_name }}" class="w-32 h-32 rounded-full border-2 border-gray-300 dark:border-gray-600">
         {% else %}
         <div class="w-32 h-32 rounded-full bg-orange-200 flex items-center justify-center text-gray-500 dark:bg-orange-700 dark:text-gray-400">
             <span class="text-lg font-medium">Aucune photo</span>

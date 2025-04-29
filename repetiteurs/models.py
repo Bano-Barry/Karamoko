@@ -12,6 +12,7 @@ class Competence(models.Model):
 
 class Repetiteur(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.SET_NULL, null=True, related_name="repetiteur")
+    avatar = models.ImageField(upload_to='avatars/repetiteurs/', blank=True, null=True)  
     biographie = models.TextField(blank=True, null=True)
     competences = models.ManyToManyField('repetiteurs.Competence', null=True, blank=True, related_name="repetiteurs")
     formations = models.ManyToManyField('formations.Formation', null=True, blank=True, related_name="repetiteurs")
