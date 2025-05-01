@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from .models import Competence, Repetiteur, Cours
-from .forms import CompetenceForm, RepetiteurForm, CoursForm
+from .forms import CompetenceForm, RepetiteurForm, CoursForm, RepetiteurUpdateForm
 
 def repetiteur_list(request):
     context = {
@@ -48,13 +48,15 @@ def repetiteur_detail(request, id):
 
 def repetiteur_update(request, pk):
     repetiteur = get_object_or_404(Repetiteur, pk=pk)
+    user_instance = repetiteur.user  # Récupérer l'utilisateur lié
+
     if request.method == 'POST':
-        form = RepetiteurForm(request.POST, request.FILES, instance=repetiteur)
+        form = RepetiteurUpdateForm(request.POST, request.FILES, instance=repetiteur, user_instance=user_instance)
         if form.is_valid():
             form.save()
             return redirect('repetiteur_list')
     else:
-        form = RepetiteurForm(instance=repetiteur)
+        form = RepetiteurUpdateForm(instance=repetiteur, user_instance=user_instance)
     
     context = {
         'breadcrumb': [
