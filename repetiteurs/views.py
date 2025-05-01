@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from .models import Competence, Repetiteur, Cours
-from .forms import CompetenceForm, RepetiteurForm, CoursForm, RepetiteurUpdateForm
+from .forms import CompetenceForm, RepetiteurCreateForm, CoursForm, RepetiteurUpdateForm
 
 def repetiteur_list(request):
     context = {
@@ -17,12 +17,12 @@ def repetiteur_list(request):
 
 def repetiteur_create(request):
     if request.method == 'POST':
-        form = RepetiteurForm(request.POST, request.FILES)
+        form = RepetiteurCreateForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
             return redirect('repetiteur_list')
     else:
-        form = RepetiteurForm()
+        form = RepetiteurCreateForm()
     
     context = {
         'breadcrumb': [
