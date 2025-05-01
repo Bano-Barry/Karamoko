@@ -3,7 +3,7 @@
 {% block content %}
 <div class="flex justify-between items-center my-8 max-w-4xl mx-auto">
     <h1 class="text-2xl font-bold text-gray-800 dark:text-white">Liste des Niveaux</h1>
-    <a href="{% url 'core:niveau_create' %}" class="px-4 py-2 text-white bg-blue-600 hover:bg-blue-700 rounded-lg shadow">
+    <a href="{% url 'niveau_create' %}" class="px-4 py-2 text-white bg-blue-600 hover:bg-blue-700 rounded-lg shadow">
         + Ajouter un Niveau
     </a>
 </div>
@@ -23,7 +23,7 @@
                 <td class="px-6 py-4">{{ forloop.counter }}</td>
                 <td class="px-6 py-4">{{ niveau.nom }}</td>
                 <td class="px-6 py-4 flex justify-center space-x-4">
-                    <a href="{% url 'core:niveau_update' niveau.id %}" class="text-blue-600 hover:underline">Modifier</a>
+                    <a href="{% url 'niveau_update' niveau.id %}" class="text-blue-600 hover:underline">Modifier</a>
                     <a href="#" data-modal-target="delete-modal-{{ niveau.id }}" data-modal-toggle="delete-modal-{{ niveau.id }}" class="text-red-600 hover:underline">Supprimer</a>
                 </td>
             </tr>
@@ -49,7 +49,7 @@
                             <button data-modal-hide="delete-modal-{{ niveau.id }}" class="px-4 py-2 text-orange-700 bg-gray-200 hover:bg-orange-300 rounded-lg shadow dark:bg-orange-700 dark:text-gray-300 dark:hover:bg-orange-600">
                                 Annuler
                             </button>
-                            <form method="POST" action="{% url 'core:niveau_delete' niveau.id %}">
+                            <form method="POST" action="{% url 'niveau_delete' niveau.id %}">
                                 {% csrf_token %}
                                 <button type="submit" class="px-4 py-2 text-white bg-red-600 hover:bg-red-700 rounded-lg shadow">
                                     Confirmer

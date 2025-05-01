@@ -39,13 +39,13 @@ class NiveauCreateView(CreateView):
     model = Niveau
     template_name = 'core/niveau_form.html'
     form_class = NiveauForm
-    success_url = reverse_lazy('core:niveau_list')
+    success_url = reverse_lazy('niveau_list')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['breadcrumb'] = [
             {'name': 'Dashboard', 'url': 'dashboard_home'},
-            {'name': 'Niveaux', 'url': 'core:niveau_list'},
+            {'name': 'Niveaux', 'url': 'niveau_list'},
             {'name': 'Créer', 'url': None},
         ]
         return context
@@ -55,13 +55,13 @@ class NiveauUpdateView(UpdateView):
     model = Niveau
     template_name = 'core/niveau_form.html'
     form_class = NiveauForm
-    success_url = reverse_lazy('core:niveau_list')
+    success_url = reverse_lazy('niveau_list')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['breadcrumb'] = [
             {'name': 'Dashboard', 'url': 'dashboard_home'},
-            {'name': 'Niveaux', 'url': 'core:niveau_list'},
+            {'name': 'Niveaux', 'url': 'niveau_list'},
             {'name': 'Modifier', 'url': None},
         ]
         return context
@@ -70,13 +70,13 @@ class NiveauUpdateView(UpdateView):
 class NiveauDeleteView(DeleteView):
     model = Niveau
     template_name = 'core/niveau_confirm_delete.html'
-    success_url = reverse_lazy('core:niveau_list')
+    success_url = reverse_lazy('niveau_list')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['breadcrumb'] = [
             {'name': 'Dashboard', 'url': 'dashboard_home'},
-            {'name': 'Niveaux', 'url': 'core:niveau_list'},
+            {'name': 'Niveaux', 'url': 'niveau_list'},
             {'name': 'Supprimer', 'url': None},
         ]
         return context
