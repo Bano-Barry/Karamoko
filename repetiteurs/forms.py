@@ -2,86 +2,44 @@ from django import forms
 from django.contrib.auth import get_user_model
 from .models import Competence, Cours, Repetiteur
 
-CustomUser = get_user_model()   
-     
+CustomUser = get_user_model()
+
+
+# Utilitaire pour les widgets communs
+def get_widget(input_type, placeholder, additional_classes=""):
+    base_classes = (
+        "block w-full mt-1 border-gray-300 px-4 py-3 rounded-md shadow-sm "
+        "focus:ring-blue-500 focus:border-blue-500 sm:text-sm dark:bg-gray-800 "
+        "dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
+    )
+    return input_type(attrs={
+        'class': f"{base_classes} {additional_classes}",
+        'placeholder': placeholder,
+    })
+
+
+# Formulaire de création de répétiteur
 class RepetiteurCreateForm(forms.ModelForm):
-    email = forms.EmailField(required=True, widget=forms.EmailInput(attrs={
-        'class': 'block w-full mt-1 border-gray-300 px-4 py-3 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white',
-        'placeholder': 'Entrez votre email',
-    }))
-    username = forms.CharField(required=True, widget=forms.TextInput(attrs={
-        'class': 'block w-full mt-1 border-gray-300 px-4 py-3 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white',
-        'placeholder': "Entrez votre nom d'utilisateur",
-    }))
-    first_name = forms.CharField(required=True, widget=forms.TextInput(attrs={
-        'class': 'block w-full mt-1 border-gray-300 px-4 py-3 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white',
-        'placeholder': 'Entrez votre prénom',
-    }))
-    last_name = forms.CharField(required=True, widget=forms.TextInput(attrs={
-        'class': 'block w-full mt-1 border-gray-300 px-4 py-3 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white',
-        'placeholder': 'Entrez votre nom',
-    }))
-    phone = forms.CharField(required=True, widget=forms.TextInput(attrs={
-        'class': 'block w-full mt-1 border-gray-300 px-4 py-3 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white',
-        'placeholder': 'Entrez votre numéro de téléphone',
-    }))
-    adresse = forms.CharField(required=True, widget=forms.TextInput(attrs={
-        'class': 'block w-full mt-1 border-gray-300 px-4 py-3 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white',
-        'placeholder': 'Entrez votre adresse',
-    }))
-    role = forms.ChoiceField(choices=[
-        ('parent', 'Parent'),
-        ('repetiteur', 'Répétiteur'),
-        ], widget=forms.Select(attrs={
-        'class': 'block w-full mt-1 border-gray-300 px-4 py-3 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white',
-    }))
+    email = forms.EmailField(required=True, widget=get_widget(forms.EmailInput, "Entrez votre email"))
+    username = forms.CharField(required=True, widget=get_widget(forms.TextInput, "Entrez votre nom d'utilisateur"))
+    first_name = forms.CharField(required=True, widget=get_widget(forms.TextInput, "Entrez votre prénom"))
+    last_name = forms.CharField(required=True, widget=get_widget(forms.TextInput, "Entrez votre nom"))
+    phone = forms.CharField(required=True, widget=get_widget(forms.TextInput, "Entrez votre numéro de téléphone"))
+    adresse = forms.CharField(required=True, widget=get_widget(forms.TextInput, "Entrez votre adresse"))
+    role = forms.ChoiceField(choices=[('parent', 'Parent'), ('repetiteur', 'Répétiteur')],
+                              widget=get_widget(forms.Select, ""))
+    password = forms.CharField(required=True, widget=get_widget(forms.PasswordInput, "Définir un mot de passe"))
+
     class Meta:
         model = Repetiteur
-        fields = ['first_name', 'last_name', 'username', 'email', 'phone', 'adresse', 'role', 'avatar', 'biographie', 'competences', 'formations']
+        fields = ['avatar', 'biographie', 'competences', 'formations']
         widgets = {
-            'first_name': forms.TextInput(attrs={
-            'class': 'block w-full mt-1 border-gray-300 px-4 py-3 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white',
-            'placeholder': 'Entrez votre prénom',
-            }),
-            'last_name': forms.TextInput(attrs={
-            'class': 'block w-full mt-1 border-gray-300 px-4 py-3 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white',
-            'placeholder': 'Entrez votre nom',
-            }),
-            'username': forms.TextInput(attrs={
-            'class': 'block w-full mt-1 border-gray-300 px-4 py-3 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white',
-            'placeholder': "Entrez votre nom d'utilisateur",
-            }),
-            'email': forms.EmailInput(attrs={
-            'class': 'block w-full mt-1 border-gray-300 px-4 py-3 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white',
-            'placeholder': 'Entrez votre email',
-            }),
-            'phone': forms.TextInput(attrs={
-            'class': 'block w-full mt-1 border-gray-300 px-4 py-3 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white',
-            'placeholder': 'Entrez votre numéro de téléphone',
-            }),
-            'adresse': forms.TextInput(attrs={
-            'class': 'block w-full mt-1 border-gray-300 px-4 py-3 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white',
-            'placeholder': 'Entrez votre adresse',
-            }),
-            'role': forms.Select(attrs={
-            'class': 'block w-full mt-1 border-gray-300 px-4 py-3 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white',
-            }),
-            'avatar': forms.ClearableFileInput(attrs={
-            'class': 'block w-full mt-1 border-gray-300 px-4 py-3 rounded-md py-4 px-3 shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white',
-            }),
-            'biographie': forms.Textarea(attrs={
-            'class': 'block w-full mt-1 border-gray-300 px-4 py-3 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white',
-            'placeholder': 'Entrez une biographie',
-            'rows': 4,
-            }),
-            'competences': forms.SelectMultiple(attrs={
-            'class': 'block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white px-4 py-3',
-            }),
-            'formations': forms.SelectMultiple(attrs={
-            'class': 'block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white px-4 py-3',
-            }),
+            'avatar': get_widget(forms.ClearableFileInput, "", "py-4 px-3"),
+            'biographie': get_widget(forms.Textarea, "Entrez une biographie", "rows-4"),
+            'competences': get_widget(forms.SelectMultiple, ""),
+            'formations': get_widget(forms.SelectMultiple, ""),
         }
-    
+
     def save(self, commit=True):
         user_data = {
             'first_name': self.cleaned_data['first_name'],
@@ -92,7 +50,9 @@ class RepetiteurCreateForm(forms.ModelForm):
             'adresse': self.cleaned_data['adresse'],
             'role': self.cleaned_data['role']
         }
-        user = CustomUser.objects.create_user(**user_data)
+        user = CustomUser(**user_data)
+        user.set_password(self.cleaned_data['password'])  # Hacher le mot de passe
+
         repetiteur = super().save(commit=False)
         repetiteur.user = user
         if commit:
@@ -101,58 +61,24 @@ class RepetiteurCreateForm(forms.ModelForm):
             self.save_m2m()  # Enregistrer les relations ManyToMany
         return repetiteur
 
+
+# Formulaire de mise à jour de répétiteur
 class RepetiteurUpdateForm(forms.ModelForm):
-    email = forms.EmailField(required=True, widget=forms.EmailInput(attrs={
-        'class': 'block w-full mt-1 border-gray-300 px-4 py-3 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white',
-        'placeholder': 'Entrez votre email',
-    }))
-    username = forms.CharField(required=True, widget=forms.TextInput(attrs={
-        'class': 'block w-full mt-1 border-gray-300 px-4 py-3 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white',
-        'placeholder': "Entrez votre nom d'utilisateur",
-    }))
-    first_name = forms.CharField(required=True, widget=forms.TextInput(attrs={
-        'class': 'block w-full mt-1 border-gray-300 px-4 py-3 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white',
-        'placeholder': 'Entrez votre prénom',
-    }))
-    last_name = forms.CharField(required=True, widget=forms.TextInput(attrs={
-        'class': 'block w-full mt-1 border-gray-300 px-4 py-3 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white',
-        'placeholder': 'Entrez votre nom',
-    }))
-    phone = forms.CharField(required=True, widget=forms.TextInput(attrs={
-        'class': 'block w-full mt-1 border-gray-300 px-4 py-3 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white',
-        'placeholder': 'Entrez votre numéro de téléphone',
-    }))
-    adresse = forms.CharField(required=True, widget=forms.TextInput(attrs={
-        'class': 'block w-full mt-1 border-gray-300 px-4 py-3 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white',
-        'placeholder': 'Entrez votre adresse',
-    }))
+    email = forms.EmailField(required=True, widget=get_widget(forms.EmailInput, "Entrez votre email"))
+    username = forms.CharField(required=True, widget=get_widget(forms.TextInput, "Entrez votre nom d'utilisateur"))
+    first_name = forms.CharField(required=True, widget=get_widget(forms.TextInput, "Entrez votre prénom"))
+    last_name = forms.CharField(required=True, widget=get_widget(forms.TextInput, "Entrez votre nom"))
+    phone = forms.CharField(required=True, widget=get_widget(forms.TextInput, "Entrez votre numéro de téléphone"))
+    adresse = forms.CharField(required=True, widget=get_widget(forms.TextInput, "Entrez votre adresse"))
 
     class Meta:
         model = Repetiteur
-        fields = ['first_name', 'last_name', 'username', 'email', 'phone', 'adresse', 'avatar', 'biographie', 'competences', 'formations']
+        fields = ['avatar', 'biographie', 'competences', 'formations']
         widgets = {
-            'avatar': forms.ClearableFileInput(attrs={
-                'class': 'block w-full mt-1 border-gray-300 px-4 py-3 rounded-md py-4 px-3 shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white',
-            }),
-            'biographie': forms.Textarea(attrs={
-                'class': 'block w-full mt-1 border-gray-300 px-4 py-3 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white',
-                'placeholder': 'Entrez une biographie',
-                'rows': 4,
-            }),
-            'competences': forms.SelectMultiple(attrs={
-                'class': 'block w-full mt-1 border-gray-300 px-4 py-3 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white',
-            }),
-            'formations': forms.SelectMultiple(attrs={
-                'class': 'block w-full mt-1 border-gray-300 px-4 py-3 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white',
-            }),
-            'phone': forms.TextInput(attrs={
-                'class': 'block w-full mt-1 border-gray-300 px-4 py-3 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white',
-                'placeholder': 'Entrez votre numéro de téléphone',
-            }),
-            'adresse': forms.TextInput(attrs={
-                'class': 'block w-full mt-1 border-gray-300 px-4 py-3 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white',
-                'placeholder': 'Entrez votre adresse',
-            }),
+            'avatar': get_widget(forms.ClearableFileInput, "", "py-4 px-3"),
+            'biographie': get_widget(forms.Textarea, "Entrez une biographie", "rows-4"),
+            'competences': get_widget(forms.SelectMultiple, ""),
+            'formations': get_widget(forms.SelectMultiple, ""),
         }
 
     def __init__(self, *args, **kwargs):
@@ -166,12 +92,9 @@ class RepetiteurUpdateForm(forms.ModelForm):
             self.fields['last_name'].initial = self.user_instance.last_name
             self.fields['phone'].initial = self.user_instance.phone
             self.fields['adresse'].initial = self.user_instance.adresse
-            self.fields['competences'].initial = self.instance.competences.all()
-            self.fields['formations'].initial = self.instance.formations.all()
 
     def save(self, commit=True):
         repetiteur = super().save(commit=False)
-        print("Repetiteur instance:", repetiteur)  # Debug line
         if self.user_instance:
             self.user_instance.email = self.cleaned_data['email']
             self.user_instance.username = self.cleaned_data['username']
@@ -179,61 +102,47 @@ class RepetiteurUpdateForm(forms.ModelForm):
             self.user_instance.last_name = self.cleaned_data['last_name']
             self.user_instance.phone = self.cleaned_data['phone']
             self.user_instance.adresse = self.cleaned_data['adresse']
-            repetiteur.competences.set(self.cleaned_data['competences'])
-            repetiteur.formations.set(self.cleaned_data['formations'])
-            print("Repetiteur instance:", repetiteur)
             if commit:
                 self.user_instance.save()
 
+        repetiteur.competences.set(self.cleaned_data.get('competences', repetiteur.competences.all()))
+        repetiteur.formations.set(self.cleaned_data.get('formations', repetiteur.formations.all()))
         if commit:
             repetiteur.save()
         return repetiteur
-    
+
+
+# Formulaire de compétence
 class CompetenceForm(forms.ModelForm):
     class Meta:
         model = Competence
         fields = '__all__'
         widgets = {
-            'nom': forms.TextInput(attrs={
-                'class': 'block w-full mt-1 border-gray-300 px-4 py-3 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white',
-                'placeholder': 'Entrez le nom de la compétence',
-            }),
+            'nom': get_widget(forms.TextInput, "Entrez le nom de la compétence"),
         }
-        
+
+
+# Formulaire de cours
 class CoursForm(forms.ModelForm):
     class Meta:
         model = Cours
         fields = '__all__'
         widgets = {
-            'titre': forms.TextInput(attrs={
-                'class': 'block w-full mt-1 border-gray-300 px-4 py-3 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white',
-                'placeholder': 'Entrez le titre du cours',
-            }),
-            'niveau': forms.Select(attrs={
-                'class': 'block w-full mt-1 border-gray-300 px-4 py-3 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white',
-            }),
-            'repetiteur': forms.Select(attrs={
-                'class': 'block w-full mt-1 border-gray-300 px-4 py-3 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white',
-            }),
+            'titre': get_widget(forms.TextInput, "Entrez le titre du cours"),
+            'niveau': get_widget(forms.Select, ""),
+            'repetiteur': get_widget(forms.Select, ""),
         }
 
+
+# Formulaire de profil de répétiteur
 class RepetiteurProfileForm(forms.ModelForm):
+
     class Meta:
         model = Repetiteur
         fields = ['avatar', 'biographie', 'competences', 'formations']
         widgets = {
-            'avatar': forms.ClearableFileInput(attrs={
-                'class': 'block w-full mt-1 border-gray-300 px-4 py-3 rounded-md py-4 px-3 shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white',
-            }),
-            'biographie': forms.Textarea(attrs={
-                'class': 'block w-full mt-1 border-gray-300 px-4 py-3 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white',
-                'placeholder': 'Entrez une biographie',
-                'rows': 4,
-            }),
-            'competences': forms.SelectMultiple(attrs={
-                'class': 'block w-full mt-1 border-gray-300 px-4 py-3 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white',
-            }),
-            'formations': forms.SelectMultiple(attrs={
-                'class': 'block w-full mt-1 border-gray-300 px-4 py-3 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white',
-            }),
+            'avatar': get_widget(forms.ClearableFileInput, "", "py-4 px-3"),
+            'biographie': get_widget(forms.Textarea, "Entrez une biographie", "rows-4"),
+            'competences': get_widget(forms.SelectMultiple, ""),
+            'formations': get_widget(forms.SelectMultiple, ""),
         }

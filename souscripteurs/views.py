@@ -1,7 +1,8 @@
 from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, DetailView, UpdateView, DeleteView
 from .models import Souscripteur
-from .forms import SouscripteurForm, SouscripteurUpdateForm
+from .forms import SouscripteurCreateForm, SouscripteurUpdateForm
+
 
 # Liste des souscripteurs
 class SouscripteurListView(ListView):
@@ -37,7 +38,7 @@ class SouscripteurDetailView(DetailView):
 class SouscripteurCreateView(CreateView):
     model = Souscripteur
     template_name = 'souscripteurs/create.html'
-    form_class = SouscripteurForm
+    form_class = SouscripteurCreateForm
     success_url = reverse_lazy('souscripteur_list')
 
     def get_context_data(self, **kwargs):
