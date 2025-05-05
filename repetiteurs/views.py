@@ -1,4 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib.auth.decorators import login_required
 from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from .models import Competence, Repetiteur, Cours
@@ -34,6 +35,7 @@ def repetiteur_create(request):
     }
     return render(request, 'repetiteurs/create.html', context)
 
+@login_required
 def repetiteur_detail(request, id):
     repetiteur = get_object_or_404(Repetiteur, id=id)
     context = {

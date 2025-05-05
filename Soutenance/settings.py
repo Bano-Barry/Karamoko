@@ -140,4 +140,14 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'authentication.CustomUser'
 LOGIN_REDIRECT_URL = 'dashboard_home'  # URL vers laquelle rediriger après la connexion
-LOGOUT_REDIRECT_URL = 'login'  # URL vers laquelle rediriger après la déconnexion
+LOGOUT_REDIRECT_URL = 'home'  # URL vers laquelle rediriger après la déconnexion
+
+# Configuration des messages
+from django.contrib.messages import constants as messages
+MESSAGE_TAGS = {
+    messages.DEBUG: 'debug',
+    messages.INFO: 'info',
+    messages.SUCCESS: 'success',
+    messages.WARNING: 'warning',
+    messages.ERROR: 'error',
+}

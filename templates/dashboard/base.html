@@ -9,7 +9,6 @@
     <link rel="stylesheet" href="{% static 'src/output.css' %}">
 </head>
 <body class="bg-gray-100 dark:bg-gray-900">
-
     <!-- Navbar -->
     <nav class="fixed top-0 z-50 w-full bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700">
         <div class="px-3 py-3 lg:px-5 lg:pl-3">
@@ -284,37 +283,50 @@
         <div class="p-4 dark:border-gray-700 mt-14">
             <!-- Breadcrumb -->
             {% block breadcrumb %}
-                {% if breadcrumb %}
-                    <nav class="flex mt-4 max-w-4xl mx-auto" aria-label="Breadcrumb">
-                        <ol class="inline-flex items-center space-x-1 md:space-x-3">
-                            {% for item in breadcrumb %}
-                            <li class="inline-flex items-center">
-                                {% if item.url %}
-                                <a href="{% url item.url %}" class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600 dark:text-gray-400 dark:hover:text-white">
-                                    {% if forloop.first %}
-                                    <svg class="w-4 h-4 mr-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                                        <path d="M10 1.5l7 7-1.5 1.5L10 4.5 4.5 10 3 8.5l7-7z"/>
-                                        <path d="M3 10v7h14v-7h-2v5H5v-5H3z"/>
-                                    </svg>
-                                    {% endif %}
-                                    {{ item.name }}
-                                </a>
-                                {% else %}
-                                <span class="ml-1 text-sm font-medium text-gray-500 dark:text-gray-400">{{ item.name }}</span>
-                                {% endif %}
-                            </li>
-                            {% if not forloop.last %}
-                            <li>
-                                <svg class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M9 5l7 7-7 7"/>
-                                </svg>
-                            </li>
+            {% if breadcrumb %}
+            <nav class="flex mt-4 max-w-4xl mx-auto" aria-label="Breadcrumb">
+                <ol class="inline-flex items-center space-x-1 md:space-x-3">
+                    {% for item in breadcrumb %}
+                    <li class="inline-flex items-center">
+                        {% if item.url %}
+                        <a href="{% url item.url %}" class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600 dark:text-gray-400 dark:hover:text-white">
+                            {% if forloop.first %}
+                            <svg class="w-4 h-4 mr-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M10 1.5l7 7-1.5 1.5L10 4.5 4.5 10 3 8.5l7-7z"/>
+                                <path d="M3 10v7h14v-7h-2v5H5v-5H3z"/>
+                            </svg>
                             {% endif %}
-                            {% endfor %}
-                        </ol>
-                    </nav>
-                {% endif %}
+                            {{ item.name }}
+                        </a>
+                        {% else %}
+                        <span class="ml-1 text-sm font-medium text-gray-500 dark:text-gray-400">{{ item.name }}</span>
+                        {% endif %}
+                    </li>
+                    {% if not forloop.last %}
+                    <li>
+                        <svg class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M9 5l7 7-7 7"/>
+                        </svg>
+                    </li>
+                    {% endif %}
+                    {% endfor %}
+                </ol>
+            </nav>
+            {% endif %}
             {% endblock %}
+            {% if messages %}
+                <div class="container mx-auto mt-4">
+                    {% for message in messages %}
+                    <div class="p-4 mb-4 text-sm rounded-lg shadow-md 
+                        {% if message.tags == 'success' %}bg-green-100 text-green-500{% endif %}
+                        {% if message.tags == 'error' %}bg-red-100 text-red-600{% endif %}
+                        {% if message.tags == 'warning' %}bg-yellow-100 text-yellow-500{% endif %}
+                        {% if message.tags == 'info' %}bg-blue-100 text-blue-800{% endif %}">
+                        {{ message }}
+                    </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
 
             <!-- Contenu dynamique -->
             {% block content %}
