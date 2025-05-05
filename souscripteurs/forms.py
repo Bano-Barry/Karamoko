@@ -27,7 +27,7 @@ class SouscripteurCreateForm(forms.ModelForm):
     phone = forms.CharField(required=True, widget=get_widget(forms.TextInput, "Entrez votre numéro de téléphone"))
     adresse = forms.CharField(required=True, widget=get_widget(forms.TextInput, "Entrez votre adresse"))
     role = forms.ChoiceField(choices=[('parent', 'Parent'), ('repetiteur', 'Répétiteur')],
-                              widget=get_widget(forms.Select, ""))
+        widget=get_widget(forms.Select, ""))
     password = forms.CharField(required=True, widget=get_widget(forms.PasswordInput, "Définir un mot de passe"))
 
     class Meta:
@@ -109,10 +109,46 @@ class SouscripteurUpdateForm(forms.ModelForm):
 
 # Formulaire de profil de souscripteur
 class SouscripteurProfileForm(forms.ModelForm):
-    
+    email = forms.EmailField(required=True, widget=get_widget(forms.EmailInput, "Entrez votre email"))
+    username = forms.CharField(required=True, widget=get_widget(forms.TextInput, "Entrez votre nom d'utilisateur"))
+    first_name = forms.CharField(required=True, widget=get_widget(forms.TextInput, "Entrez votre prénom"))
+    last_name = forms.CharField(required=True, widget=get_widget(forms.TextInput, "Entrez votre nom"))
+    phone = forms.CharField(required=True, widget=get_widget(forms.TextInput, "Entrez votre numéro de téléphone"))
+    adresse = forms.CharField(required=True, widget=get_widget(forms.TextInput, "Entrez votre adresse"))
+
     class Meta:
         model = Souscripteur
-        fields = ['avatar',]
+        fields = ['first_name', 'last_name', 'username', 'email', 'phone', 'adresse', 'avatar']
         widgets = {
-            'avatar': get_widget(forms.FileInput, ""),
+            'avatar': get_widget(forms.ClearableFileInput, "", "py-4 px-3"),
         }
+
+    def __init__(self, *args, **kwargs):
+        self.user_instance = kwargs.pop('user_instance', None)
+        super().__init__(*args, **kwargs)
+
+        if self.user_instance:
+            # Pré-remplir les champs liés à l'utilisateur
+            self.fields['email'].initial = self.user_instance.email
+            self.fields['username'].initial = self.user_instance.username
+            self.fields['first_name'].initial = self.user_instance.first_name
+            self.fields['last_name'].initial = self.user_instance.last_name
+            self.fields['phone'].initial = self.user_instance.phone
+            self.fields['adresse'].initial = self.user_instance.adresse
+
+    def save(self, commit=True):
+        souscripteur = super().save(commit=False)
+        if self.user_instance:
+            # Mettre à jour les champs de l'utilisateur lié
+            self.user_instance.email = self.cleaned_data['email']
+            self.user_instance.username = self.cleaned_data['username']
+            self.user_instance.first_name = self.cleaned_data['first_name']
+            self.user_instance.last_name = self.cleaned_data['last_name']
+            self.user_instance.phone = self.cleaned_data['phone']
+            self.user_instance.adresse = self.cleaned_data['adresse']
+            if commit:
+                self.user_instance.save()
+
+        if commit:
+            souscripteur.save()
+        return souscripteur

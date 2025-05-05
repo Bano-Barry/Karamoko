@@ -54,24 +54,24 @@ def register(request):
 def complete_repetiteur_profile(request):
     repetiteur = get_object_or_404(Repetiteur, user=request.user)
     if request.method == 'POST':
-        form = RepetiteurProfileForm(request.POST, request.FILES, instance=repetiteur)
+        form = RepetiteurProfileForm(request.POST, request.FILES, instance=repetiteur, user_instance=request.user)  # Récupère le formulaire avec les données de l'utilisateur
         if form.is_valid():
             form.save()
             messages.success(request, 'Votre profil a été mis à jour avec succès !')  # Message de succès
             return redirect('repetiteur_detail', id=repetiteur.id)  # Redirige vers le tableau de bord après la mise à jour
     else:
-        form = RepetiteurProfileForm(instance=repetiteur)
+        form = RepetiteurProfileForm(instance=repetiteur, user_instance=request.user)  # Récupère le formulaire avec les données de l'utilisateur
     return render(request, 'repetiteurs/complete_profile.html', {'form': form, 'repetiteur': repetiteur})  # Affiche le formulaire de mise à jour du profil
 
 @login_required
 def complete_souscripteur_profile(request):
     souscripteur = get_object_or_404(Souscripteur, user=request.user)
     if request.method == 'POST':
-        form = SouscripteurProfileForm(request.POST, request.FILES, instance=souscripteur)
+        form = SouscripteurProfileForm(request.POST, request.FILES, instance=souscripteur, user_instance=request.user)  # Récupère le formulaire avec les données de l'utilisateur  
         if form.is_valid():
             form.save()
             messages.success(request, 'Votre profil a été mis à jour avec succès !')
             return redirect('souscripteur_detail', pk=souscripteur.id)  # Redirige vers le tableau de bord après la mise à jour
     else:
-        form = SouscripteurProfileForm(instance=souscripteur)
+        form = SouscripteurProfileForm(instance=souscripteur, user_instance=request.user)  # Récupère le formulaire avec les données de l'utilisateur
     return render(request, 'souscripteurs/complete_profile.html', {'form': form})

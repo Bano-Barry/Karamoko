@@ -5,7 +5,7 @@
 {% block title %}Mon Profil | Karamoko{% endblock %}
 
 {% block content %}
-<div class="max-w-6xl mx-auto mt-8 p-6 rounded-lg shadow-md dark:bg-gray-800">
+<div class="max-w-6xl mx-auto mt-8 p-6 rounded-lg shadow-md bg-white dark:bg-gray-800">
     <h1 class="text-2xl font-bold text-gray-800 dark:text-white mb-6 text-center">Mon Profil</h1>
 
     <!-- Section 1 : Informations personnelles -->
@@ -15,7 +15,7 @@
             {% if repetiteur.avatar %}
                 <img src="{{ repetiteur.avatar.url }}" alt="Photo de profil" class="w-32 h-32 rounded-full shadow-md mb-4">
             {% else %}
-                <img src="{% static 'images/default-profile.png' %}" alt="Photo de profil par défaut" class="w-32 h-32 rounded-full shadow-md mb-4">
+                <img src="{% static 'images/default_avatar.webp' %}" alt="Photo de profil par défaut" class="w-32 h-32 rounded-full shadow-md mb-4">
             {% endif %}
             <p class="text-lg font-semibold text-gray-700 dark:text-gray-300">{{ user.first_name }} {{ user.last_name }}</p>
         </div>
@@ -73,7 +73,7 @@
         </form>
     </div>
 
-    <!-- Actions rapides -->
+    {% comment %} <!-- Actions rapides -->
     <div>
         <h2 class="text-lg font-semibold text-gray-700 dark:text-gray-300">Actions rapides</h2>
         <div class="mt-4 space-y-2">
@@ -84,6 +84,6 @@
                 Se déconnecter
             </a>
         </div>
-    </div>
+    </div> {% endcomment %}
 </div>
 {% endblock %}

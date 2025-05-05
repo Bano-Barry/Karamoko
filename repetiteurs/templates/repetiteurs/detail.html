@@ -1,5 +1,8 @@
 <!-- filepath: c:\Users\Bano\Documents\University\Soutenance\KaramokoSoutenance\repetiteurs\templates\repetiteurs\detail.html -->
 {% extends 'dashboard/base.html' %}
+{% load static %}
+
+{% block title %}Détails du Répétiteur | Karamoko{% endblock %}
 
 {% block content %}
 <div class="max-w-6xl mx-auto mt-8 bg-white p-6 rounded-lg shadow-md dark:bg-gray-800">
@@ -10,9 +13,7 @@
         {% if repetiteur.avatar %}
         <img src="{{ repetiteur.avatar.url }}" alt="Photo de {{ repetiteur.user.get_full_name }}" class="w-32 h-32 rounded-full border-2 border-gray-300 dark:border-gray-600">
         {% else %}
-        <div class="w-32 h-32 rounded-full bg-orange-200 flex items-center justify-center text-gray-500 dark:bg-orange-700 dark:text-gray-400">
-            <span class="text-lg font-medium">Aucune photo</span>
-        </div>
+            <img class="w-32 h-32 rounded-full" src="{% static 'images/default_avatar.webp' %}" alt="Default avatar">
         {% endif %}
     </div>
 
@@ -22,6 +23,7 @@
         <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg shadow">
             <h2 class="text-xl font-bold text-gray-800 dark:text-white mb-4">Informations Personnelles</h2>
             <p class="mb-2"><strong class="text-gray-800 dark:text-gray-300">Nom Complet :</strong> {{ repetiteur.user.get_full_name }}</p>
+            <p class="mb-2"><strong class="text-gray-800 dark:text-gray-300">Nom d'utilisateur :</strong> {{ repetiteur.user.username }}</p>
             <p class="mb-2"><strong class="text-gray-800 dark:text-gray-300">Adresse Email :</strong> {{ repetiteur.user.email }}</p>
             <p class="mb-2"><strong class="text-gray-800 dark:text-gray-300">Numéro de Téléphone :</strong> {{ repetiteur.user.phone }}</p>
             <p class="mb-2"><strong class="text-gray-800 dark:text-gray-300">Adresse :</strong> {{ repetiteur.user.adresse }}</p>
