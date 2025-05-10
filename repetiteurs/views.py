@@ -4,7 +4,6 @@ from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from .models import Competence, Repetiteur, Cours
 from .forms import CompetenceForm, RepetiteurCreateForm, CoursForm, RepetiteurUpdateForm
-from django.db.models import Q
 
 def repetiteur_list(request):
     adresse = request.GET.get('adresse', '').strip()

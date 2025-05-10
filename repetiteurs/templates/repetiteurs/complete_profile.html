@@ -58,6 +58,15 @@
                     Aucune formation renseignée.
                 {% endfor %}
             </p>
+            <p class="text-gray-600 dark:text-gray-400"><strong>Cours dispensés :</strong> 
+                {% for cours in repetiteur.cours.all %}
+                    <span class="inline-block bg-purple-100 text-purple-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-purple-900 dark:text-purple-300">
+                        {{ cours.titre }}
+                    </span>
+                {% empty %}
+                    Aucun cours sélectionné.
+                {% endfor %}
+            </p>
         </div>
     </div>
 
@@ -72,18 +81,5 @@
             </button>
         </form>
     </div>
-
-    {% comment %} <!-- Actions rapides -->
-    <div>
-        <h2 class="text-lg font-semibold text-gray-700 dark:text-gray-300">Actions rapides</h2>
-        <div class="mt-4 space-y-2">
-            <a href="#" class="block px-4 py-2 text-white bg-yellow-600 hover:bg-yellow-700 rounded-lg shadow">
-                Changer mon mot de passe
-            </a>
-            <a href="{% url 'logout' %}" class="block px-4 py-2 text-white bg-red-600 hover:bg-red-700 rounded-lg shadow">
-                Se déconnecter
-            </a>
-        </div>
-    </div> {% endcomment %}
 </div>
 {% endblock %}

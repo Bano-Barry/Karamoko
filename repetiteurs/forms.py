@@ -129,8 +129,7 @@ class CoursForm(forms.ModelForm):
         fields = '__all__'
         widgets = {
             'titre': get_widget(forms.TextInput, "Entrez le titre du cours"),
-            'niveau': get_widget(forms.Select, ""),
-            'repetiteur': get_widget(forms.Select, ""),
+            'description': get_widget(forms.Textarea, "Entrez la description du cours", "rows-4"),
         }
 
 
@@ -145,12 +144,14 @@ class RepetiteurProfileForm(forms.ModelForm):
     
     class Meta:
         model = Repetiteur
-        fields = ['first_name', 'last_name', 'username', 'email', 'phone', 'adresse', 'avatar', 'biographie', 'competences', 'formations']
+        fields = ['first_name', 'last_name', 'username', 'email', 'phone', 'adresse', 'avatar', 'biographie', 'competences', 'formations', 'cours']
         widgets = {
             'avatar': get_widget(forms.ClearableFileInput, "", "py-4 px-3"),
             'biographie': get_widget(forms.Textarea, "Entrez une biographie", "rows-4"),
             'competences': get_widget(forms.SelectMultiple, ""),
             'formations': get_widget(forms.SelectMultiple, ""),
+            'cours': get_widget(forms.SelectMultiple, ""),  # Widget pour sélectionner plusieurs cours
+
         }
 
     def __init__(self, *args, **kwargs):
@@ -179,6 +180,7 @@ class RepetiteurProfileForm(forms.ModelForm):
 
         repetiteur.competences.set(self.cleaned_data.get('competences', repetiteur.competences.all()))
         repetiteur.formations.set(self.cleaned_data.get('formations', repetiteur.formations.all()))
+        repetiteur.cours.set(self.cleaned_data.get('cours', repetiteur.cours.all()))
         if commit:
             repetiteur.save()
         return repetiteur

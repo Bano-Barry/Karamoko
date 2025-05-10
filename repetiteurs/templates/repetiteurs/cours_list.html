@@ -14,8 +14,7 @@
             <tr>
                 <th scope="col" class="px-6 py-3">#</th>
                 <th scope="col" class="px-6 py-3">Titre</th>
-                <th scope="col" class="px-6 py-3">Niveau</th>
-                <th scope="col" class="px-6 py-3">Répétiteur</th>
+                <th scope="col" class="px-6 py-3">Description</th>
                 <th scope="col" class="px-6 py-3">Actions</th>
             </tr>
         </thead>
@@ -24,8 +23,7 @@
             <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 text-center">
                 <td class="px-6 py-4">{{ forloop.counter }}</td>
                 <td class="px-6 py-4">{{ cours.titre }}</td>
-                <td class="px-6 py-4">{{ cours.niveau.nom }}</td>
-                <td class="px-6 py-4">{{ cours.repetiteur.nom }} {{ cours.repetiteur.prenom }} </td>
+                <td class="px-6 py-4">{{ cours.description }}</td>
                 <td class="px-6 py-4 flex justify-center space-x-4">
                     <a href="{% url 'cours_update' cours.id %}" class="text-blue-600 hover:underline">Modifier</a>
                     <a href="#" data-modal-target="delete-modal-{{ cours.id }}" data-modal-toggle="delete-modal-{{ cours.id }}" class="text-red-600 hover:underline">Supprimer</a>
