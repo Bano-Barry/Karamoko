@@ -4,17 +4,62 @@ from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from .models import Competence, Repetiteur, Cours
 from .forms import CompetenceForm, RepetiteurCreateForm, CoursForm, RepetiteurUpdateForm
+from django.db.models import Q
 
 def repetiteur_list(request):
+    adresse = request.GET.get('adresse', '').strip()
+    competence = request.GET.get('competence', '').strip()
+
+    repetiteurs = Repetiteur.objects.all()
+
+    if adresse:
+        repetiteurs = repetiteurs.filter(user__adresse__icontains=adresse)
+
+    if competence:
+        repetiteurs = repetiteurs.filter(competences__nom__icontains=competence)
+
+    # Évite les doublons si un répétiteur a plusieurs compétences
+    repetiteurs = repetiteurs.distinct()
+
     context = {
         'breadcrumb': [
             {'name': 'Dashboard', 'url': 'dashboard_home'},
             {'name': 'Répétiteurs', 'url': 'repetiteur_list'},
-            {'name': 'Liste des Répétiteurs', 'url': None},  # Pas de lien pour l'élément actif
+            {'name': 'Liste des Répétiteurs', 'url': None},
         ],
-        'repetiteurs': Repetiteur.objects.all(),
+        'repetiteurs': repetiteurs,
+        'adresse': adresse,
+        'competence': competence,
     }
+
     return render(request, 'repetiteurs/list.html', context)
+
+def vitrine_repetiteur_list(request):
+    # Récupérer les paramètres GET
+    adresse = request.GET.get('adresse', '').strip()
+    competence = request.GET.get('competences', '').strip()
+
+    # Récupérer tous les répétiteurs
+    repetiteurs = Repetiteur.objects.all()
+
+    # Appliquer les filtres
+    if adresse:
+        repetiteurs = repetiteurs.filter(user__adresse__icontains=adresse)
+
+    if competence:
+        repetiteurs = repetiteurs.filter(competences__nom__icontains=competence)
+
+    # Éviter les doublons si un répétiteur a plusieurs compétences
+    repetiteurs = repetiteurs.distinct()
+
+    # Contexte pour le template
+    context = {
+        'repetiteurs': repetiteurs,
+        'adresse': adresse,
+        'competences': competence,
+    }
+
+    return render(request, 'vitrine/encadreurs.html', context)
 
 def repetiteur_create(request):
     if request.method == 'POST':

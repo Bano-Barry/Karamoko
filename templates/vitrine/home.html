@@ -38,12 +38,13 @@
             <p class="text-lg md:text-xl text-center mb-8">
                 Découvrez les défis auxquels sont confrontées les familles et comment nous pouvons vous aider à les surmonter.
             </p>
+        </div>
         <div class="container mx-auto px-4">
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 
                 <!-- Card 1 -->
                 <div class="max-w-sm mx-auto bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700 text-center">
-                    <img class="rounded-t-lg mx-auto  " src="{% static 'images/problem2.png' %}" alt="Problem 1" />
+                    <img class="rounded-t-lg mx-auto w-full h-50 object-cover" src="{% static 'images/problem1.jpg' %}" alt="Problem 1" />
                     <div class="p-5">
                         <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Accès Limité aux Encadreurs</h5>
                         <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">
@@ -53,21 +54,21 @@
                 </div>
                 <!-- Card 2 -->
                 <div class="max-w-sm mx-auto bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700 text-center">
-                    <img class="rounded-t-lg mx-auto  " src="{% static 'images/problem1.avif' %}" alt="Problem 2" />
+                    <img class="rounded-t-lg mx-auto w-full h-50 object-cover " src="{% static 'images/problem2.jpg' %}" alt="Problem 2" />
                     <div class="p-5">
                         <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Manque de Suivi</h5>
                         <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">
-                            Les parents ont souvent du mal à suivre les progrès scolaires de leurs enfants de manière efficace.
+                            Les familles ont du mal à s'assurer de la régularité et de la qualité des séances de cours dispensées.
                         </p>
                     </div>
                 </div>
                 <!-- Card 3 -->
                 <div class="max-w-sm mx-auto bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700 text-center">
-                    <img class="rounded-t-lg mx-auto  " src="{% static 'images/problem3.png' %}" alt="Problem 3" />
+                    <img class="rounded-t-lg mx-auto w-full h-50 object-cover " src="{% static 'images/problem3.jpg' %}" alt="Problem 3" />
                     <div class="p-5">
-                        <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Manque de Flexibilité</h5>
+                        <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Absence de Vérification Fiable</h5>
                         <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">
-                            Les horaires rigides des cours traditionnels ne conviennent pas toujours aux emplois du temps des familles.
+                            Il n'existe pas toujours de mécanismes fiables pour vérifier l'identité et les compétences des enseignants.
                         </p>
                     </div>
                 </div>
@@ -75,9 +76,8 @@
             </div>
         </div>
     </section>
-    <!-- Section Encadreurs -->
-    <section class="relative py-16 bg-cover bg-center text-white" style="background-image: url('{% static "images/encadreurs_africains.png" %}'); height: 80vh;">
-        <div class="absolute inset-0 "></div>
+    <section class="relative py-8 bg-cover text-white" style="background-image: url('{% static "images/encadreurs_africains.jpg" %}'); height: 80vh; opacity: 0.9;">
+        <div class="absolute inset-0  bg-opacity-60 z-0"></div>
         <div class="container mx-auto px-4 relative z-10 h-full flex items-center">
             <div class="w-full md:w-1/2 text-left">
                 <h2 class="text-3xl md:text-4xl text-orange-500 font-bold mb-4">
@@ -87,7 +87,7 @@
                     Découvrez une équipe d'encadreurs guinéens passionnés et expérimentés, prêts à accompagner vos enfants vers l'excellence académique. Nous mettons un point d'honneur à offrir un encadrement personnalisé et adapté à chaque élève.
                 </p>
                 <!-- Bouton -->
-                <a href="{% url 'encadreurs' %}" class="bg-blue-700 text-white px-6 py-3 rounded-full text-md font-medium hover:bg-blue-800">
+                <a href="{% url 'encadreurs' %}" class="bg-orange-500 text-white px-6 py-3 rounded-full text-md font-medium hover:bg-orange-600">
                     Voir les Encadreurs
                 </a>
             </div>
@@ -101,7 +101,7 @@
                 <!-- Témoignage 1 -->
                 <div class="bg-gray-100 p-6 rounded-lg shadow-md text-center">
                     <div class="mb-4">
-                        <img src="{% static 'images/user1.jpg' %}" alt="User 1" class="mx-auto  rounded-full">
+                        <img src="{% static 'images/user1.jpg' %}" alt="User 1" class="mx-auto   w-full h-50 object-cover">
                     </div>
                     <p class="text-gray-700 italic mb-4">
                         "Grâce à cette plateforme, j'ai trouvé un excellent répétiteur pour mon fils. Ses notes se sont nettement améliorées en quelques mois."
@@ -112,7 +112,7 @@
                 <!-- Témoignage 2 -->
                 <div class="bg-gray-100 p-6 rounded-lg shadow-md text-center">
                     <div class="mb-4">
-                        <img src="{% static 'images/user2.jpg' %}" alt="User 2" class="mx-auto  rounded-full">
+                        <img src="{% static 'images/user2.jpg' %}" alt="User 2" class="mx-auto   w-full h-50 object-cover">
                     </div>
                     <p class="text-gray-700 italic mb-4">
                         "En tant qu'encadreur, cette plateforme m'a permis de trouver des élèves motivés et de partager ma passion pour l'enseignement."
@@ -123,7 +123,7 @@
                 <!-- Témoignage 3 -->
                 <div class="bg-gray-100 p-6 rounded-lg shadow-md text-center">
                     <div class="mb-4">
-                        <img src="{% static 'images/user3.jpg' %}" alt="User 3" class="mx-auto  rounded-full">
+                        <img src="{% static 'images/user3.jpg' %}" alt="User 3" class="mx-auto   w-full h-50 object-cover">
                     </div>
                     <p class="text-gray-700 italic mb-4">
                         "La flexibilité des horaires et la qualité des encadreurs ont vraiment fait la différence pour ma fille."
@@ -141,7 +141,7 @@
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <!-- École 1 -->
                 <div class="max-w-sm mx-auto bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700 text-center">
-                    <img class="rounded-t-lg mx-auto w-24 h-24 " src="{% static 'images/ecole1.png' %}" alt="École 1" />
+                    <img class="rounded-t-lg mx-auto  w-full h-50 object-cover " src="{% static 'images/ecole1.jpg' %}" alt="École 1" />
                     <div class="p-5">
                         <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">École Primaire Excellence</h5>
                         <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">
@@ -154,7 +154,7 @@
                 </div>
                 <!-- École 2 -->
                 <div class="max-w-sm mx-auto bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700 text-center">
-                    <img class="rounded-t-lg mx-auto w-24 h-24 " src="{% static 'images/ecole2.png' %}" alt="École 2" />
+                    <img class="rounded-t-lg mx-auto  w-full h-50 object-cover " src="{% static 'images/ecole2.jpg' %}" alt="École 2" />
                     <div class="p-5">
                         <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Lycée Moderne Conakry</h5>
                         <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">
@@ -167,7 +167,7 @@
                 </div>
                 <!-- École 3 -->
                 <div class="max-w-sm mx-auto bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700 text-center">
-                    <img class="rounded-t-lg mx-auto w-24 h-24 " src="{% static 'images/ecole3.png' %}" alt="École 3" />
+                    <img class="rounded-t-lg mx-auto  w-full h-50 object-cover " src="{% static 'images/ecole3.jpg' %}" alt="École 3" />
                     <div class="p-5">
                         <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Institut Scientifique de Guinée</h5>
                         <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">

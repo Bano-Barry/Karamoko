@@ -5,39 +5,89 @@
 {% block content %}
 <section class="py-16 bg-gray-50">
     <div class="container mx-auto px-4">
-        <h1 class="text-4xl font-bold text-center text-orange-500 mb-12">Nos Encadreurs Qualifiés</h1>
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+        <!-- En-tête -->
+        <div class="text-center mb-12">
+            <h1 class="text-4xl font-bold text-orange-500">Nos Encadreurs Qualifiés</h1>
+            <p class="text-lg text-gray-600 mt-4">
+                Découvrez une équipe d'encadreurs passionnés et expérimentés, prêts à accompagner vos enfants vers l'excellence académique.
+            </p>
+        </div>
+       <!-- Formulaire de Recherche -->
+        <form method="GET" action="{% url 'vitrine_repetiteur_list' %}" class="mb-12">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Recherche par Adresse -->
+                <div>
+                    <label for="adresse" class="block text-sm font-medium text-gray-700 mb-1">Adresse</label>
+                    <input
+                        type="text"
+                        name="adresse"
+                        id="adresse"
+                        placeholder="Lieu (ex : Conakry)"
+                        value="{{ adresse|default_if_none:'' }}"
+                        class="block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-orange-500 focus:border-orange-500"
+                    >
+                </div>
+
+                <!-- Recherche par Compétence -->
+                <div>
+                    <label for="competence" class="block text-sm font-medium text-gray-700 mb-1">Matière</label>
+                    <input
+                        type="text"
+                        name="competences"
+                        id="competences"
+                        placeholder="Matière (ex : Mathématiques)"
+                        value="{{ competences|default_if_none:'' }}"
+                        class="block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-orange-500 focus:border-orange-500"
+                    >
+                </div>
+
+                <!-- Bouton de Recherche -->
+                <div class="flex items-end">
+                    <button
+                        type="submit"
+                        class="w-full bg-blue-700 text-white py-2 rounded-lg hover:bg-blue-800 transition duration-200">
+                        🔍 Rechercher
+                    </button>
+                </div>
+            </div>
+        </form>
+
+        <!-- Grille des encadreurs -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
             {% for repetiteur in repetiteurs %}
-            <!-- Card Encadreur -->
-            <div class="w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700">
-                <div class="flex flex-col items-center pb-10">
-                    <!-- Avatar -->
+            <!-- Carte Encadreur -->
+            <div class="bg-white border border-gray-200 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
+                <!-- Avatar -->
+                <div class="relative">
                     {% if repetiteur.avatar %}
-                    <img class="w-24 h-24 mb-3 rounded-full shadow-lg" src="{{ repetiteur.avatar.url }}" alt="{{ repetiteur.nom }} image"/>
+                    <img class="w-full h-50 object-cover rounded-t-lg" src="{{ repetiteur.avatar.url }}" alt="{{ repetiteur.nom }} image" />
                     {% else %}
-                    <img class="w-24 h-24 mb-3 rounded-full shadow-lg" src="{% static 'images/default-avatar.png' %}" alt="Default avatar"/>
+                    <img class="w-full h-50 object-cover rounded-t-lg" src="{% static 'images/default_avatar.webp' %}" alt="Default avatar" />
                     {% endif %}
-                    <!-- Nom -->
-                    <h5 class="mb-1 text-xl font-medium text-gray-900 dark:text-white">{{ repetiteur.prenom }} {{ repetiteur.nom }}</h5>
-                    <!-- Compétences -->
-                    <!-- Compétences -->
-                    <span class="text-sm text-gray-500 dark:text-gray-400 mb-2">
-                        <strong>Compétences :</strong>
-                        {% for competence in repetiteur.competences.all %}
-                            {{ competence.nom }}{% if not forloop.last %}, {% endif %}
-                        {% endfor %}
-                    </span>
-                    <!-- Formations -->
-                    <span class="text-sm text-gray-500 dark:text-gray-400 mb-4">
-                        <strong>Cours proposés :</strong>
-                        {% for formation in repetiteur.formations.all %}
-                            {{ formation.titre }}{% if not forloop.last %}, {% endif %}
-                        {% endfor %}
-                    </span>
+                    <div class="absolute top-2 right-2 bg-orange-500 text-white text-xs px-2 py-1 rounded-full">
+                        {{ repetiteur.experience|default:"1" }} an{% if repetiteur.experience|default:1 > 1 %}s{% endif %} d'expérience
+                    </div>
+                </div>
+                <!-- Contenu -->
+                <div class="p-5 text-center">
+                    <h5 class="text-xl font-semibold text-gray-900 dark:text-white truncate">{{ repetiteur.prenom }} {{ repetiteur.nom }}</h5>
+                    <p class="text-left text-gray-500 mb-2 truncate">
+                        {{ repetiteur.user.adresse|default:"Non spécifiée" }}
+                    </p>
+                    <h5 class="text-2xl text-gray-500 mb-2">
+                        {{ repetiteur.user.first_name }} {{ repetiteur.user.last_name }}
+                    </h5>
+                    <p class="text-center text-gray-500 mb-4 overflow-hidden max-h-screen">
+                        {{ repetiteur.biographie|default:"Aucune biographie disponible" }}
+                    </p>
                     <!-- Actions -->
-                    <div class="flex mt-4 md:mt-6">
-                        <a href="{% url 'repetiteur_detail' repetiteur.id %}" class="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Voir Profil</a>
-                        <a href="#" class="py-2 px-4 ms-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Message</a>
+                    <div class="flex justify-center space-x-4">
+                        <a href="{% url 'repetiteur_detail' repetiteur.id %}" class="px-4 py-2 bg-blue-700 text-white text-sm font-medium rounded-lg hover:bg-blue-800">
+                            Voir Profil
+                        </a>
+                        <a href="#" class="px-4 py-2 bg-gray-200 text-gray-700 text-sm font-medium rounded-lg hover:bg-gray-300">
+                            Message
+                        </a>
                     </div>
                 </div>
             </div>

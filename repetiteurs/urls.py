@@ -19,4 +19,6 @@ urlpatterns = [
     path('cours/<int:pk>/update/', views.CoursUpdateView.as_view(), name='cours_update'),
     path('cours/<int:pk>/delete/', views.CoursDeleteView.as_view(), name='cours_delete'),
     # path('cours/<int:pk>/detail/', views.CoursDetailView.as_view(), name='cours_detail'),
+    path('encadreurs/', views.vitrine_repetiteur_list, name='vitrine_repetiteur_list'),
+
 ]
