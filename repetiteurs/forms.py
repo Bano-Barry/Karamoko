@@ -20,22 +20,53 @@ def get_widget(input_type, placeholder, additional_classes=""):
 
 # Formulaire de création de répétiteur
 class RepetiteurCreateForm(forms.ModelForm):
-    email = forms.EmailField(required=True, widget=get_widget(forms.EmailInput, "Entrez votre email"))
-    username = forms.CharField(required=True, widget=get_widget(forms.TextInput, "Entrez votre nom d'utilisateur"))
-    first_name = forms.CharField(required=True, widget=get_widget(forms.TextInput, "Entrez votre prénom"))
-    last_name = forms.CharField(required=True, widget=get_widget(forms.TextInput, "Entrez votre nom"))
-    phone = forms.CharField(required=True, widget=get_widget(forms.TextInput, "Entrez votre numéro de téléphone"))
-    adresse = forms.CharField(required=True, widget=get_widget(forms.TextInput, "Entrez votre adresse"))
-    role = forms.ChoiceField(choices=[('parent', 'Parent'), ('repetiteur', 'Répétiteur')],
-                              widget=get_widget(forms.Select, ""))
-    password = forms.CharField(required=True, widget=get_widget(forms.PasswordInput, "Définir un mot de passe"))
+    email = forms.EmailField(
+        required=True, 
+        label="Adresse email", 
+        widget=get_widget(forms.EmailInput, "Entrez votre email")
+    )
+    username = forms.CharField(
+        required=True, 
+        label="Nom d'utilisateur", 
+        widget=get_widget(forms.TextInput, "Entrez votre nom d'utilisateur")
+    )
+    first_name = forms.CharField(
+        required=True, 
+        label="Prénom", 
+        widget=get_widget(forms.TextInput, "Entrez votre prénom")
+    )
+    last_name = forms.CharField(
+        required=True, 
+        label="Nom", 
+        widget=get_widget(forms.TextInput, "Entrez votre nom")
+    )
+    phone = forms.CharField(
+        required=True, 
+        label="Numéro de téléphone", 
+        widget=get_widget(forms.TextInput, "Entrez votre numéro de téléphone")
+    )
+    adresse = forms.CharField(
+        required=True, 
+        label="Adresse", 
+        widget=get_widget(forms.TextInput, "Entrez votre adresse")
+    )
+    role = forms.ChoiceField(
+        choices=[('parent', 'Parent'), ('repetiteur', 'Répétiteur')],
+        label="Rôle", 
+        widget=get_widget(forms.Select, "")
+    )
+    password = forms.CharField(
+        required=True, 
+        label="Mot de passe", 
+        widget=get_widget(forms.PasswordInput, "Définir un mot de passe")
+    )
 
     class Meta:
         model = Repetiteur
-        fields = ['avatar', 'biographie', 'competences', 'formations']
+        fields = [ 'username', 'role', 'password', 'avatar', 'first_name', 'last_name', 'email', 'phone', 'adresse', 'biographie', 'competences', 'formations']
         widgets = {
             'avatar': get_widget(forms.ClearableFileInput, "", "py-4 px-3"),
-            'biographie': get_widget(forms.Textarea, "Entrez une biographie", "rows-4"),
+            'biographie': get_widget(forms.Textarea, "Ex : professeur de mathematiques dans les écoles x, y ...", "rows-4"),
             'competences': get_widget(forms.SelectMultiple, ""),
             'formations': get_widget(forms.SelectMultiple, ""),
         }
