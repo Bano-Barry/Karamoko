@@ -1,5 +1,7 @@
 from django.urls import path
 
+from repetiteurs.views import repetiteur_public_detail
+
 from . import views
 
 urlpatterns = [
@@ -11,4 +13,8 @@ urlpatterns = [
     path('niveaux/create/', views.NiveauCreateView.as_view(), name='niveau_create'),
     path('niveaux/<int:pk>/update/', views.NiveauUpdateView.as_view(), name='niveau_update'),
     path('niveaux/<int:pk>/delete/', views.NiveauDeleteView.as_view(), name='niveau_delete'),
+    
+    # urls publics pour les répétiteurs
+    path('repetiteur/<int:id>/', repetiteur_public_detail, name='repetiteur_public_detail'),
+
 ]

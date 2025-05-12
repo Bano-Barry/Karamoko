@@ -56,41 +56,45 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
             {% for repetiteur in repetiteurs %}
             <!-- Carte Encadreur -->
-            <div class="bg-white border border-gray-200 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
-                <!-- Avatar -->
-                <div class="relative">
-                    {% if repetiteur.avatar %}
-                    <img class="w-full h-50 object-cover rounded-t-lg" src="{{ repetiteur.avatar.url }}" alt="{{ repetiteur.nom }} image" />
-                    {% else %}
-                    <img class="w-full h-50 object-cover rounded-t-lg" src="{% static 'images/default_avatar.webp' %}" alt="Default avatar" />
-                    {% endif %}
-                    <div class="absolute top-2 right-2 bg-orange-500 text-white text-xs px-2 py-1 rounded-full">
-                        {{ repetiteur.experience|default:"1" }} an{% if repetiteur.experience|default:1 > 1 %}s{% endif %} d'expérience
+            <a href="{% url 'repetiteur_public_detail' repetiteur.id %}" class="block group">
+                <div class="bg-white border border-gray-200 rounded-lg shadow-lg hover:shadow-xl">
+                    <!-- Avatar -->
+                    <div class="relative">
+                        {% if repetiteur.avatar %}
+                        <img class="w-full h-50 object-cover rounded-t-lg" src="{{ repetiteur.avatar.url }}" alt="{{ repetiteur.nom }} image" />
+                        {% else %}
+                        <img class="w-full h-50 object-cover rounded-t-lg" src="{% static 'images/default_avatar.webp' %}" alt="Default avatar" />
+                        {% endif %}
+                        <div class="absolute top-2 right-2 bg-orange-500 text-white text-xs px-2 py-1 rounded-full">
+                            {{ repetiteur.experience|default:"1" }} an{% if repetiteur.experience|default:1 > 1 %}s{% endif %} d'expérience
+                        </div>
+                    </div>
+                    <!-- Contenu -->
+                    <div class="p-5 text-center">
+                        <h5 class="text-xl font-semibold text-gray-900 dark:text-white truncate">{{ repetiteur.prenom }} {{ repetiteur.nom }}</h5>
+                        <p class="text-left text-gray-500 mb-2 truncate">
+                            {{ repetiteur.user.adresse|default:"Non spécifiée" }}
+                        </p>
+                        <h5 class="text-2xl text-gray-500 mb-2">
+                            {{ repetiteur.user.first_name }} {{ repetiteur.user.last_name }}
+                        </h5>
+                        <p class="text-center text-gray-500 mb-4 overflow-hidden max-h-screen">
+                            {{ repetiteur.biographie|default:"Aucune biographie disponible" }}
+                        </p>
+                        {% comment %} <!-- Actions -->
+                        <div class="flex justify-center space-x-4">
+                            <a href="{% url 'repetiteur_detail' repetiteur.id %}" class="px-4 py-2 bg-blue-700 text-white text-sm font-medium rounded-lg hover:bg-blue-800">
+                                Voir Profil
+                            </a>
+                            <a href="#" class="px-4 py-2 bg-gray-200 text-gray-700 text-sm font-medium rounded-lg hover:bg-gray-300">
+                                Message
+                            </a>
+                        </div> {% endcomment %}
                     </div>
                 </div>
-                <!-- Contenu -->
-                <div class="p-5 text-center">
-                    <h5 class="text-xl font-semibold text-gray-900 dark:text-white truncate">{{ repetiteur.prenom }} {{ repetiteur.nom }}</h5>
-                    <p class="text-left text-gray-500 mb-2 truncate">
-                        {{ repetiteur.user.adresse|default:"Non spécifiée" }}
-                    </p>
-                    <h5 class="text-2xl text-gray-500 mb-2">
-                        {{ repetiteur.user.first_name }} {{ repetiteur.user.last_name }}
-                    </h5>
-                    <p class="text-center text-gray-500 mb-4 overflow-hidden max-h-screen">
-                        {{ repetiteur.biographie|default:"Aucune biographie disponible" }}
-                    </p>
-                    <!-- Actions -->
-                    <div class="flex justify-center space-x-4">
-                        <a href="{% url 'repetiteur_detail' repetiteur.id %}" class="px-4 py-2 bg-blue-700 text-white text-sm font-medium rounded-lg hover:bg-blue-800">
-                            Voir Profil
-                        </a>
-                        <a href="#" class="px-4 py-2 bg-gray-200 text-gray-700 text-sm font-medium rounded-lg hover:bg-gray-300">
-                            Message
-                        </a>
-                    </div>
-                </div>
-            </div>
+            </a>
+            {% empty %}
+            <p class="text-center text-gray-500">Aucun encadreur trouvé.</p>
             {% endfor %}
         </div>
     </div>

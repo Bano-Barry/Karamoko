@@ -92,6 +92,11 @@ def repetiteur_detail(request, id):
     }
     return render(request, 'repetiteurs/detail.html', context)
 
+def repetiteur_public_detail(request, id):
+    repetiteur = get_object_or_404(Repetiteur, id=id)
+    return render(request, 'repetiteurs/public_detail.html', {'repetiteur': repetiteur})
+
+
 def repetiteur_update(request, pk):
     repetiteur = get_object_or_404(Repetiteur, pk=pk)
     user_instance = repetiteur.user  # Récupérer l'utilisateur lié
