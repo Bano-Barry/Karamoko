@@ -1,25 +1,55 @@
 from django.contrib import admin
-from .models import Paiement, MethodePaiement, PlanTarifaire
 
-# Enregistrement du modèle MethodePaiement
+from paiements.models import MethodePaiement, Paiement, PlanTarifaire
+
 @admin.register(MethodePaiement)
 class MethodePaiementAdmin(admin.ModelAdmin):
-    list_display = ('id', 'nom')  # Affiche l'ID et le nom dans la liste d'administration
-    search_fields = ('nom',)  # Ajoute une barre de recherche sur le champ "nom"
-    ordering = ('nom',)  # Trie les résultats par nom
+    list_display = ('id', 'nom')
+    search_fields = ('nom',)
+    ordering = ('nom',)
 
-# Enregistrement du modèle PlanTarifaire
 @admin.register(PlanTarifaire)
 class PlanTarifaireAdmin(admin.ModelAdmin):
-    list_display = ('id', 'nom', 'prix')  # Affiche l'ID, le nom et le prix dans la liste d'administration
-    search_fields = ('nom',)  # Ajoute une barre de recherche sur le champ "nom"
-    list_filter = ('prix',)  # Ajoute un filtre par prix
-    ordering = ('nom',)  # Trie les résultats par nom
+    list_display = ('id', 'nom', 'prix', 'description_courte')
+    search_fields = ('nom', 'description')
+    list_filter = ('prix',)
+    ordering = ('nom',)
 
-# Enregistrement du modèle Paiement
+    def description_courte(self, obj):
+        return (obj.description[:50] + '...') if obj.description else "-"
+    description_courte.short_description = 'Description'
+
 @admin.register(Paiement)
 class PaiementAdmin(admin.ModelAdmin):
-    list_display = ('id', 'souscription', 'methode', 'montant', 'date')  # Affiche les détails du paiement
-    search_fields = ('souscription__id', 'methode__nom')  # Barre de recherche sur la souscription et la méthode de paiement
-    list_filter = ('methode', 'date')  # Ajoute des filtres par méthode de paiement et date
-    ordering = ('-date',)  # Trie les paiements par date décroissante
+    list_display = (
+        'id', 
+        'get_souscripteur', 
+        'get_repetiteur',
+        'plan_tarifaire', 
+        'methode', 
+        'montant', 
+        'date'
+    )
+    search_fields = (
+        'souscription__souscripteur__nom', 
+        'souscription__repetiteur__nom',
+        'methode__nom'
+    )
+    list_filter = (
+        'methode', 
+        'date',
+        'souscription__plan_tarifaire'
+    )
+    ordering = ('-date',)
+
+    def get_souscripteur(self, obj):
+        return obj.souscription.souscripteur.nom
+    get_souscripteur.short_description = 'Souscripteur'
+
+    def get_repetiteur(self, obj):
+        return obj.souscription.repetiteur.nom
+    get_repetiteur.short_description = 'Répetiteur'
+
+    def plan_tarifaire(self, obj):
+        return obj.souscription.plan_tarifaire.nom
+    plan_tarifaire.short_description = 'Plan Tarifaire'

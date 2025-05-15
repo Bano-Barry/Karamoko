@@ -54,6 +54,16 @@
                 <span class="text-gray-500 dark:text-gray-400">Aucune formation</span>
                 {% endfor %}
             </p>
+            <p class="mb-2"><strong class="text-gray-800 dark:text-gray-300">Cours enseignés :</strong></p>
+            <p class="mb-4">
+                {% for course in repetiteur.cours.all %}
+                <span class="inline-block bg-green-100 text-green-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300">
+                    {{ course.titre }} 
+                </span>
+                {% empty %}
+                <span class="text-gray-500 dark:text-gray-400">Aucun cours enseigné</span>
+                {% endfor %}
+            </p>
             <p class="mb-2"><strong class="text-gray-800 dark:text-gray-300">Documents Justificatifs :</strong></p>
             <p>
                 {% for document in repetiteur.documents.all %}

@@ -20,5 +20,10 @@ urlpatterns = [
     path('cours/<int:pk>/delete/', views.CoursDeleteView.as_view(), name='cours_delete'),
     # path('cours/<int:pk>/detail/', views.CoursDetailView.as_view(), name='cours_detail'),
     path('encadreurs/', views.vitrine_repetiteur_list, name='vitrine_repetiteur_list'),
-
+    
+    # urls pour les souscriptions 
+    path('souscription/create/<int:repetiteur_id>/', views.souscription_create, name='souscription_create'),
+    # path('souscription/<int:repetiteur_id>/detail/', views.souscription_detail, name='souscription_detail'),
+    # path('souscription/<int:repetiteur_id>/update/', views.souscription_update, name='souscription_update'),
+    # path('souscription/<int:repetiteur_id>/delete/', views.souscription_delete, name='souscription_delete'),
 ]

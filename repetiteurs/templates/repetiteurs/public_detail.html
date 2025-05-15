@@ -29,6 +29,31 @@
                 <p class="text-gray-600 mt-4">A aidé plus de <span class="font-semibold">{{ repetiteur.etudiants_aides|default:"0" }}</span> élèves</p>
                 <p class="text-gray-600">Prix par heure : <span class="font-semibold">{{ repetiteur.prix_par_heure|default:"Non spécifié" }} €</span></p>
             </div>
+            <!-- Bouton de réservation -->
+            {% if user.is_authenticated %}
+                {% if user.souscripteur %}
+                    {% comment %} <div class="flex justify-center md:justify-start items-center space-x-4 mt-4">
+                        <a href="{% url 'souscription_create' repetiteur.id %}"
+                            <button data-modal-target="souscription-modal" data-modal-toggle="souscription-modal"
+                                class="px-4 py-2 bg-blue-700/80 text-white rounded-full shadow hover:bg-blue-800">
+                                Souscrire
+                            </button>
+                        </a>
+                    </div> {% endcomment %}
+                    <div class="flex justify-center md:justify-start items-center space-x-4 mt-4">
+                        <a href="{% url 'souscription_create' repetiteur.id %}"  class="px-4 py-2 bg-blue-700/80 text-white rounded-full shadow hover:bg-blue-800">
+                                Souscrire
+                        </a>
+                    </div>
+                {% else %}
+                    <div class="flex justify-center md:justify-start items-center space-x-4 mt-4">
+                        <a href="#" 
+                        class="px-4 py-2 bg-blue-700/80 text-white rounded-full shadow hover:bg-green-800">
+                            Voir mes souscriptions
+                        </a>
+                    </div>
+                {% endif %}
+            {% endif %}
         </div>
 
         <!-- Navigation par onglets -->
@@ -95,7 +120,7 @@
                         <h3 class="text-lg font-semibold text-gray-700 mb-2">Cours enseignés :</h3>
                         <div class="flex flex-wrap gap-2">
                             {% for cour in repetiteur.cours.all %}
-                                <span class="inline-block bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded">{{ cour }}</span>
+                                <span class="inline-block mr-2 bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded">{{ cour }}</span>
                             {% empty %}
                                 <span class="text-gray-500 text-sm">Non spécifié</span>
                             {% endfor %}
@@ -153,6 +178,66 @@
         <p class="text-gray-600 text-center mt-2"><i class="fas fa-graduation-cap mr-1"></i> Expérience : {{ repetiteur.experience|default:"1" }} an(s)</p>
     </aside>
 </section>
+
+<!-- Modal de souscription -->
+    {% comment %} <div id="souscription-modal" tabindex="-1" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
+        <div class="relative w-full max-w-md max-h-full">
+            <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                <!-- En-tête du modal -->
+                <div class="flex justify-between items-center p-5 border-b rounded-t dark:border-gray-600">
+                    <h3 class="text-xl font-medium text-gray-900 dark:text-white">Ajouter une Souscription</h3>
+                    <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="souscription-modal">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+                        </svg>
+                    </button>
+                </div>
+                <!-- Contenu du modal -->
+                <form method="POST" action="{% url 'souscription_create' repetiteur.id %}">
+                    {% csrf_token %}
+                    <div class="p-6 space-y-4">
+                        <!-- Liste des cours -->
+                        <div>
+                            <label for="cours" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Cours</label>
+                            <select id="cours" name="cours" multiple required class="block px-4 py-3 w-full mt-1 border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                                {% for cours in repetiteur.cours.all %}
+                                    <option value="{{ cours.id }}">{{ cours.titre }}</option>
+                                {% empty %}
+                                    <option disabled>Aucun cours disponible</option>
+                                {% endfor %}
+                            </select>
+                            <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Maintenez la touche Ctrl (ou Cmd sur Mac) pour sélectionner plusieurs cours.</p>
+                        </div>
+                        <!-- Liste des plans -->
+                        <div>
+                            <label for="plan_tarifaire" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Plan Tarifaire</label>
+                            <select id="plan_tarifaire" name="plan_tarifaire" required class="block px-4 py-3 w-full mt-1 border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                                {% for plan in plans %}
+                                    <option value="{{ plan.id }}">{{ plan.nom }} - {{ plan.duree }} mois</option>
+                                {% empty %}
+                                    <option disabled>Aucun plan tarifaire disponible</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <!-- Date de début -->
+                        <div>
+                            <label for="date_debut" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Date de début</label>
+                            <input type="date" id="date_debut" name="date_debut" value="{{ date_today }}" readonly class="block px-4 py-3 w-full mt-1 border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                        </div>
+                        <!-- Date de fin -->
+                        <div>
+                            <label for="date_fin" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Date de fin</label>
+                            <input type="date" id="date_fin" name="date_fin" value="{{ date_fin }}" readonly class="block px-4 py-3 w-full mt-1 border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                        </div>
+                    </div>
+                    <!-- Boutons -->
+                    <div class="flex items-center justify-end p-6 border-t border-gray-200 rounded-b dark:border-gray-600">
+                        <button type="submit" class="px-4 py-2 bg-blue-700 text-white rounded-full shadow hover:bg-blue-800">Souscrire</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div> {% endcomment %}
 {% endblock %}
 
 {% block extra_css %}

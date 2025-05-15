@@ -21,19 +21,7 @@
 
 <body class="bg-blue-50">
     <!-- Navbar -->
-    {% if messages %}
-        <div class="container mx-auto mt-4">
-            {% for message in messages %}
-            <div class="p-4 mb-4 text-sm rounded-lg shadow-md 
-                {% if message.tags == 'success' %}bg-green-100 text-green-800{% endif %}
-                {% if message.tags == 'error' %}bg-red-100 text-red-800{% endif %}
-                {% if message.tags == 'warning' %}bg-yellow-100 text-yellow-800{% endif %}
-                {% if message.tags == 'info' %}bg-blue-100 text-blue-800{% endif %}">
-                {{ message }}
-            </div>
-            {% endfor %}
-        </div>
-    {% endif %}
+    
     <nav class="fixed top-0 left-0 w-full bg-blue-700/80 text-white z-50 shadow-lg backdrop-blur-md">
         <div class="container mx-auto px-4 py-3 flex justify-between items-center">
             <!-- Logo -->
@@ -91,10 +79,12 @@
                                 <a href="{% url 'dashboard_home' %}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white">
                                     Dashboard
                                 </a>
+                                <a href="{% url 'admin:index' %}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white">
+                                    Settings
+                                </a>
                             {% endif %}
-                            <li>
-                                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white">Settings</a>
-                            </li>
+                            {% comment %} <li>
+                            </li> {% endcomment %}
                             <li>
                                 <form method="post" action="{% url 'logout' %}" class="inline-block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white w-full text-left">
                                     {% csrf_token %}
@@ -133,6 +123,19 @@
 
     <div class="container-fluid mx-auto mt-4">
         {% block content %}
+            {% if messages %}
+                <div class="container mx-auto mt-4">
+                    {% for message in messages %}
+                    <div class="p-4 mb-4 text-sm rounded-lg shadow-md 
+                        {% if message.tags == 'success' %}bg-green-100 text-green-800{% endif %}
+                        {% if message.tags == 'error' %}bg-red-600 text-white{% endif %}
+                        {% if message.tags == 'warning' %}bg-yellow-100 text-yellow-500{% endif %}
+                        {% if message.tags == 'info' %}bg-blue-100 text-blue-800{% endif %}">
+                        {{ message }}
+                    </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
         {% endblock content %}
     </div>
 

@@ -58,7 +58,7 @@ def complete_repetiteur_profile(request):
         if form.is_valid():
             form.save()
             messages.success(request, 'Votre profil a été mis à jour avec succès !')  # Message de succès
-            return redirect('repetiteur_detail', id=repetiteur.id)  # Redirige vers le tableau de bord après la mise à jour
+            return redirect('complete_repetiteur_profile')  # Redirige vers la page de mise à jour du profil après la soumission
     else:
         form = RepetiteurProfileForm(instance=repetiteur, user_instance=request.user)  # Récupère le formulaire avec les données de l'utilisateur
     return render(request, 'repetiteurs/complete_profile.html', {'form': form, 'repetiteur': repetiteur})  # Affiche le formulaire de mise à jour du profil
@@ -71,7 +71,7 @@ def complete_souscripteur_profile(request):
         if form.is_valid():
             form.save()
             messages.success(request, 'Votre profil a été mis à jour avec succès !')
-            return redirect('souscripteur_detail', pk=souscripteur.id)  # Redirige vers le tableau de bord après la mise à jour
+            return redirect('complete_souscripteur_profile')  # Redirige vers la page de mise à jour du profil après la soumission
     else:
         form = SouscripteurProfileForm(instance=souscripteur, user_instance=request.user)  # Récupère le formulaire avec les données de l'utilisateur
     return render(request, 'souscripteurs/complete_profile.html', {'form': form})

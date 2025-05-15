@@ -16,6 +16,7 @@
             <tr>
                 <th scope="col" class="px-6 py-3">#</th>
                 <th scope="col" class="px-6 py-3">Nom</th>
+                <th scope="col" class="px-6 py-3">Description</th>
                 <th scope="col" class="px-6 py-3">Actions</th>
             </tr>
         </thead>
@@ -24,6 +25,7 @@
             <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 text-center">
                 <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ forloop.counter }}</td>
                 <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ methode.nom }}</td>
+                <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ methode.description }}</td>
                 <td class="px-6 py-4 flex justify-center space-x-4">
                     <a href="{% url 'methodepaiement_update' methode.id %}" class="text-blue-600 hover:underline flex items-center">
                         <svg class="w-5 h-5 mr-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">

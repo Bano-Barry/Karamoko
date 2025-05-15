@@ -20,12 +20,12 @@ def get_widget(input_type, placeholder, additional_classes=""):
 
 # Formulaire de création de souscripteur
 class SouscripteurCreateForm(forms.ModelForm):
-    email = forms.EmailField(required=True, widget=get_widget(forms.EmailInput, "Entrez votre email"))
+    email = forms.EmailField(widget=get_widget(forms.EmailInput, "Entrez votre email"))
     username = forms.CharField(required=True, widget=get_widget(forms.TextInput, "Entrez votre nom d'utilisateur"))
-    first_name = forms.CharField(required=True, widget=get_widget(forms.TextInput, "Entrez votre prénom"))
-    last_name = forms.CharField(required=True, widget=get_widget(forms.TextInput, "Entrez votre nom"))
-    phone = forms.CharField(required=True, widget=get_widget(forms.TextInput, "Entrez votre numéro de téléphone"))
-    adresse = forms.CharField(required=True, widget=get_widget(forms.TextInput, "Entrez votre adresse"))
+    first_name = forms.CharField(widget=get_widget(forms.TextInput, "Entrez votre prénom"))
+    last_name = forms.CharField(widget=get_widget(forms.TextInput, "Entrez votre nom"))
+    phone = forms.CharField(widget=get_widget(forms.TextInput, "Entrez votre numéro de téléphone"))
+    adresse = forms.CharField(widget=get_widget(forms.TextInput, "Entrez votre adresse"))
     role = forms.ChoiceField(choices=[('parent', 'Parent'), ('repetiteur', 'Répétiteur')],
         widget=get_widget(forms.Select, ""))
     password = forms.CharField(required=True, widget=get_widget(forms.PasswordInput, "Définir un mot de passe"))
@@ -65,12 +65,12 @@ class SouscripteurCreateForm(forms.ModelForm):
 
 # Formulaire de mise à jour de souscripteur
 class SouscripteurUpdateForm(forms.ModelForm):
-    email = forms.EmailField(required=True, widget=get_widget(forms.EmailInput, "Entrez votre email"))
+    email = forms.EmailField(widget=get_widget(forms.EmailInput, "Entrez votre email"))
     username = forms.CharField(required=True, widget=get_widget(forms.TextInput, "Entrez votre nom d'utilisateur"))
-    first_name = forms.CharField(required=True, widget=get_widget(forms.TextInput, "Entrez votre prénom"))
-    last_name = forms.CharField(required=True, widget=get_widget(forms.TextInput, "Entrez votre nom"))
-    phone = forms.CharField(required=True, widget=get_widget(forms.TextInput, "Entrez votre numéro de téléphone"))
-    adresse = forms.CharField(required=True, widget=get_widget(forms.TextInput, "Entrez votre adresse"))
+    first_name = forms.CharField( widget=get_widget(forms.TextInput, "Entrez votre prénom"))
+    last_name = forms.CharField(widget=get_widget(forms.TextInput, "Entrez votre nom"))
+    phone = forms.CharField(widget=get_widget(forms.TextInput, "Entrez votre numéro de téléphone"))
+    adresse = forms.CharField(widget=get_widget(forms.TextInput, "Entrez votre adresse"))
     avatar = forms.ImageField(required=False, widget=get_widget(forms.ClearableFileInput, ""))
 
     class Meta:
@@ -109,12 +109,12 @@ class SouscripteurUpdateForm(forms.ModelForm):
 
 # Formulaire de profil de souscripteur
 class SouscripteurProfileForm(forms.ModelForm):
-    email = forms.EmailField(required=True, widget=get_widget(forms.EmailInput, "Entrez votre email"))
+    email = forms.EmailField(widget=get_widget(forms.EmailInput, "Entrez votre email"))
     username = forms.CharField(required=True, widget=get_widget(forms.TextInput, "Entrez votre nom d'utilisateur"))
-    first_name = forms.CharField(required=True, widget=get_widget(forms.TextInput, "Entrez votre prénom"))
-    last_name = forms.CharField(required=True, widget=get_widget(forms.TextInput, "Entrez votre nom"))
-    phone = forms.CharField(required=True, widget=get_widget(forms.TextInput, "Entrez votre numéro de téléphone"))
-    adresse = forms.CharField(required=True, widget=get_widget(forms.TextInput, "Entrez votre adresse"))
+    first_name = forms.CharField( widget=get_widget(forms.TextInput, "Entrez votre prénom"))
+    last_name = forms.CharField( widget=get_widget(forms.TextInput, "Entrez votre nom"))
+    phone = forms.CharField( widget=get_widget(forms.TextInput, "Entrez votre numéro de téléphone"))
+    adresse = forms.CharField( widget=get_widget(forms.TextInput, "Entrez votre adresse"))
 
     class Meta:
         model = Souscripteur

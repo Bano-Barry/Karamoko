@@ -6,8 +6,8 @@ class CustomUser(AbstractUser):
         ('parent', 'Parent'),
         ('repetiteur', 'Répétiteur'),
     ]
-    first_name = models.CharField(max_length=100)
-    last_name = models.CharField(max_length=100)
+    first_name = models.CharField(max_length=100, blank=True, null=True)
+    last_name = models.CharField(max_length=100, blank=True, null=True)
     email = models.EmailField(max_length=100, unique=True, blank=False, null=False, 
         error_messages={
             'unique': "Cette adresse e-mail est déjà utilisée.",
