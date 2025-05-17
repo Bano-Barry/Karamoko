@@ -1,6 +1,6 @@
 from datetime import timedelta
 from django.shortcuts import render, get_object_or_404, redirect
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.urls import reverse_lazy
 from django.utils.timezone import now
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
@@ -12,6 +12,10 @@ from .models import Competence, Repetiteur, Cours
 from .forms import CompetenceForm, RepetiteurCreateForm, CoursForm, RepetiteurUpdateForm
 from django.contrib import messages
 
+def is_superuser(user):
+    return user.is_superuser
+
+# @user_passes_test(is_superuser)
 def repetiteur_list(request):
     adresse = request.GET.get('adresse', '').strip()
     competence = request.GET.get('competence', '').strip()
@@ -67,6 +71,7 @@ def vitrine_repetiteur_list(request):
 
     return render(request, 'vitrine/encadreurs.html', context)
 
+# @user_passes_test(is_superuser)
 def repetiteur_create(request):
     if request.method == 'POST':
         form = RepetiteurCreateForm(request.POST, request.FILES)
@@ -86,7 +91,7 @@ def repetiteur_create(request):
     }
     return render(request, 'repetiteurs/create.html', context)
 
-@login_required
+# @user_passes_test(is_superuser)
 def repetiteur_detail(request, id):
     repetiteur = get_object_or_404(Repetiteur, id=id)
     context = {
@@ -103,7 +108,7 @@ def repetiteur_public_detail(request, id):
     repetiteur = get_object_or_404(Repetiteur, id=id)
     return render(request, 'repetiteurs/public_detail.html', {'repetiteur': repetiteur})
 
-
+# @user_passes_test(is_superuser)
 def repetiteur_update(request, pk):
     repetiteur = get_object_or_404(Repetiteur, pk=pk)
     user_instance = repetiteur.user  # Récupérer l'utilisateur lié
@@ -126,6 +131,7 @@ def repetiteur_update(request, pk):
     }
     return render(request, 'repetiteurs/update.html', context)
 
+# @user_passes_test(is_superuser)
 def repetiteur_delete(request, pk):
     repetiteur = get_object_or_404(Repetiteur, pk=pk)
     if request.method == 'POST':
@@ -133,6 +139,7 @@ def repetiteur_delete(request, pk):
         return redirect('repetiteur_list')
     return render(request, 'repetiteurs/delete.html', {'repetiteur': repetiteur})
 
+# @user_passes_test(is_superuser)
 # Liste des compétences
 class CompetenceListView(ListView):
     model = Competence
@@ -147,6 +154,7 @@ class CompetenceListView(ListView):
         ]
         return context
 
+# @user_passes_test(is_superuser)
 # Création d'une compétence
 class CompetenceCreateView(CreateView):
     model = Competence
@@ -164,6 +172,7 @@ class CompetenceCreateView(CreateView):
         return context
 
 # Mise à jour d'une compétence
+# @user_passes_test(is_superuser)
 class CompetenceUpdateView(UpdateView):
     model = Competence
     template_name = 'repetiteurs/competence_form.html'
@@ -180,6 +189,7 @@ class CompetenceUpdateView(UpdateView):
         return context
 
 # Suppression d'une compétence
+# @user_passes_test(is_superuser)
 class CompetenceDeleteView(DeleteView):
     model = Competence
     template_name = 'repetiteurs/competence_confirm_delete.html'
@@ -195,6 +205,7 @@ class CompetenceDeleteView(DeleteView):
         return context
 
 # Liste des cours
+# @user_passes_test(is_superuser)
 class CoursListView(ListView):
     model = Cours
     template_name = 'repetiteurs/cours_list.html'
@@ -209,6 +220,7 @@ class CoursListView(ListView):
         return context
 
 # Création d'un cours
+# @user_passes_test(is_superuser)
 class CoursCreateView(CreateView):
     model = Cours
     template_name = 'repetiteurs/cours_form.html'
@@ -225,6 +237,7 @@ class CoursCreateView(CreateView):
         return context
 
 # Mise à jour d'un cours
+# @user_passes_test(is_superuser)
 class CoursUpdateView(UpdateView):
     model = Cours
     template_name = 'repetiteurs/cours_form.html'
@@ -241,6 +254,7 @@ class CoursUpdateView(UpdateView):
         return context
 
 # Suppression d'un cours
+# @user_passes_test(is_superuser)
 class CoursDeleteView(DeleteView):
     model = Cours
     template_name = 'repetiteurs/cours_confirm_delete.html'
