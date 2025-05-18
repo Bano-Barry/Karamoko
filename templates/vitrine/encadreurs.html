@@ -22,7 +22,7 @@
                         type="text"
                         name="adresse"
                         id="adresse"
-                        placeholder="Lieu (ex : Conakry)"
+                        placeholder="Lieu (ex : Matam)"
                         value="{{ adresse|default_if_none:'' }}"
                         class="block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-orange-500 focus:border-orange-500"
                     >
@@ -59,18 +59,18 @@
             <a href="{% url 'repetiteur_public_detail' repetiteur.id %}" class="block group">
                 <div class="bg-white border border-gray-200 rounded-lg shadow-lg hover:shadow-xl">
                     <!-- Avatar -->
-                    <div class="relative">
+                    <div class="relative h-80">
                         {% if repetiteur.avatar %}
-                        <img class="w-full h-50 object-cover rounded-t-lg" src="{{ repetiteur.avatar.url }}" alt="{{ repetiteur.nom }} image" />
+                        <img class="w-full h-full object-cover object-center rounded-t-lg" src="{{ repetiteur.avatar.url }}" alt="{{ repetiteur.nom }} image" />
                         {% else %}
-                        <img class="w-full h-50 object-cover rounded-t-lg" src="{% static 'images/default_avatar.webp' %}" alt="Default avatar" />
+                        <img class="w-full h-full object-cover object-center rounded-t-lg" src="{% static 'images/default_avatar.webp' %}" alt="Default avatar" />
                         {% endif %}
                         <div class="absolute top-2 right-2 bg-orange-500 text-white text-xs px-2 py-1 rounded-full">
                             {{ repetiteur.experience|default:"1" }} an{% if repetiteur.experience|default:1 > 1 %}s{% endif %} d'expérience
                         </div>
                     </div>
                     <!-- Contenu -->
-                    <div class="p-5 text-center">
+                    <div class="p-5 text-center ">
                         <h5 class="text-xl font-semibold text-gray-900 dark:text-white truncate">{{ repetiteur.prenom }} {{ repetiteur.nom }}</h5>
                         <p class="text-left text-gray-500 mb-2 truncate">
                             {{ repetiteur.user.adresse|default:"Non spécifiée" }}
@@ -79,7 +79,7 @@
                             {{ repetiteur.user.first_name }} {{ repetiteur.user.last_name }}
                         </h5>
                         <p class="text-center text-gray-500 mb-4 overflow-hidden max-h-screen">
-                            {{ repetiteur.biographie|default:"Aucune biographie disponible" }}
+                            {{ repetiteur.biographie|default:"Aucune biographie disponible"|truncatechars:30}}
                         </p>
                         {% comment %} <!-- Actions -->
                         <div class="flex justify-center space-x-4">

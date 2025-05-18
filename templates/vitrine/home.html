@@ -32,9 +32,9 @@
         </div>
     </header>
     <!-- Section des problématiques principales -->
-    <section class="py-16 ">
+    <section class="pb-10 pt-4">
         <div class="container mx-auto px-4">
-            <h2 class="text-3xl md:text-4xl text-orange-500 font-bold text-center mb-12">Les Problématiques que Nous Résolvons</h2>
+            <h2 class="text-3xl md:text-4xl text-orange-500 font-bold text-center mb-4">Les Problématiques que Nous Résolvons</h2>
             <p class="text-lg md:text-xl text-center mb-8">
                 Découvrez les défis auxquels sont confrontées les familles et comment nous pouvons vous aider à les surmonter.
             </p>
@@ -76,7 +76,8 @@
             </div>
         </div>
     </section>
-    <section class="relative py-8 bg-cover text-white" style="background-image: url('{% static "images/encadreurs_africains.jpg" %}'); height: 80vh; opacity: 0.9;">
+    <!-- Section Encadreurs -->
+    <section class="relative pb-10 pt-4 bg-cover text-white" style="background-image: url('{% static "images/encadreurs_africains.jpg" %}'); height: 80vh; opacity: 0.9;">
         <div class="absolute inset-0  bg-opacity-60 z-0"></div>
         <div class="container mx-auto px-4 relative z-10 h-full flex items-center">
             <div class="w-full md:w-1/2 text-left">
@@ -94,14 +95,14 @@
         </div>
     </section>
     <!-- Section Témoignages -->
-    <section class="py-16 bg-white">
+    <section class="pb-10 pt-4 ">
         <div class="container mx-auto px-4">
-            <h2 class="text-3xl md:text-4xl text-orange-500 font-bold text-center mb-12">Ce que disent nos utilisateurs</h2>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <!-- Témoignage 1 -->
-                <div class="bg-gray-100 p-6 rounded-lg shadow-md text-center">
+            <h2 class="text-3xl md:text-4xl text-orange-500 font-bold text-center mb-4">Ce que disent nos utilisateurs</h2>
+            <div id="carousel-temoignages" class="relative max-w-xl mx-auto">
+                <!-- Slides -->
+                <div class="carousel-slide bg-gray-100 p-6 rounded-lg shadow-md text-center hidden">
                     <div class="mb-4">
-                        <img src="{% static 'images/user1.jpg' %}" alt="User 1" class="mx-auto   w-full h-50 object-cover">
+                        <img src="{% static 'images/user1.jpg' %}" alt="User 1" class="mx-auto w-32 h-32 rounded-full object-cover">
                     </div>
                     <p class="text-gray-700 italic mb-4">
                         "Grâce à cette plateforme, j'ai trouvé un excellent répétiteur pour mon fils. Ses notes se sont nettement améliorées en quelques mois."
@@ -109,10 +110,9 @@
                     <h4 class="text-lg font-semibold">Aïssata D.</h4>
                     <p class="text-gray-500 text-sm">Parent d'élève</p>
                 </div>
-                <!-- Témoignage 2 -->
-                <div class="bg-gray-100 p-6 rounded-lg shadow-md text-center">
+                <div class="carousel-slide bg-gray-100 p-6 rounded-lg shadow-md text-center hidden">
                     <div class="mb-4">
-                        <img src="{% static 'images/user2.jpg' %}" alt="User 2" class="mx-auto   w-full h-50 object-cover">
+                        <img src="{% static 'images/user2.jpg' %}" alt="User 2" class="mx-auto w-32 h-32 rounded-full object-cover">
                     </div>
                     <p class="text-gray-700 italic mb-4">
                         "En tant qu'encadreur, cette plateforme m'a permis de trouver des élèves motivés et de partager ma passion pour l'enseignement."
@@ -120,10 +120,9 @@
                     <h4 class="text-lg font-semibold">Mamadou K.</h4>
                     <p class="text-gray-500 text-sm">Encadreur</p>
                 </div>
-                <!-- Témoignage 3 -->
-                <div class="bg-gray-100 p-6 rounded-lg shadow-md text-center">
+                <div class="carousel-slide bg-gray-100 p-6 rounded-lg shadow-md text-center hidden">
                     <div class="mb-4">
-                        <img src="{% static 'images/user3.jpg' %}" alt="User 3" class="mx-auto   w-full h-50 object-cover">
+                        <img src="{% static 'images/user3.jpg' %}" alt="User 3" class="mx-auto w-32 h-32 rounded-full object-cover">
                     </div>
                     <p class="text-gray-700 italic mb-4">
                         "La flexibilité des horaires et la qualité des encadreurs ont vraiment fait la différence pour ma fille."
@@ -131,13 +130,44 @@
                     <h4 class="text-lg font-semibold">Fatou B.</h4>
                     <p class="text-gray-500 text-sm">Parent d'élève</p>
                 </div>
+                <div class="carousel-slide bg-gray-100 p-6 rounded-lg shadow-md text-center hidden">
+                    <div class="mb-4">
+                        <img src="{% static 'images/user4.jpg' %}" alt="User 4" class="mx-auto w-32 h-32 rounded-full object-cover" onerror="this.onerror=null; this.src='{% static 'images/default_avatar.webp' %}' ">
+                    </div>
+                    <p class="text-gray-700 italic mb-4">
+                        "En tant qu'enseignante, j'ai trouvé une plateforme qui valorise mon travail, de rencontrer des élèves motivés et des parents impliqués."
+                    </p>
+                    <h4 class="text-lg font-semibold">Aissatou S.</h4>
+                    <p class="text-gray-500 text-sm">Encadreur</p>
+                </div>
+                <div class="carousel-slide bg-gray-100 p-6 rounded-lg shadow-md text-center hidden">
+                    <div class="mb-4">
+                        <img src="{% static 'images/user5.jpg' %}" alt="User 5" class="mx-auto w-32 h-32 rounded-full object-cover" onerror="this.onerror=null; this.src='{% static 'images/default_avatar.webp' %}' ">
+                    </div>
+                    <p class="text-gray-700 italic mb-4">
+                        "J'ai trouvé un répétiteur qui comprend les besoins spécifiques de mon enfant. Je suis très satisfait du service."
+                    </p>
+                    <h4 class="text-lg font-semibold">Mamadou K.</h4>
+                    <p class="text-gray-500 text-sm">Parent d'élève</p>
+                </div>
+            <!-- Navigation -->
+            <div class="flex justify-center mt-4 space-x-4">
+                <button id="prev-slide" class="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-full focus:outline-none" aria-label="Précédent">
+                    &larr;
+                </button>
+                <button id="next-slide" class="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-full focus:outline-none" aria-label="Suivant">
+                    &rarr;
+                </button>
+            </div>
+            <!-- Dots -->
+            <div class="flex justify-center mt-4 space-x-2" id="carousel-dots"></div>
             </div>
         </div>
     </section>
     <!-- Section Présentation des Meilleures Écoles -->
-    <section class="py-16 bg-white">
+    <section class="pb-10 pt-4">
         <div class="container mx-auto px-4">
-            <h2 class="text-3xl md:text-4xl text-orange-500 font-bold text-center mb-12">Nos Partenaires : Les Meilleures Écoles de Guinée</h2>
+            <h2 class="text-3xl md:text-4xl text-orange-500 font-bold text-center mb-4">Nos Partenaires : Les Meilleures Écoles de Guinée</h2>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <!-- École 1 -->
                 <div class="max-w-sm mx-auto bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700 text-center">
@@ -169,11 +199,11 @@
                 <div class="max-w-sm mx-auto bg-white border border-gray-200 rounded-lg shadow-sm dark:bg-gray-800 dark:border-gray-700 text-center">
                     <img class="rounded-t-lg mx-auto  w-full h-50 object-cover " src="{% static 'images/ecole3.jpg' %}" alt="École 3" />
                     <div class="p-5">
-                        <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Institut Scientifique de Guinée</h5>
+                        <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Ecole Scientifique de Guinée</h5>
                         <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">
-                            Spécialisé dans les sciences et la technologie, cet institut forme les leaders de demain.
+                            Spécialisé dans les sciences et la technologie, cette école forme les leaders de demain.
                         </p>
-                        <a href="https://www.google.com/maps?q=Institut+Scientifique+de+Guinée" target="_blank" class="mt-4 inline-block bg-blue-700 text-white px-6 py-2 rounded-full text-sm font-medium hover:bg-blue-800">
+                        <a href="https://www.google.com/maps?q=Ecole+Scientifique+de+Guinée" target="_blank" class="mt-4 inline-block bg-blue-700 text-white px-6 py-2 rounded-full text-sm font-medium hover:bg-blue-800">
                             En savoir plus
                         </a>
                     </div>
@@ -182,9 +212,9 @@
         </div>
     </section>
     <!-- Section Contact -->
-    <section class="py-16 bg-gray-100">
+    <section class="pb-10 pt-4 ">
         <div class="container mx-auto px-4">
-            <h2 class="text-3xl md:text-4xl text-orange-500 font-bold text-center mb-12">Contactez-nous</h2>
+            <h2 class="text-3xl md:text-4xl text-orange-500 font-bold text-center mb-10">Contactez-nous</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <!-- Formulaire de contact -->
                 <div class="bg-white p-6 rounded-lg shadow-md">
@@ -225,4 +255,6 @@
             </div>
         </div>
     </section>
+
+    <script src="{% static 'js/carousel-testimonials.js' %}"></script>
 {% endblock content %}

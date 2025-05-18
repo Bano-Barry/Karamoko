@@ -16,40 +16,55 @@
     <link rel="stylesheet" href="{% static 'src/output.css' %}">
     {% endcompress %}
 
-
 </head>
 
-<body class="bg-blue-50">
+<body class="bg-blue-50 ">
     <!-- Navbar -->
     
-    <nav class="fixed top-0 left-0 w-full bg-blue-700/80 text-white z-50 shadow-lg backdrop-blur-md">
-        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
-            <!-- Logo -->
-            <a href="{% url 'home' %}" class="text-2xl font-bold flex items-center">
-                <img src="{% static 'images/logo.jpg' %}" alt="Karamoko Logo" class="h-10 mr-2">
-                <span class="hidden sm:inline">Karamoko</span>
-            </a>
+<nav class="fixed top-0  left-0 w-full bg-blue-700/80 text-white z-50 shadow-lg backdrop-blur-md">
+    <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+        <!-- Logo -->
+        <a href="{% url 'home' %}" class="text-2xl font-bold flex items-center">
+            <img src="{% static 'images/logo.jpg' %}" alt="Karamoko Logo" class="h-10 mr-2">
+            <span class="hidden sm:inline text-orange-300">Karamoko</span>
+        </a>
 
-            <!-- Navigation Links -->
-            <ul class="hidden md:flex space-x-8 text-white font-medium">
-                <li>
-                    <a href="{% url 'encadreurs' %}" class="{% if request.path == '/encadreurs/' %}text-orange-300 font-bold{% else %}hover:text-orange-400{% endif %} uppercase transition duration-300">
-                        Encadreurs
-                    </a>
-                </li>
-                <li>
-                    <a href="{% url 'services' %}" class="{% if request.path == '/services/' %}text-orange-300 font-bold{% else %}hover:text-orange-400{% endif %} uppercase transition duration-300">
-                        Services
-                    </a>
-                </li>
-                <li>
-                    <a href="{% url 'about' %}" class="{% if request.path == '/about/' %}text-orange-300 font-bold{% else %}hover:text-orange-400{% endif %} uppercase transition duration-300">
-                        À propos
-                    </a>
-                </li>
-            </ul>
+        <!-- Hamburger -->
+        <div class="md:hidden">
+            <button id="menu-toggle" class="focus:outline-none">
+                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M4 6h16M4 12h16M4 18h16">
+                    </path>
+                </svg>
+            </button>
+        </div>
 
-            <!-- Login Button -->
+        <!-- Navigation Links (desktop) -->
+        <ul class="hidden md:flex space-x-8 text-white font-medium">
+            <li>
+                <a href="{% url 'encadreurs' %}"
+                class="block {% if request.resolver_match.url_name == 'encadreurs' %}text-orange-300 font-bold{% else %}hover:text-orange-400{% endif %} uppercase transition duration-300">
+                    Encadreurs
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'services' %}"
+                class="block {% if request.resolver_match.url_name == 'services' %}text-orange-300 font-bold{% else %}hover:text-orange-400{% endif %} uppercase transition duration-300">
+                    Services
+                </a>
+            </li>
+            <li>
+              <a href="{% url 'about' %}"
+                    class="block {% if request.resolver_match.url_name == 'about' %}text-orange-300 font-bold{% else %}hover:text-orange-400{% endif %} uppercase transition duration-300">
+                    À propos
+                </a>
+            </li>
+        </ul>
+
+        <!-- Login Button -->
+        <div class="hidden md:flex items-center ms-3">
             <div class="flex items-center ms-3">
                 <button type="button" class="flex items-center text-sm rounded-full" aria-expanded="false" data-dropdown-toggle="dropdown-user">
                     <span class="sr-only">Open user menu</span>
@@ -104,22 +119,54 @@
                 </div>
             </div>
 
-            <script>
-                const userMenuButton = document.getElementById('user-menu-button');
-                const userMenu = document.getElementById('user-menu');
-
-                userMenuButton.addEventListener('click', () => {
-                    userMenu.classList.toggle('hidden');
-                });
-
-                document.addEventListener('click', (event) => {
-                    if (!userMenuButton.contains(event.target) && !userMenu.contains(event.target)) {
-                        userMenu.classList.add('hidden');
-                    }
-                });
-            </script>
         </div>
-    </nav>
+    </div>
+
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="md:hidden hidden px-4 pb-4">
+        <ul class="space-y-2 text-white font-medium">
+            <li>
+                <a href="{% url 'encadreurs' %}"
+                    class="{% if request.resolver_match.url_name == 'encadreurs' %}text-orange-300 font-bold{% else %}hover:text-orange-400{% endif %} uppercase transition duration-300">
+                    Encadreurs
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'services' %}"
+                    class="{% if request.resolver_match.url_name == 'services' %}text-orange-300 font-bold{% else %}hover:text-orange-400{% endif %} uppercase transition duration-300">
+                    Services
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'about' %}"
+                    class="{% if request.resolver_match.url_name == 'about' %}text-orange-300 font-bold{% else %}hover:text-orange-400{% endif %} uppercase transition duration-300">
+                    À propos
+                </a>
+            </li>
+            <li class="border-t border-white pt-2">
+                {% if user.is_authenticated %}
+                    <span class="block text-sm">Bonjour, {{ user.get_username }}</span>
+                    <form method="post" action="{% url 'logout' %}" class="mt-2">
+                        {% csrf_token %}
+                        <button type="submit" class="text-sm hover:text-orange-300">Se déconnecter</button>
+                    </form>
+                {% else %}
+                    <a href="{% url 'login' %}" class="text-sm hover:text-orange-300">Se connecter</a>
+                {% endif %}
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<script>
+    const menuToggle = document.getElementById('menu-toggle');
+    const mobileMenu = document.getElementById('mobile-menu');
+
+    menuToggle.addEventListener('click', () => {
+        mobileMenu.classList.toggle('hidden');
+    });
+</script>
+
 
     <div class="container-fluid mx-auto mt-4">
         {% block content %}
@@ -219,6 +266,7 @@
             mobileMenu.classList.toggle('hidden');
         });
     </script>
+    {% comment %} <script src="{% static 'js/navbar-sticky.js' %}"></script> {% endcomment %}
 </body>
 
 </html>

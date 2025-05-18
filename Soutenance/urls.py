@@ -10,8 +10,8 @@ urlpatterns = [
     path('karamoko/', include('authentication.urls')),  # URL pour l'authentification
     path('', include('core.urls')),  # URL pour le site vitrine et niveaux
     path('dashboard/', include('dashboard.urls')),  # URL pour le dashboard
-    path('dashboard/repetiteurs/', include('repetiteurs.urls')),
-    path('dashboard/souscripteurs/', include('souscripteurs.urls')),
+    path('dashboard/', include('repetiteurs.urls')),
+    path('dashboard/', include('souscripteurs.urls')),
     path('dashboard/', include('formations.urls')), # URL pour les formations
     path('dashboard/', include('paiements.urls')),  # URL pour les paiements
     path('dashboard/', include('souscriptions.urls')), #URL pour les souscriptions

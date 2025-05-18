@@ -12,7 +12,7 @@
                 {% if repetiteur.avatar %}
                     <img class="w-32 h-32 rounded-full mx-auto md:mx-0" src="{{ repetiteur.avatar.url }}" alt="{{ repetiteur.user.first_name }}">
                 {% else %}
-                    <img class="w-32 h-32 rounded-full mx-auto md:mx-0" src="{% static 'images/default_avatar.webp' %}" alt="{{ repetiteur.user.first_name }}">
+                    <img class="w-32 h-32 rounded-full mx-auto md:mx-0" src="{% static 'images/default_avatar.webp' %}" alt="Photo de {{ repetiteur.user.first_name }}">
                 {% endif %}
             </div>
             <!-- Informations principales -->
@@ -27,7 +27,7 @@
                     </div>
                 </div>
                 <p class="text-gray-600 mt-4">A aidé plus de <span class="font-semibold">{{ repetiteur.etudiants_aides|default:"0" }}</span> élèves</p>
-                <p class="text-gray-600">Prix par heure : <span class="font-semibold">{{ repetiteur.prix_par_heure|default:"Non spécifié" }} €</span></p>
+                <p class="text-gray-600">Prix par heure : <span class="font-semibold">{{ repetiteur.prix_par_heure|default:"Non spécifié" }} GNF</span></p>
             </div>
             <!-- Bouton de réservation -->
             {% if user.is_authenticated %}
@@ -57,7 +57,7 @@
         </div>
 
         <!-- Navigation par onglets -->
-        <div class="border-b border-gray-200 dark:border-gray-700">
+        <div class="border-b border-gray-200 dark:border-gray-700 sticky top-0 bg-white z-40">
             <ul class="flex flex-wrap -mb-px text-sm font-medium text-center text-gray-500 dark:text-gray-400">
             <li class="me-2">
                 <a href="#a-propos" data-tab="a-propos" class="tab-link inline-flex items-center justify-center p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300 group active">
@@ -164,19 +164,6 @@
             </div>
         </div>
     </div>
-
-    <!-- Sidebar -->
-    <aside class="fixed top-20 right-10 w-64 bg-white p-6 rounded-lg shadow-lg">
-        {% if repetiteur.avatar %}
-            <img class="w-24 h-24 rounded-full mx-auto mb-4" src="{{ repetiteur.avatar.url }}" alt="{{ repetiteur.user.first_name }}">
-        {% else %}
-            <img class="w-24 h-24 rounded-full mx-auto mb-4" src="{% static 'images/default_avatar.webp' %}" alt="{{ repetiteur.user.first_name }}">
-        {% endif %}
-        <button class="w-full bg-blue-700 text-white py-2 rounded-lg mt-4 hover:bg-blue-800">Réserver un cours d'essai</button>
-        <p class="text-gray-600 text-center mt-2"><i class="fas fa-clock mr-1"></i> Durée : 30 minutes</p>
-        <p class="text-gray-600 text-center mt-2"><i class="fas fa-chart-line mr-1"></i> Réservations la semaine dernière : {{ repetiteur.reservations_semaine|default:"0" }}</p>
-        <p class="text-gray-600 text-center mt-2"><i class="fas fa-graduation-cap mr-1"></i> Expérience : {{ repetiteur.experience|default:"1" }} an(s)</p>
-    </aside>
 </section>
 
 <!-- Modal de souscription -->
