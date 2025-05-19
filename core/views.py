@@ -80,3 +80,9 @@ class NiveauDeleteView(DeleteView):
             {'name': 'Supprimer', 'url': None},
         ]
         return context
+
+# urls.py
+# Ajout d'une vue pour tester le 404
+def trigger_404(request):
+    return render(request, 'vitrine/404.html', status=404)
+handler404 = trigger_404

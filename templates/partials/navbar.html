@@ -1,0 +1,147 @@
+{% load static %}
+
+<nav class="fixed top-0  left-0 w-full bg-blue-700/80 text-white z-50 shadow-lg backdrop-blur-md">
+    <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+        <!-- Logo -->
+        <a href="{% url 'home' %}" class="text-2xl font-bold flex items-center">
+            <img src="{% static 'images/logo.jpg' %}" alt="Karamoko Logo" class="h-10 mr-2">
+            <span class="hidden sm:inline text-orange-300">Karamoko</span>
+        </a>
+
+        <!-- Hamburger -->
+        <div class="md:hidden">
+            <button id="menu-toggle" class="focus:outline-none">
+                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M4 6h16M4 12h16M4 18h16">
+                    </path>
+                </svg>
+            </button>
+        </div>
+
+        <!-- Navigation Links (desktop) -->
+        <ul class="hidden md:flex space-x-8 text-white font-medium">
+            <li>
+                <a href="{% url 'encadreurs' %}"
+                class="block {% if request.resolver_match.url_name == 'encadreurs' %}text-orange-300 font-bold{% else %}hover:text-orange-400{% endif %} uppercase transition duration-300">
+                    Encadreurs
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'services' %}"
+                class="block {% if request.resolver_match.url_name == 'services' %}text-orange-300 font-bold{% else %}hover:text-orange-400{% endif %} uppercase transition duration-300">
+                    Services
+                </a>
+            </li>
+            <li>
+              <a href="{% url 'about' %}"
+                    class="block {% if request.resolver_match.url_name == 'about' %}text-orange-300 font-bold{% else %}hover:text-orange-400{% endif %} uppercase transition duration-300">
+                    À propos
+                </a>
+            </li>
+        </ul>
+
+        <!-- Login Button -->
+        <div class="hidden md:flex items-center ms-3">
+            <div class="flex items-center ms-3">
+                <button type="button" class="flex items-center text-sm rounded-full" aria-expanded="false" data-dropdown-toggle="dropdown-user">
+                    <span class="sr-only">Open user menu</span>
+                    <svg class="w-8 h-8 text-gray-400 dark:text-gray-200" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                    </svg>
+                    <span class="text-sm font-medium text-white ms-2">
+                        {% if user.is_authenticated %}
+                            Bonjour, {{ user.get_username }}
+                        {% else %}
+                            Se connecter
+                        {% endif %}
+                    </span>
+                </button>
+                <div class="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded shadow dark:bg-gray-700 dark:divide-gray-600" id="dropdown-user">
+                    {% if user.is_authenticated %}
+                        <ul class="py-1">
+                            {% if user.repetiteur %}
+                                    <a href="{% url 'complete_repetiteur_profile' %}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white">
+                                        Votre Profil
+                                    </a>
+                            {% elif user.souscripteur %}
+                                    <a href="{% url 'complete_souscripteur_profile' %}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white">
+                                        Votre profil
+                                    </a>
+                            {% else %}
+                                <a href="{% url 'dashboard_home' %}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white">
+                                    Dashboard
+                                </a>
+                                <a href="{% url 'admin:index' %}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white">
+                                    Settings
+                                </a>
+                            {% endif %}
+                            {% comment %} <li>
+                            </li> {% endcomment %}
+                            <li>
+                                <form method="post" action="{% url 'logout' %}" class="inline-block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white w-full text-left">
+                                    {% csrf_token %}
+                                    <button type="submit">
+                                        Se déconnecter
+                                    </button>
+                                </form>
+                            </li>
+                        </ul>
+                    {% else %}
+                        <ul class="py-1">
+                            <li>
+                                <a href="{% url 'login' %}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white">Se connecter</a>
+                            </li>
+                        </ul>
+                    {% endif %}
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="md:hidden hidden px-4 pb-4">
+        <ul class="space-y-2 text-white font-medium">
+            <li>
+                <a href="{% url 'encadreurs' %}"
+                    class="{% if request.resolver_match.url_name == 'encadreurs' %}text-orange-300 font-bold{% else %}hover:text-orange-400{% endif %} uppercase transition duration-300">
+                    Encadreurs
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'services' %}"
+                    class="{% if request.resolver_match.url_name == 'services' %}text-orange-300 font-bold{% else %}hover:text-orange-400{% endif %} uppercase transition duration-300">
+                    Services
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'about' %}"
+                    class="{% if request.resolver_match.url_name == 'about' %}text-orange-300 font-bold{% else %}hover:text-orange-400{% endif %} uppercase transition duration-300">
+                    À propos
+                </a>
+            </li>
+            <li class="border-t border-white pt-2">
+                {% if user.is_authenticated %}
+                    <span class="block text-sm">Bonjour, {{ user.get_username }}</span>
+                    <form method="post" action="{% url 'logout' %}" class="mt-2">
+                        {% csrf_token %}
+                        <button type="submit" class="text-sm hover:text-orange-300">Se déconnecter</button>
+                    </form>
+                {% else %}
+                    <a href="{% url 'login' %}" class="text-sm hover:text-orange-300">Se connecter</a>
+                {% endif %}
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<script>
+    const menuToggle = document.getElementById('menu-toggle');
+    const mobileMenu = document.getElementById('mobile-menu');
+
+    menuToggle.addEventListener('click', () => {
+        mobileMenu.classList.toggle('hidden');
+    });
+</script>

@@ -17,4 +17,5 @@ urlpatterns = [
     # urls publics pour les répétiteurs
     path('repetiteur/<int:id>/', repetiteur_public_detail, name='repetiteur_public_detail'),
 
+    path('karamoko/test-404/', views.trigger_404, name='test_404'),
 ]

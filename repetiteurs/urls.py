@@ -8,11 +8,11 @@ urlpatterns = [
     path('competences/<int:pk>/update/', views.CompetenceUpdateView.as_view(), name='competence_update'),
     path('competences/<int:pk>/delete/', views.CompetenceDeleteView.as_view(), name='competence_delete'),
     # URLs pour les répétiteurs
-    path('', views.repetiteur_list, name='repetiteur_list'),
-    path('create/', views.repetiteur_create, name='repetiteur_create'),
-    path('<int:id>/', views.repetiteur_detail, name='repetiteur_detail'),
-    path('<int:pk>/edit/', views.repetiteur_update, name='repetiteur_update'),
-    path('<int:pk>/delete/', views.repetiteur_delete, name='repetiteur_delete'),
+    path('repetiteurs/', views.repetiteur_list, name='repetiteur_list'),
+    path('repetiteurs/create/', views.repetiteur_create, name='repetiteur_create'),
+    path('repetiteurs/<int:id>/', views.repetiteur_detail, name='repetiteur_detail'),
+    path('repetiteurs/<int:pk>/edit/', views.repetiteur_update, name='repetiteur_update'),
+    path('repetiteurs/<int:pk>/delete/', views.repetiteur_delete, name='repetiteur_delete'),
     # URLs pour les cours
     path('cours/', views.CoursListView.as_view(), name='cours_list'),
     path('cours/create/', views.CoursCreateView.as_view(), name='cours_create'),
