@@ -19,6 +19,11 @@ def services(request):
 def about(request):
     return render(request, 'vitrine/about.html')
 
+def guide_parent(request):
+    return render(request, 'vitrine/guide_parent.html')
+def guide_repetiteur(request):
+    return render(request, 'vitrine/guide_repetiteur.html')
+
 
 # Liste des niveaux
 class NiveauListView(ListView):

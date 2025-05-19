@@ -21,25 +21,43 @@
         </div>
 
         <!-- Navigation Links (desktop) -->
-        <ul class="hidden md:flex space-x-8 text-white font-medium">
+        <ul class="hidden md:flex space-x-8 text-white font-medium uppercase items-center">
             <li>
                 <a href="{% url 'encadreurs' %}"
-                class="block {% if request.resolver_match.url_name == 'encadreurs' %}text-orange-300 font-bold{% else %}hover:text-orange-400{% endif %} uppercase transition duration-300">
+                class="block {% if request.resolver_match.url_name == 'encadreurs' %}text-orange-300 font-bold{% else %}hover:text-orange-400{% endif %}  transition duration-300">
                     Encadreurs
                 </a>
             </li>
             <li>
-                <a href="{% url 'services' %}"
-                class="block {% if request.resolver_match.url_name == 'services' %}text-orange-300 font-bold{% else %}hover:text-orange-400{% endif %} uppercase transition duration-300">
-                    Services
-                </a>
-            </li>
-            <li>
-              <a href="{% url 'about' %}"
-                    class="block {% if request.resolver_match.url_name == 'about' %}text-orange-300 font-bold{% else %}hover:text-orange-400{% endif %} uppercase transition duration-300">
+                <a href="{% url 'about' %}"
+                    class="block {% if request.resolver_match.url_name == 'about' %}text-orange-300 font-bold{% else %}hover:text-orange-400{% endif %}  transition duration-300">
                     À propos
                 </a>
             </li>
+            <li >
+                <button id="guideDropdownButton" data-dropdown-toggle="guideDropdownMenu" type="button"
+                    class="flex items-center justify-between w-full text-white uppercase rounded-sm hover:bg-blue-800 md:hover:bg-transparent md:border-0 md:hover:text-orange-400 md:p-0 md:w-auto  transition duration-300">
+                    Guide d'utilisation
+                    <svg class="w-4 h-4 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
+                    </svg>
+                </button>
+                <!-- Dropdown menu -->
+                <div id="guideDropdownMenu" class="absolute right-0 z-10 hidden font-normal bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-44 dark:bg-gray-700 dark:divide-gray-600">
+                    <ul class="py-2 text-sm text-gray-700 dark:text-gray-400" aria-labelledby="guideDropdownButton">
+                        <li>
+                            <a href="{% url 'guide_parent' %}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Parents</a>
+                        </li>
+                        <li>
+                            <a href="{% url 'guide_repetiteur' %}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Encadreurs</a>
+                        </li>
+                        {% comment %} <li>
+                            <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Élèves</a>
+                        </li> {% endcomment %}
+                    </ul>
+                </div>
+            </li>
+
         </ul>
 
         <!-- Login Button -->
@@ -111,16 +129,33 @@
                 </a>
             </li>
             <li>
-                <a href="{% url 'services' %}"
-                    class="{% if request.resolver_match.url_name == 'services' %}text-orange-300 font-bold{% else %}hover:text-orange-400{% endif %} uppercase transition duration-300">
-                    Services
-                </a>
-            </li>
-            <li>
                 <a href="{% url 'about' %}"
                     class="{% if request.resolver_match.url_name == 'about' %}text-orange-300 font-bold{% else %}hover:text-orange-400{% endif %} uppercase transition duration-300">
                     À propos
                 </a>
+            </li>
+            <li >
+                <button id="guideDropdownButtonMobile" data-dropdown-toggle="guideDropdownMenuMobile" type="button"
+                    class="flex items-center justify-between w-full text-white uppercase rounded-sm hover:bg-blue-800 md:hover:bg-transparent md:border-0 md:hover:text-orange-400 md:p-0 md:w-auto  transition duration-300">
+                    Guide d'utilisation
+                    <svg class="w-4 h-4 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
+                    </svg>
+                </button>
+                <!-- Dropdown menu -->
+                <div id="guideDropdownMenuMobile" class="absolute right-0 z-10 hidden font-normal bg-white divide-y divide-gray-100 rounded-lg shadow-sm w-44 dark:bg-gray-700 dark:divide-gray-600">
+                    <ul class="py-2 text-sm text-gray-700 dark:text-gray-400" aria-labelledby="guideDropdownButtonMobile">
+                        <li>
+                            <a href="{% url 'guide_parent' %}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Parents</a>
+                        </li>
+                        <li>
+                            <a href="{% url 'guide_repetiteur' %}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Encadreurs</a>
+                        </li>
+                        {% comment %} <li>
+                            <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Élèves</a>
+                        </li> {% endcomment %}
+                    </ul>
+                </div>
             </li>
             <li class="border-t border-white pt-2">
                 {% if user.is_authenticated %}

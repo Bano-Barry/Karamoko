@@ -1,0 +1,118 @@
+{% extends "_base.html" %}
+{% load static %}
+
+{% block content %}
+<section class="py-16">
+    <div class="container mx-auto px-4">
+        <div class="text-center mb-12">
+            <h1 class="text-4xl font-bold text-orange-500">Guide Parent</h1>
+            <p class="text-lg text-gray-600 mt-4">
+                Bienvenue sur la page du guide parent. Ici, vous trouverez toutes les informations nécessaires pour accompagner votre enfant dans son parcours éducatif, à domicile.
+            </p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
+            <!-- Colonne gauche -->
+            <div>
+                <h2 class="text-2xl font-semibold text-gray-800 mb-4">Comment pouvons-nous vous aider ?</h2>
+                <p class="text-gray-700 text-base mb-3">
+                    Découvrez les réponses aux questions fréquentes sur notre plateforme.
+                    Si vous ne trouvez pas votre réponse, n'hésitez pas à nous contacter.
+                </p>
+                <p class="text-gray-700 text-base">
+                    Parcourez les sections ci-dessous pour des réponses détaillées adaptées à votre profil de parent.
+                </p>
+            </div>
+            <!-- Colonne droite avec accordéon Flowbite -->
+            <div>
+                <div id="accordion-color" data-accordion="collapse" data-active-classes="bg-blue-100 dark:bg-gray-800 text-blue-600 dark:text-white">
+                    <!-- FAQ 1 -->
+                    <h2 id="accordion-color-heading-1">
+                        <button type="button" class="flex items-center justify-between w-full p-5 font-medium rtl:text-right text-gray-500 border border-b-0 border-gray-200 rounded-t-xl focus:ring-4 focus:ring-blue-200 dark:focus:ring-blue-800 dark:border-gray-700 dark:text-gray-400 hover:bg-blue-100 dark:hover:bg-gray-800 gap-3" data-accordion-target="#accordion-color-body-1" aria-expanded="true" aria-controls="accordion-color-body-1">
+                            <span>Comment trouver un répétiteur pour mon enfant ?</span>
+                        <svg data-accordion-icon class="w-4 h-4 rotate-180 shrink-0" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5 5 1 1 5"/>
+                            </svg>
+                        </button>
+                    </h2>
+                    <div id="accordion-color-body-1" class="hidden" aria-labelledby="accordion-color-heading-1">
+                        <div class="p-5 border border-b-0 border-gray-200 dark:border-gray-700 dark:bg-gray-900">
+                            Utilisez notre outil de recherche avancée en filtrant par localisation, matière et niveau d’étude. Une fois le profil trouvé, cliquez sur "Je recrute cet encadreur". Notre équipe vous contactera pour finaliser la demande.
+                        </div>
+                    </div>
+                    <!-- FAQ 2 -->
+                    <h2 id="accordion-color-heading-2">
+                        <button type="button" class="flex items-center justify-between w-full p-5 font-medium rtl:text-right text-gray-500 border border-b-0 border-gray-200 focus:ring-4 focus:ring-blue-200 dark:focus:ring-blue-800 dark:border-gray-700 dark:text-gray-400 hover:bg-blue-100 dark:hover:bg-gray-800 gap-3" data-accordion-target="#accordion-color-body-2" aria-expanded="false" aria-controls="accordion-color-body-2">
+                            <span>Comment sont sélectionnés les répétiteurs ?</span>
+                            <svg data-accordion-icon class="w-4 h-4 rotate-180 shrink-0" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5 5 1 1 5"/>
+                            </svg>
+                        </button>
+                    </h2>
+                    <div id="accordion-color-body-2" class="hidden" aria-labelledby="accordion-color-heading-2">
+                        <div class="p-5 border border-b-0 border-gray-200 dark:border-gray-700">
+                            Tous nos encadreurs passent par une sélection rigoureuse incluant CV, entretien, vérification des diplômes et références.
+                        </div>
+                    </div>
+                    <!-- FAQ 3 -->
+                    <h2 id="accordion-color-heading-3">
+                        <button type="button" class="flex items-center justify-between w-full p-5 font-medium rtl:text-right text-gray-500 border border-b-0 border-gray-200 focus:ring-4 focus:ring-blue-200 dark:focus:ring-blue-800 dark:border-gray-700 dark:text-gray-400 hover:bg-blue-100 dark:hover:bg-gray-800 gap-3" data-accordion-target="#accordion-color-body-3" aria-expanded="false" aria-controls="accordion-color-body-3">
+                            <span>Quels sont les tarifs pour les services de répétition ?</span>
+                            <svg data-accordion-icon class="w-4 h-4 rotate-180 shrink-0" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5 5 1 1 5"/>
+                            </svg>
+                        </button>
+                    </h2>
+                    <div id="accordion-color-body-3" class="hidden" aria-labelledby="accordion-color-heading-3">
+                        <div class="p-5 border border-b-0 border-gray-200 dark:border-gray-700">
+                            Les tarifs dépendent du niveau, de la matière et de la durée. Un devis estimatif est fourni avant toute validation.
+                        </div>
+                    </div>
+                    <!-- FAQ 4 -->
+                    <h2 id="accordion-color-heading-4">
+                        <button type="button" class="flex items-center justify-between w-full p-5 font-medium rtl:text-right text-gray-500 border border-b-0 border-gray-200 focus:ring-4 focus:ring-blue-200 dark:focus:ring-blue-800 dark:border-gray-700 dark:text-gray-400 hover:bg-blue-100 dark:hover:bg-gray-800 gap-3" data-accordion-target="#accordion-color-body-4" aria-expanded="false" aria-controls="accordion-color-body-4">
+                            <span>Comment se passe le suivi des cours et la communication avec l’encadreur ?</span>
+                            <svg data-accordion-icon class="w-4 h-4 rotate-180 shrink-0" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5 5 1 1 5"/>
+                            </svg>
+                        </button>
+                    </h2>
+                    <div id="accordion-color-body-4" class="hidden" aria-labelledby="accordion-color-heading-4">
+                        <div class="p-5 border border-b-0 border-gray-200 dark:border-gray-700">
+                            Vous disposez d’un espace parent pour suivre les progrès, échanger des messages et recevoir des comptes-rendus réguliers de l’encadreur.
+                        </div>
+                    </div>
+                    <!-- FAQ 5 -->
+                    <h2 id="accordion-color-heading-5">
+                        <button type="button" class="flex items-center justify-between w-full p-5 font-medium rtl:text-right text-gray-500 border border-gray-200 focus:ring-4 focus:ring-blue-200 dark:focus:ring-blue-800 dark:border-gray-700 dark:text-gray-400 hover:bg-blue-100 dark:hover:bg-gray-800 gap-3" data-accordion-target="#accordion-color-body-5" aria-expanded="false" aria-controls="accordion-color-body-5">
+                            <span>Comment puis-je payer les services de répétition ?</span>
+                            <svg data-accordion-icon class="w-4 h-4 rotate-180 shrink-0" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5 5 1 1 5"/>
+                            </svg>
+                        </button>
+                    </h2>
+                    <div id="accordion-color-body-5" class="hidden" aria-labelledby="accordion-color-heading-5">
+                        <div class="p-5 border border-t-0 border-gray-200 dark:border-gray-700">
+                            Le paiement s’effectue en toute sécurité via la plateforme (Mobile Money, carte bancaire ou virement). Un reçu vous est envoyé après chaque transaction.
+                        </div>
+                    </div>
+                    <!-- FAQ 6 -->
+                    <h2 id="accordion-color-heading-6">
+                        <button type="button" class="flex items-center justify-between w-full p-5 font-medium rtl:text-right text-gray-500 border border-gray-200 focus:ring-4 focus:ring-blue-200 dark:focus:ring-blue-800 dark:border-gray-700 dark:text-gray-400 hover:bg-blue-100 dark:hover:bg-gray-800 gap-3" data-accordion-target="#accordion-color-body-6" aria-expanded="false" aria-controls="accordion-color-body-6">
+                            <span>Que faire en cas de problème ou d’insatisfaction ?</span>
+                            <svg data-accordion-icon class="w-4 h-4 rotate-180 shrink-0" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5 5 1 1 5"/>
+                            </svg>
+                        </button>
+                    </h2>
+                    <div id="accordion-color-body-6" class="hidden" aria-labelledby="accordion-color-heading-6">
+                        <div class="p-5 border border-t-0 border-gray-200 dark:border-gray-700">
+                            Contactez notre support via la messagerie intégrée ou par téléphone. Nous nous engageons à trouver une solution rapide et adaptée à votre situation.
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+</section>
+{% endblock %}

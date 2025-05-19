@@ -7,8 +7,9 @@ from . import views
 urlpatterns = [
     path('karamoko/', views.home, name='home'),
     path('karamoko/encadreurs/', views.encadreurs, name='encadreurs'),
-    path('karamoko/services/', views.services, name='services'),
     path('karamoko/about/', views.about, name='about'),
+    path('karamoko/guide_parent/', views.guide_parent, name='guide_parent'),
+    path('karamoko/guide_repetiteur/', views.guide_repetiteur, name='guide_repetiteur'),
     path('dashboard/niveaux/', views.NiveauListView.as_view(), name='niveau_list'),
     path('dashboard/niveaux/create/', views.NiveauCreateView.as_view(), name='niveau_create'),
     path('dashboard/niveaux/<int:pk>/update/', views.NiveauUpdateView.as_view(), name='niveau_update'),
