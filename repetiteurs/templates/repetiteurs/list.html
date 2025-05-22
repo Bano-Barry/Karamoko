@@ -1,12 +1,22 @@
 {% extends 'dashboard/base.html' %}
 
 {% block content %}
-<div class="flex justify-between items-center my-8 max-w-4xl mx-auto">
-    <h1 class="text-2xl font-bold text-gray-800 dark:text-white">Liste des Répétiteurs</h1>
-    <!-- Bouton pour rediriger vers la page de création -->
-    <a href="{% url 'repetiteur_create' %}" class="px-4 py-2 text-white bg-blue-600 hover:bg-blue-700 rounded-lg shadow">
-        + Ajouter un Répétiteur
-    </a>
+<div class="">
+    <div class="mt-3 max-w-4xl mx-auto flex items-center space-x-2">
+        <span class="text-sm font-medium text-gray-600 dark:text-gray-300">Filtrer :</span>
+        <a href="{% url 'repetiteur_list' %}" class="px-3 py-1 rounded-lg text-sm {% if not statut %}bg-blue-600 text-white{% else %}bg-gray-200{% endif %}">Tous</a>
+        <a href="?statut=valide" class="px-3 py-1 rounded-lg text-sm {% if statut == 'valide' %}bg-blue-600 text-white{% else %}bg-gray-200{% endif %}">Validés</a>
+        <a href="?statut=en_attente" class="px-3 py-1 rounded-lg text-sm {% if statut == 'en_attente' %}bg-blue-600 text-white{% else %}bg-gray-200{% endif %}">En attente</a>
+        <a href="?statut=non_soumis" class="px-3 py-1 rounded-lg text-sm {% if statut == 'non_soumis' %}bg-blue-600 text-white{% else %}bg-gray-200{% endif %}">Non soumis</a>
+    </div>
+
+    <div class="flex justify-between items-center my-8 max-w-4xl mx-auto">
+        <h1 class="text-2xl font-bold text-gray-800 dark:text-white">Liste des Répétiteurs</h1>
+        <!-- Bouton pour rediriger vers la page de création -->
+        <a href="{% url 'repetiteur_create' %}" class="px-4 py-2 text-white bg-blue-600 hover:bg-blue-700 rounded-lg shadow">
+            + Ajouter un Répétiteur
+        </a>
+    </div>
 </div>
 
 <!-- Tableau des répétiteurs -->

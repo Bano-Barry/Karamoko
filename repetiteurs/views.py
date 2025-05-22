@@ -18,8 +18,16 @@ def is_superuser(user):
 
 @user_passes_test(is_superuser)
 def repetiteur_list(request):
+    statut = request.GET.get('statut')
 
     repetiteurs = Repetiteur.objects.all()
+
+    if statut == 'valide':
+        repetiteurs = repetiteurs.filter(user__is_validated=True)
+    elif statut == 'en_attente':
+        repetiteurs = repetiteurs.filter(is_soumis=True, user__is_validated=False)
+    elif statut == 'non_soumis':
+        repetiteurs = repetiteurs.filter(is_soumis=False)
 
     # Gestion de la validation de profil
     if request.method == "POST":
@@ -40,9 +48,11 @@ def repetiteur_list(request):
             {'name': 'Liste des Répétiteurs', 'url': None},
         ],
         'repetiteurs': repetiteurs,
+        'statut': statut
     }
 
     return render(request, 'repetiteurs/list.html', context)
+
 
 @user_passes_test(is_superuser)
 def vitrine_repetiteur_list(request):
