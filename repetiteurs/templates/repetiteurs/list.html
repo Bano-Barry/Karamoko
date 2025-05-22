@@ -16,7 +16,7 @@
             <tr>
                 <th scope="col" class="px-6 py-3">#</th>
                 <th scope="col" class="px-6 py-3">Nom</th>
-                <th scope="col" class="px-6 py-3">Email</th>
+                <th scope="col" class="px-6 py-3">Statut</th>
                 <th scope="col" class="px-6 py-3">Contact</th>
                 <th scope="col" class="px-6 py-3">Actions</th>
             </tr>
@@ -26,7 +26,23 @@
             <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 text-center">
                 <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ forloop.counter }}</td>
                 <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ repetiteur.user.first_name }} {{ repetiteur.user.last_name }}</td>
-                <td class="px-6 py-4">{{ repetiteur.user.email }}</td>
+                <td class="px-6 py-4">
+                    {% if repetiteur.user.is_validated %}
+                        <span class="px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm">Validé</span>
+                    {% elif repetiteur.is_soumis %}
+                        <!-- Formulaire pour valider -->
+                        <form method="POST" class="inline">
+                            {% csrf_token %}
+                            <input type="hidden" name="repetiteur_id" value="{{ repetiteur.id }}">
+                            <input type="hidden" name="action" value="valider">
+                            <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 text-sm rounded-lg">
+                                ✅ Valider
+                            </button>
+                        </form>
+                    {% else %}
+                        <span class="px-3 py-1 bg-gray-200 text-gray-700 rounded-full text-sm">Non soumis</span>
+                    {% endif %}
+                </td>
                 <td class="px-6 py-4">{{ repetiteur.user.phone }}</td>
                 <td class="px-6 py-4 flex justify-center space-x-4">
                     <a href="{% url 'repetiteur_detail' repetiteur.id %}" class="text-blue-600 hover:underline flex items-center">

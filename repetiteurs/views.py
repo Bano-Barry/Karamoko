@@ -18,19 +18,20 @@ def is_superuser(user):
 
 @user_passes_test(is_superuser)
 def repetiteur_list(request):
-    adresse = request.GET.get('adresse', '').strip()
-    competence = request.GET.get('competence', '').strip()
 
     repetiteurs = Repetiteur.objects.all()
 
-    if adresse:
-        repetiteurs = repetiteurs.filter(user__adresse__icontains=adresse)
+    # Gestion de la validation de profil
+    if request.method == "POST":
+        repetiteur_id = request.POST.get('repetiteur_id')
+        action = request.POST.get('action')
+        repetiteur = get_object_or_404(Repetiteur, id=repetiteur_id)
 
-    if competence:
-        repetiteurs = repetiteurs.filter(competences__nom__icontains=competence)
-
-    # Évite les doublons si un répétiteur a plusieurs compétences
-    repetiteurs = repetiteurs.distinct()
+        if action == "valider":
+            repetiteur.user.is_validated = True
+            repetiteur.user.save()
+            messages.success(request, f"✅ Le profil de {repetiteur} a été validé avec succès.")
+            return redirect('repetiteur_list')
 
     context = {
         'breadcrumb': [
@@ -39,8 +40,6 @@ def repetiteur_list(request):
             {'name': 'Liste des Répétiteurs', 'url': None},
         ],
         'repetiteurs': repetiteurs,
-        'adresse': adresse,
-        'competence': competence,
     }
 
     return render(request, 'repetiteurs/list.html', context)
