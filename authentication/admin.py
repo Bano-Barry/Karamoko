@@ -5,17 +5,17 @@ from .models import CustomUser
 @admin.register(CustomUser)
 class CustomUserAdmin(UserAdmin):
     model = CustomUser
-    list_display = ('id', 'username', 'email', 'first_name', 'last_name', 'role', 'is_active', 'is_staff')
+    list_display = ('id', 'phone', 'email', 'first_name', 'last_name', 'role', 'is_active', 'is_staff')
     list_filter = ('role', 'is_active', 'is_staff', 'is_superuser')
-    search_fields = ('username', 'email', 'first_name', 'last_name', 'phone')
+    search_fields = ('email', 'first_name', 'last_name', 'phone')
     ordering = ('id',)
 
     fieldsets = (
         ('Informations de connexion', {
-            'fields': ('username', 'password')
+            'fields': ('phone', 'password')
         }),
         ('Informations personnelles', {
-            'fields': ('first_name', 'last_name', 'email', 'phone', 'adresse', 'role')
+            'fields': ('first_name', 'last_name', 'email', 'adresse', 'role')
         }),
         ('Permissions', {
             'fields': ('is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions')
@@ -29,7 +29,7 @@ class CustomUserAdmin(UserAdmin):
         (None, {
             'classes': ('wide',),
             'fields': (
-                'username', 'email', 'first_name', 'last_name', 'phone', 'adresse', 'role',
+                'phone', 'email', 'first_name', 'last_name', 'adresse', 'role',
                 'password1', 'password2',
                 'is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions'
             ),

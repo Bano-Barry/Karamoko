@@ -1,4 +1,4 @@
-<!-- filepath: c:\Users\Bano\Documents\University\Soutenance\KaramokoSoutenance\repetiteurs\templates\repetiteurs\detail.html -->
+<!-- filepath: repetiteurs/templates/repetiteurs/detail.html -->
 {% extends 'dashboard/base.html' %}
 {% load static %}
 
@@ -11,68 +11,110 @@
     <!-- Photo de profil -->
     <div class="flex justify-center mb-6">
         {% if repetiteur.avatar %}
-        <img src="{{ repetiteur.avatar.url }}" alt="Photo de {{ repetiteur.user.get_full_name }}" class="w-32 h-32 rounded-full border-2 border-gray-300 dark:border-gray-600">
+            <img src="{{ repetiteur.avatar.url }}" alt="Photo de {{ repetiteur.user.get_full_name }}" class="w-32 h-32 rounded-full border-2 border-gray-300 dark:border-gray-600">
         {% else %}
-            <img class="w-32 h-32 rounded-full" src="{% static 'images/default_avatar.webp' %}" alt="Default avatar">
+            <img src="{% static 'images/default_avatar.webp' %}" alt="Default avatar" class="w-32 h-32 rounded-full">
         {% endif %}
     </div>
 
-    <!-- Informations personnelles et professionnelles -->
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <!-- Informations personnelles -->
+    <!-- Informations personnelles -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
         <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg shadow">
             <h2 class="text-xl font-bold text-gray-800 dark:text-white mb-4">Informations Personnelles</h2>
-            <p class="mb-2"><strong class="text-gray-800 dark:text-gray-300">Nom Complet :</strong> {{ repetiteur.user.get_full_name }}</p>
-            <p class="mb-2"><strong class="text-gray-800 dark:text-gray-300">Nom d'utilisateur :</strong> {{ repetiteur.user.username }}</p>
-            <p class="mb-2"><strong class="text-gray-800 dark:text-gray-300">Adresse Email :</strong> {{ repetiteur.user.email }}</p>
-            <p class="mb-2"><strong class="text-gray-800 dark:text-gray-300">Numéro de Téléphone :</strong> {{ repetiteur.user.phone }}</p>
-            <p class="mb-2"><strong class="text-gray-800 dark:text-gray-300">Adresse :</strong> {{ repetiteur.user.adresse }}</p>
-            <p class="mb-2"><strong class="text-gray-800 dark:text-gray-300">Role :</strong> {{ repetiteur.user.role }}</p>
-            <p class="mb-2"><strong class="text-gray-800 dark:text-gray-300">Biographie :</strong> {{ repetiteur.biographie|default:"Non renseignée" }}</p>
+            <p class="mb-2"><strong>Nom Complet :</strong> {{ repetiteur.user.first_name }} {{ repetiteur.user.last_name }}</p>
+            <p class="mb-2"><strong>Numéro de Téléphone :</strong> {{ repetiteur.user.phone }}</p>
+            <p class="mb-2"><strong>Adresse :</strong> {{ repetiteur.user.adresse }}</p>
+            <p class="mb-2"><strong>Rôle :</strong> {{ repetiteur.user.get_role_display }}</p>
+            <p class="mb-2"><strong>Date de soumission :</strong> {{ repetiteur.date_soumission|date:"d/m/Y H:i" }}</p>
         </div>
-
-        <!-- Informations professionnelles -->
         <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg shadow">
-            <h2 class="text-xl font-bold text-gray-800 dark:text-white mb-4">Informations Professionnelles</h2>
-            <p class="mb-2"><strong class="text-gray-800 dark:text-gray-300">Compétences :</strong></p>
-            <p class="mb-4">
-                {% for competence in repetiteur.competences.all %}
+            <h2 class="text-xl font-bold text-gray-800 dark:text-white mb-4">Documents</h2>
+            <p class="mb-2"><strong>Pièce d'identité :</strong>
+                {% if repetiteur.piece_identite %}
+                    <a href="{{ repetiteur.piece_identite.url }}" class="text-blue-600 underline" target="_blank">Voir le document</a>
+                {% else %}
+                    <span class="text-gray-500">Non fourni</span>
+                {% endif %}
+            </p>
+            <p class="mb-2"><strong>Diplôme :</strong>
+                {% if repetiteur.diplome %}
+                    <a href="{{ repetiteur.diplome.url }}" class="text-blue-600 underline" target="_blank">Voir le diplôme</a>
+                {% else %}
+                    <span class="text-gray-500">Non fourni</span>
+                {% endif %}
+            </p>
+            <p class="mb-2"><strong>Contrat école :</strong>
+                {% if repetiteur.contrat_ecole %}
+                    <a href="{{ repetiteur.contrat_ecole.url }}" class="text-blue-600 underline" target="_blank">Voir le contrat</a>
+                {% else %}
+                    <span class="text-gray-500">Non fourni</span>
+                {% endif %}
+            </p>
+        </div>
+    </div>
+
+    <!-- Informations professionnelles -->
+    <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg shadow mb-8">
+        <h2 class="text-xl font-bold text-gray-800 dark:text-white mb-4">Informations Professionnelles</h2>
+        <p class="mb-2"><strong>Biographie :</strong> {{ repetiteur.biographie|default:"Non renseignée" }}</p>
+        <p class="mb-2"><strong>Prix par séance :</strong> {{ repetiteur.prix_par_seance|default:"Non renseigné" }} GNF</p>
+        <p class="mb-2"><strong>Compétences :</strong>
+            {% for competence in repetiteur.competences.all %}
                 <span class="inline-block bg-blue-100 text-blue-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300">
                     {{ competence.nom }}
                 </span>
-                {% empty %}
-                <span class="text-gray-500 dark:text-gray-400">Aucune compétence</span>
-                {% endfor %}
-            </p>
-            <p class="mb-2"><strong class="text-gray-800 dark:text-gray-300">Formations :</strong></p>
-            <p class="mb-4">
-                {% for formation in repetiteur.formations.all %}
+            {% empty %}
+                <span class="text-gray-500">Aucune compétence</span>
+            {% endfor %}
+        </p>
+        <p class="mb-2"><strong>Cours enseignés :</strong>
+            {% for cours in repetiteur.cours.all %}
                 <span class="inline-block bg-green-100 text-green-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300">
-                    {{ formation.titre }} 
+                    {{ cours.titre }}
                 </span>
-                {% empty %}
-                <span class="text-gray-500 dark:text-gray-400">Aucune formation</span>
-                {% endfor %}
-            </p>
-            <p class="mb-2"><strong class="text-gray-800 dark:text-gray-300">Cours enseignés :</strong></p>
-            <p class="mb-4">
-                {% for course in repetiteur.cours.all %}
-                <span class="inline-block bg-green-100 text-green-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300">
-                    {{ course.titre }} 
-                </span>
-                {% empty %}
-                <span class="text-gray-500 dark:text-gray-400">Aucun cours enseigné</span>
-                {% endfor %}
-            </p>
-            <p class="mb-2"><strong class="text-gray-800 dark:text-gray-300">Documents Justificatifs :</strong></p>
-            <p>
-                {% for document in repetiteur.documents.all %}
-                <a href="{{ document.file.url }}" class="text-blue-500 hover:underline dark:text-blue-300">{{ document.nom }}</a>
-                {% empty %}
-                <span class="text-gray-500 dark:text-gray-400">Aucun document</span>
-                {% endfor %}
-            </p>
-        </div>
+            {% empty %}
+                <span class="text-gray-500">Aucun cours</span>
+            {% endfor %}
+        </p>
+    </div>
+
+    <!-- Statut du profil -->
+    <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg shadow">
+    <h2 class="text-xl font-bold text-gray-800 dark:text-white mb-4">Statut du Profil</h2>
+    <ul class="space-y-2">
+        <li>
+            <strong>Complétude du profil :</strong>
+            {% if repetiteur.is_profile_complete %}
+                <span class="inline-block bg-green-100 text-green-800 px-3 py-1 rounded-full">✅ Profil complet</span>
+            {% else %}
+                <span class="inline-block bg-red-600 text-white px-3 py-1 rounded-full">❌ Profil incomplet</span>
+                <span class="block text-xs text-gray-500 mt-1">Le répétiteur doit compléter tous les champs obligatoires pour soumettre sa candidature.</span>
+            {% endif %}
+        </li>
+        <li>
+            <strong>Soumission pour validation :</strong>
+            {% if repetiteur.is_soumis %}
+                <span class="inline-block bg-blue-100 text-blue-800 px-3 py-1 rounded-full">Soumis</span>
+            {% else %}
+                <span class="inline-block bg-gray-200 text-gray-700 px-3 py-1 rounded-full">Non soumis</span>
+                <span class="block text-xs text-gray-500 mt-1">Le profil n'a pas encore été soumis à l'équipe pour validation.</span>
+            {% endif %}
+        </li>
+        <li>
+            <strong>Validation par l'équipe :</strong>
+            {% if repetiteur.is_soumis %}
+                {% if repetiteur.user.is_validated %}
+                    <span class="inline-block bg-green-100 text-green-800 px-3 py-1 rounded-full">✅ Validé</span>
+                    <span class="block text-xs text-gray-500 mt-1">Ce répétiteur est officiellement validé et peut recevoir des souscriptions.</span>
+                {% else %}
+                    <span class="inline-block bg-orange-100 text-orange-700 px-3 py-1 rounded-full">⏳ En attente de validation</span>
+                    <span class="block text-xs text-gray-500 mt-1">En attente de vérification par l'équipe Karamoko.</span>
+                {% endif %}
+            {% else %}
+                <span class="inline-block bg-gray-100 text-gray-700 px-3 py-1 rounded-full">-</span>
+            {% endif %}
+        </li>
+    </ul>
     </div>
 </div>
 {% endblock %}

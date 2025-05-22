@@ -57,8 +57,8 @@
                         </button>
                         <div class="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded shadow dark:bg-gray-700 dark:divide-gray-600" id="dropdown-user">
                             <div class="px-4 py-3">
-                                <p class="text-sm text-gray-900 dark:text-white">{{ user.username }}</p>
-                                <p class="text-sm font-medium text-gray-900 truncate dark:text-gray-300">{{ user.email }}</p>
+                                {% comment %} <p class="text-sm text-gray-900 dark:text-white">{{ user.first_name }}</p> {% endcomment %}
+                                <p class="text-sm font-medium text-gray-900 truncate dark:text-gray-300">{{ user.first_name }}</p>
                             </div>
                             <ul class="py-1">
                                 <li>
@@ -81,7 +81,7 @@
                                     <form method="post" action="{% url 'logout' %}" class="inline-block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white w-full text-left">
                                         {% csrf_token %}
                                         <button type="submit">
-                                            Sign out
+                                            Se déconnecter
                                         </button>
                                     </form>
                                 </li>
@@ -180,8 +180,8 @@
                     <!-- Divider -->
                     <hr class="my-4 border-gray-200 dark:border-gray-600">
                 {% endif %}
-                
-                {% if user.is_superuser or user.repetiteur %}
+
+                {% if user.is_superuser or user.role == 'repetiteur' %}
                 <!-- Section Formations -->
                     <li>
                         <a href="{% url 'formation_list' %}" 
@@ -191,7 +191,7 @@
                         xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
                         <path d="M12 2L1 7l11 5 9-4.09V17h2V7L12 2zm0 13.5l-8-3.6V14l8 3.5 8-3.5v-2.1l-8 3.6z"/>
                         </svg>
-                        <span class="ms-3">Formations</span>
+                        <span class="ms-3">Formations </span>
                         </a>
                     </li>
                     <li>
@@ -253,7 +253,7 @@
                 {% endif %}
 
                 <!-- Section Souscriptions -->
-                {% comment %} {% if user.is_superuser %} {% endcomment %}
+                {% if user.is_superuser or user.role == 'parent' %}
                     <li>
                         <a href="{% url 'souscription_list' %}" 
                         class="flex items-center p-2 rounded-lg group 
@@ -276,9 +276,7 @@
                         <span class="ms-3">Suivi des Séances</span>
                         </a>
                     </li>
-            {% comment %} {% endif %}                 {% endcomment %}
-                
-                
+                {% endif %}               
             </ul>
         </div>
     </aside>

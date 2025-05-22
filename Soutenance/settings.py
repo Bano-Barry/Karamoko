@@ -46,6 +46,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'authentication.middlewares.CheckRepetiteurValidationMiddleware',  # Middleware pour vérifier la validation du répétiteur   
 ]
 
 ROOT_URLCONF = 'Soutenance.urls'

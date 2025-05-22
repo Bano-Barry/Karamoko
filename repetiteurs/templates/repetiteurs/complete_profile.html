@@ -76,9 +76,15 @@
         <form method="POST" enctype="multipart/form-data" class="mt-4">
             {% csrf_token %}
             {{ form.as_p }}
-            <button type="submit" class="px-4 py-2 mt-4 text-white bg-blue-600 hover:bg-blue-700 rounded-lg shadow">
-                Enregistrer les modifications
-            </button>
+                <button type="submit" name="submit_final" value="1" class="px-4 py-2 mt-4 text-green-800 bg-green-100 hover:bg-green-700 rounded-lg shadow">
+                    ✅ Soumettre pour validation
+                </button>
+
+            {% if repetiteur.is_soumis %}
+                <div class="mt-4 text-green-700 bg-green-100 p-3 rounded-lg">
+                    ✅ Votre profil a été soumis. Il est en attente de validation.
+                </div>
+            {% endif %}
         </form>
     </div>
 </div>

@@ -9,7 +9,7 @@ urlpatterns = [
     path('K-admin/', admin.site.urls, name='administration'), # URL pour l'admin
     path('karamoko/', include('authentication.urls')),  # URL pour l'authentification
     path('', include('core.urls')),  # URL pour le site vitrine et niveaux
-    path('dashboard/', include('dashboard.urls')),  # URL pour le dashboard
+    path('dashboard/', include('dashboard.urls'), name='dashboard'),  # URL pour le dashboard
     path('dashboard/', include('repetiteurs.urls')),
     path('dashboard/', include('souscripteurs.urls')),
     path('dashboard/', include('formations.urls')), # URL pour les formations

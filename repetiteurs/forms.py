@@ -20,23 +20,13 @@ def get_widget(input_type, placeholder, additional_classes=""):
 
 # Formulaire de création de répétiteur
 class RepetiteurCreateForm(forms.ModelForm):
-    email = forms.EmailField(
-        required=True, 
-        label="Adresse email", 
-        widget=get_widget(forms.EmailInput, "Entrez votre email")
-    )
-    username = forms.CharField(
-        required=True, 
-        label="Nom d'utilisateur", 
-        widget=get_widget(forms.TextInput, "Entrez votre nom d'utilisateur")
-    )
     first_name = forms.CharField(
-        required=True, 
+        # required=True, 
         label="Prénom", 
         widget=get_widget(forms.TextInput, "Entrez votre prénom")
     )
     last_name = forms.CharField(
-        required=True, 
+        # required=True, 
         label="Nom", 
         widget=get_widget(forms.TextInput, "Entrez votre nom")
     )
@@ -46,7 +36,7 @@ class RepetiteurCreateForm(forms.ModelForm):
         widget=get_widget(forms.TextInput, "Entrez votre numéro de téléphone")
     )
     adresse = forms.CharField(
-        required=True, 
+        # required=True, 
         label="Adresse", 
         widget=get_widget(forms.TextInput, "Entrez votre adresse")
     )
@@ -63,20 +53,17 @@ class RepetiteurCreateForm(forms.ModelForm):
 
     class Meta:
         model = Repetiteur
-        fields = [ 'username', 'role', 'password', 'avatar', 'first_name', 'last_name', 'email', 'phone', 'adresse', 'biographie', 'competences', 'formations']
+        fields = [ 'phone', 'role', 'password', 'avatar', 'first_name', 'last_name',  'adresse', 'biographie', 'competences']
         widgets = {
             'avatar': get_widget(forms.ClearableFileInput, "", "py-4 px-3"),
             'biographie': get_widget(forms.Textarea, "Ex : professeur de mathematiques dans les écoles x, y ...", "rows-4"),
             'competences': get_widget(forms.SelectMultiple, ""),
-            'formations': get_widget(forms.SelectMultiple, ""),
         }
 
     def save(self, commit=True):
         user_data = {
             'first_name': self.cleaned_data['first_name'],
             'last_name': self.cleaned_data['last_name'],
-            'username': self.cleaned_data['username'],
-            'email': self.cleaned_data['email'],
             'phone': self.cleaned_data['phone'],
             'adresse': self.cleaned_data['adresse'],
             'role': self.cleaned_data['role']
@@ -95,8 +82,8 @@ class RepetiteurCreateForm(forms.ModelForm):
 
 # Formulaire de mise à jour de répétiteur
 class RepetiteurUpdateForm(forms.ModelForm):
-    email = forms.EmailField(required=True, widget=get_widget(forms.EmailInput, "Entrez votre email"))
-    username = forms.CharField(required=True, widget=get_widget(forms.TextInput, "Entrez votre nom d'utilisateur"))
+    # email = forms.EmailField(required=True, widget=get_widget(forms.EmailInput, "Entrez votre email"))
+    # username = forms.CharField(required=True, widget=get_widget(forms.TextInput, "Entrez votre nom d'utilisateur"))
     first_name = forms.CharField(required=True, widget=get_widget(forms.TextInput, "Entrez votre prénom"))
     last_name = forms.CharField(required=True, widget=get_widget(forms.TextInput, "Entrez votre nom"))
     phone = forms.CharField(required=True, widget=get_widget(forms.TextInput, "Entrez votre numéro de téléphone"))
@@ -104,12 +91,11 @@ class RepetiteurUpdateForm(forms.ModelForm):
 
     class Meta:
         model = Repetiteur
-        fields = ['first_name', 'last_name', 'username', 'email', 'phone', 'adresse', 'avatar', 'biographie', 'competences', 'formations']
+        fields = ['first_name', 'last_name', 'phone', 'adresse', 'avatar', 'biographie', 'competences']
         widgets = {
             'avatar': get_widget(forms.ClearableFileInput, "", "py-4 px-3"),
             'biographie': get_widget(forms.Textarea, "Entrez une biographie", "rows-4"),
             'competences': get_widget(forms.SelectMultiple, ""),
-            'formations': get_widget(forms.SelectMultiple, ""),
         }
 
     def __init__(self, *args, **kwargs):
@@ -117,8 +103,8 @@ class RepetiteurUpdateForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
 
         if self.user_instance:
-            self.fields['email'].initial = self.user_instance.email
-            self.fields['username'].initial = self.user_instance.username
+            # self.fields['email'].initial = self.user_instance.email
+            # self.fields['username'].initial = self.user_instance.username
             self.fields['first_name'].initial = self.user_instance.first_name
             self.fields['last_name'].initial = self.user_instance.last_name
             self.fields['phone'].initial = self.user_instance.phone
@@ -127,8 +113,8 @@ class RepetiteurUpdateForm(forms.ModelForm):
     def save(self, commit=True):
         repetiteur = super().save(commit=False)
         if self.user_instance:
-            self.user_instance.email = self.cleaned_data['email']
-            self.user_instance.username = self.cleaned_data['username']
+            # self.user_instance.email = self.cleaned_data['email']
+            # self.user_instance.username = self.cleaned_data['username']
             self.user_instance.first_name = self.cleaned_data['first_name']
             self.user_instance.last_name = self.cleaned_data['last_name']
             self.user_instance.phone = self.cleaned_data['phone']
@@ -137,7 +123,6 @@ class RepetiteurUpdateForm(forms.ModelForm):
                 self.user_instance.save()
 
         repetiteur.competences.set(self.cleaned_data.get('competences', repetiteur.competences.all()))
-        repetiteur.formations.set(self.cleaned_data.get('formations', repetiteur.formations.all()))
         if commit:
             repetiteur.save()
         return repetiteur
@@ -166,23 +151,36 @@ class CoursForm(forms.ModelForm):
 
 # Formulaire de profil de répétiteur
 class RepetiteurProfileForm(forms.ModelForm):
-    email = forms.EmailField(required=True, widget=get_widget(forms.EmailInput, "Entrez votre email"))
-    username = forms.CharField(required=True, widget=get_widget(forms.TextInput, "Entrez votre nom d'utilisateur"))
+    # Champs du modèle CustomUser à afficher ici
     first_name = forms.CharField(required=True, widget=get_widget(forms.TextInput, "Entrez votre prénom"))
     last_name = forms.CharField(required=True, widget=get_widget(forms.TextInput, "Entrez votre nom"))
     phone = forms.CharField(required=True, widget=get_widget(forms.TextInput, "Entrez votre numéro de téléphone"))
     adresse = forms.CharField(required=True, widget=get_widget(forms.TextInput, "Entrez votre adresse"))
-    
+
     class Meta:
         model = Repetiteur
-        fields = ['first_name', 'last_name', 'username', 'email', 'phone', 'adresse', 'avatar', 'biographie', 'competences', 'formations', 'cours']
+        fields = [
+            'first_name', 'last_name', 'phone', 'adresse',  # pas dans Repetiteur, mais gérés via user_instance
+            'avatar',
+            'biographie',
+            'competences',
+            'cours',
+            # 'zone',
+            'prix_par_seance',
+            'diplome',
+            'contrat_ecole',
+            'piece_identite',
+        ]
         widgets = {
             'avatar': get_widget(forms.ClearableFileInput, "", "py-4 px-3"),
             'biographie': get_widget(forms.Textarea, "Entrez une biographie", "rows-4"),
             'competences': get_widget(forms.SelectMultiple, ""),
-            'formations': get_widget(forms.SelectMultiple, ""),
-            'cours': get_widget(forms.SelectMultiple, ""),  # Widget pour sélectionner plusieurs cours
-
+            'cours': get_widget(forms.SelectMultiple, ""),
+            # 'zone': get_widget(forms.TextInput, "Votre zone géographique"),
+            'prix_par_seance': get_widget(forms.NumberInput, "Votre tarif par séance"),
+            'diplome': get_widget(forms.ClearableFileInput, "", "py-2"),
+            'contrat_ecole': get_widget(forms.ClearableFileInput, "", "py-2"),
+            'piece_identite': get_widget(forms.ClearableFileInput, "", "py-2"),
         }
 
     def __init__(self, *args, **kwargs):
@@ -190,18 +188,33 @@ class RepetiteurProfileForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
 
         if self.user_instance:
-            self.fields['email'].initial = self.user_instance.email
-            self.fields['username'].initial = self.user_instance.username
             self.fields['first_name'].initial = self.user_instance.first_name
             self.fields['last_name'].initial = self.user_instance.last_name
             self.fields['phone'].initial = self.user_instance.phone
             self.fields['adresse'].initial = self.user_instance.adresse
 
-    def save(self, commit=True):
+    def clean(self):
+        cleaned_data = super().clean()
+        required_fields = [
+            'avatar',
+            'biographie',
+            'competences',
+            'cours',
+            # 'zone',
+            'prix_par_seance',
+            'diplome',
+            'piece_identite',
+        ]
+        for field in required_fields:
+            value = cleaned_data.get(field)
+            if not value or (hasattr(value, 'exists') and not value.exists()):
+                self.add_error(field, "Ce champ est obligatoire.")
+
+    def save(self, commit=True, submit_final=False):
         repetiteur = super().save(commit=False)
+
+        # Update les champs du user
         if self.user_instance:
-            self.user_instance.email = self.cleaned_data['email']
-            self.user_instance.username = self.cleaned_data['username']
             self.user_instance.first_name = self.cleaned_data['first_name']
             self.user_instance.last_name = self.cleaned_data['last_name']
             self.user_instance.phone = self.cleaned_data['phone']
@@ -209,9 +222,24 @@ class RepetiteurProfileForm(forms.ModelForm):
             if commit:
                 self.user_instance.save()
 
-        repetiteur.competences.set(self.cleaned_data.get('competences', repetiteur.competences.all()))
-        repetiteur.formations.set(self.cleaned_data.get('formations', repetiteur.formations.all()))
-        repetiteur.cours.set(self.cleaned_data.get('cours', repetiteur.cours.all()))
+        # Update les champs Repetiteur
+        repetiteur.avatar = self.cleaned_data.get('avatar', repetiteur.avatar)
+        repetiteur.biographie = self.cleaned_data.get('biographie', repetiteur.biographie)
+        repetiteur.piece_identite = self.cleaned_data.get('piece_identite', repetiteur.piece_identite)
+        repetiteur.diplome = self.cleaned_data.get('diplome', repetiteur.diplome)
+        repetiteur.contrat_ecole = self.cleaned_data.get('contrat_ecole', repetiteur.contrat_ecole)
+        repetiteur.prix_par_seance = self.cleaned_data.get('prix_par_seance', repetiteur.prix_par_seance)
+
         if commit:
             repetiteur.save()
+
+        repetiteur.competences.set(self.cleaned_data.get('competences', repetiteur.competences.all()))
+        repetiteur.cours.set(self.cleaned_data.get('cours', repetiteur.cours.all()))
+
+        # 👉 Gère ici la soumission finale
+        if submit_final and repetiteur.is_profile_complete():
+            repetiteur.is_soumis = True
+            if commit:
+                repetiteur.save()
+
         return repetiteur

@@ -50,18 +50,50 @@ def register(request):
     return render(request, 'authentication/register.html', {'form': form})  # Affiche la page d'enregistrement avec le formulaire
 
 
+# @login_required
+# def complete_repetiteur_profile(request):
+#     repetiteur = get_object_or_404(Repetiteur, user=request.user)
+#     if request.method == 'POST':
+#         form = RepetiteurProfileForm(request.POST, request.FILES, instance=repetiteur, user_instance=request.user)  # Récupère le formulaire avec les données de l'utilisateur
+#         if form.is_valid():
+#             form.save()
+#             messages.success(request, 'Votre profil a été mis à jour avec succès !')  # Message de succès
+#             return redirect('complete_repetiteur_profile')  # Redirige vers la page de mise à jour du profil après la soumission
+#     else:
+#         form = RepetiteurProfileForm(instance=repetiteur, user_instance=request.user)  # Récupère le formulaire avec les données de l'utilisateur
+#     return render(request, 'repetiteurs/complete_profile.html', {'form': form, 'repetiteur': repetiteur})  # Affiche le formulaire de mise à jour du profil
+
 @login_required
 def complete_repetiteur_profile(request):
     repetiteur = get_object_or_404(Repetiteur, user=request.user)
+
     if request.method == 'POST':
-        form = RepetiteurProfileForm(request.POST, request.FILES, instance=repetiteur, user_instance=request.user)  # Récupère le formulaire avec les données de l'utilisateur
+        form = RepetiteurProfileForm(
+            request.POST, request.FILES,
+            instance=repetiteur,
+            user_instance=request.user
+        )
+
         if form.is_valid():
-            form.save()
-            messages.success(request, 'Votre profil a été mis à jour avec succès !')  # Message de succès
-            return redirect('complete_repetiteur_profile')  # Redirige vers la page de mise à jour du profil après la soumission
+            submit_final = 'submit_final' in request.POST
+            form.save(submit_final=submit_final)  
+
+            if submit_final:
+                if repetiteur.is_profile_complete():
+                    messages.success(request, '✅ Votre profil a été soumis pour validation.')
+                else:
+                    messages.warning(request, '⚠️ Votre profil est incomplet, la soumission est bloquée.')
+            else:
+                messages.success(request, '💾 Vos informations ont été mises à jour avec succès !')
+
+            return redirect('complete_repetiteur_profile')
     else:
-        form = RepetiteurProfileForm(instance=repetiteur, user_instance=request.user)  # Récupère le formulaire avec les données de l'utilisateur
-    return render(request, 'repetiteurs/complete_profile.html', {'form': form, 'repetiteur': repetiteur})  # Affiche le formulaire de mise à jour du profil
+        form = RepetiteurProfileForm(instance=repetiteur, user_instance=request.user)
+
+    return render(request, 'repetiteurs/complete_profile.html', {
+        'form': form,
+        'repetiteur': repetiteur
+    })
 
 @login_required
 def complete_souscripteur_profile(request):

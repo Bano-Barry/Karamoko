@@ -20,8 +20,8 @@ def get_widget(input_type, placeholder, additional_classes=""):
 
 # Formulaire de création de souscripteur
 class SouscripteurCreateForm(forms.ModelForm):
-    email = forms.EmailField(widget=get_widget(forms.EmailInput, "Entrez votre email"))
-    username = forms.CharField(required=True, widget=get_widget(forms.TextInput, "Entrez votre nom d'utilisateur"))
+    # email = forms.EmailField(widget=get_widget(forms.EmailInput, "Entrez votre email"))
+    # username = forms.CharField(required=True, widget=get_widget(forms.TextInput, "Entrez votre nom d'utilisateur"))
     first_name = forms.CharField(widget=get_widget(forms.TextInput, "Entrez votre prénom"))
     last_name = forms.CharField(widget=get_widget(forms.TextInput, "Entrez votre nom"))
     phone = forms.CharField(widget=get_widget(forms.TextInput, "Entrez votre numéro de téléphone"))
@@ -42,8 +42,8 @@ class SouscripteurCreateForm(forms.ModelForm):
         user_data = {
             'first_name': self.cleaned_data['first_name'],
             'last_name': self.cleaned_data['last_name'],
-            'username': self.cleaned_data['username'],
-            'email': self.cleaned_data['email'],
+            # 'username': self.cleaned_data['username'],
+            # 'email': self.cleaned_data['email'],
             'phone': self.cleaned_data['phone'],
             'adresse': self.cleaned_data['adresse'],
             'role': self.cleaned_data['role'],
@@ -65,8 +65,8 @@ class SouscripteurCreateForm(forms.ModelForm):
 
 # Formulaire de mise à jour de souscripteur
 class SouscripteurUpdateForm(forms.ModelForm):
-    email = forms.EmailField(widget=get_widget(forms.EmailInput, "Entrez votre email"))
-    username = forms.CharField(required=True, widget=get_widget(forms.TextInput, "Entrez votre nom d'utilisateur"))
+    # email = forms.EmailField(widget=get_widget(forms.EmailInput, "Entrez votre email"))
+    # username = forms.CharField(required=True, widget=get_widget(forms.TextInput, "Entrez votre nom d'utilisateur"))
     first_name = forms.CharField( widget=get_widget(forms.TextInput, "Entrez votre prénom"))
     last_name = forms.CharField(widget=get_widget(forms.TextInput, "Entrez votre nom"))
     phone = forms.CharField(widget=get_widget(forms.TextInput, "Entrez votre numéro de téléphone"))
@@ -82,8 +82,8 @@ class SouscripteurUpdateForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
 
         if self.user_instance:
-            self.fields['username'].initial = self.user_instance.username
-            self.fields['email'].initial = self.user_instance.email
+            # self.fields['username'].initial = self.user_instance.username
+            # self.fields['email'].initial = self.user_instance.email
             self.fields['first_name'].initial = self.user_instance.first_name
             self.fields['last_name'].initial = self.user_instance.last_name
             self.fields['phone'].initial = self.user_instance.phone
@@ -93,8 +93,8 @@ class SouscripteurUpdateForm(forms.ModelForm):
         souscripteur = super().save(commit=False)
 
         if self.user_instance:
-            self.user_instance.username = self.cleaned_data['username']
-            self.user_instance.email = self.cleaned_data['email']
+            # self.user_instance.username = self.cleaned_data['username']
+            # self.user_instance.email = self.cleaned_data['email']
             self.user_instance.first_name = self.cleaned_data['first_name']
             self.user_instance.last_name = self.cleaned_data['last_name']
             self.user_instance.phone = self.cleaned_data['phone']
@@ -109,8 +109,8 @@ class SouscripteurUpdateForm(forms.ModelForm):
 
 # Formulaire de profil de souscripteur
 class SouscripteurProfileForm(forms.ModelForm):
-    email = forms.EmailField(widget=get_widget(forms.EmailInput, "Entrez votre email"))
-    username = forms.CharField(required=True, widget=get_widget(forms.TextInput, "Entrez votre nom d'utilisateur"))
+    # email = forms.EmailField(widget=get_widget(forms.EmailInput, "Entrez votre email"))
+    # username = forms.CharField(required=True, widget=get_widget(forms.TextInput, "Entrez votre nom d'utilisateur"))
     first_name = forms.CharField( widget=get_widget(forms.TextInput, "Entrez votre prénom"))
     last_name = forms.CharField( widget=get_widget(forms.TextInput, "Entrez votre nom"))
     phone = forms.CharField( widget=get_widget(forms.TextInput, "Entrez votre numéro de téléphone"))
@@ -118,7 +118,7 @@ class SouscripteurProfileForm(forms.ModelForm):
 
     class Meta:
         model = Souscripteur
-        fields = ['first_name', 'last_name', 'username', 'email', 'phone', 'adresse', 'avatar']
+        fields = ['first_name', 'last_name', 'phone', 'adresse', 'avatar']
         widgets = {
             'avatar': get_widget(forms.ClearableFileInput, "", "py-4 px-3"),
         }
@@ -129,8 +129,8 @@ class SouscripteurProfileForm(forms.ModelForm):
 
         if self.user_instance:
             # Pré-remplir les champs liés à l'utilisateur
-            self.fields['email'].initial = self.user_instance.email
-            self.fields['username'].initial = self.user_instance.username
+            # self.fields['email'].initial = self.user_instance.email
+            # self.fields['username'].initial = self.user_instance.username
             self.fields['first_name'].initial = self.user_instance.first_name
             self.fields['last_name'].initial = self.user_instance.last_name
             self.fields['phone'].initial = self.user_instance.phone
@@ -140,8 +140,8 @@ class SouscripteurProfileForm(forms.ModelForm):
         souscripteur = super().save(commit=False)
         if self.user_instance:
             # Mettre à jour les champs de l'utilisateur lié
-            self.user_instance.email = self.cleaned_data['email']
-            self.user_instance.username = self.cleaned_data['username']
+            # self.user_instance.email = self.cleaned_data['email']
+            # self.user_instance.username = self.cleaned_data['username']
             self.user_instance.first_name = self.cleaned_data['first_name']
             self.user_instance.last_name = self.cleaned_data['last_name']
             self.user_instance.phone = self.cleaned_data['phone']
