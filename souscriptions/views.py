@@ -77,8 +77,15 @@ def liste_demandes_souscription(request):
     return render(request, 'souscriptions/liste_demandes_souscription.html', context)
 
 def demande_souscription_detail(request, demande_id):
-    demande = get_object_or_404(DemandeSouscription, id=demande_id)
-    souscription = get_object_or_404(Souscription, souscripteur=demande.souscripteur, statut='active')
+    # demande = get_object_or_404(DemandeSouscription, id=demande_id)
+    # souscription = get_object_or_404(Souscription, souscripteur=demande.souscripteur, statut='active')
+    demande = DemandeSouscription.objects.filter(id=demande_id).first()
+    souscription = None
+    if demande and demande.statut == 'affectée':
+        souscription = Souscription.objects.filter(
+            souscripteur=demande.souscripteur,
+            statut='active'
+        ).first()
     # Breadcrumb dynamique selon le rôle
     if request.user.role == 'parent':
         breadcrumb = [
