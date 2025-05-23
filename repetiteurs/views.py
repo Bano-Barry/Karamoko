@@ -8,6 +8,7 @@ from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 
 from paiements.models import PlanTarifaire
 from souscripteurs.models import Souscripteur
+from souscriptions.forms import DemandeSouscriptionForm
 from souscriptions.models import Souscription
 from .models import Competence, Repetiteur, Cours
 from .forms import CompetenceForm, RepetiteurCreateForm, CoursForm, RepetiteurUpdateForm
@@ -43,8 +44,7 @@ def repetiteur_list(request):
 
     context = {
         'breadcrumb': [
-            {'name': 'Dashboard', 'url': 'dashboard_home'},
-            {'name': 'Répétiteurs', 'url': 'repetiteur_list'},
+            {'name': 'Mes souscriptions', 'url': 'dashboard_home'},
             {'name': 'Liste des Répétiteurs', 'url': None},
         ],
         'repetiteurs': repetiteurs,
@@ -280,45 +280,71 @@ class CoursDeleteView(DeleteView):
         ]
         return context
 
+# @login_required
+# def souscription_create(request, repetiteur_id):
+#     repetiteur = get_object_or_404(Repetiteur, id=repetiteur_id)
+#     souscripteur = get_object_or_404(Souscripteur, user=request.user)
+#     plans = PlanTarifaire.objects.all()
+
+#     if request.method == 'POST':
+#         cours_ids = request.POST.getlist('cours')
+#         plan_tarifaire_id = request.POST.get('plan_tarifaire')
+#         try:
+#             plan_tarifaire = get_object_or_404(PlanTarifaire, id=plan_tarifaire_id)
+
+#             date_debut = now().date()
+#             date_fin = date_debut + timedelta(days=30 * plan_tarifaire.duree)
+
+#             souscription = Souscription.objects.create(
+#                 souscripteur=souscripteur,
+#                 repetiteur=repetiteur,
+#                 plan_tarifaire=plan_tarifaire,
+#                 date_debut=date_debut,
+#                 date_fin=date_fin,
+#                 statut='active'
+#             )
+
+#             for cours_id in cours_ids:
+#                 cours = get_object_or_404(Cours, id=cours_id)
+#                 souscription.cours.add(cours)
+#             # print(f"Souscription créée avec ID : {souscription.id}")
+#             messages.success(request, "Souscription créée avec succès.")
+#             return redirect('souscription_detail', souscription_id=souscription.id)
+#         except Exception as e:
+#             messages.error(request, "Erreur lors de la création de la souscription.")
+
+#     # Si GET, afficher le formulaire
+#     date_today = now().date()
+#     date_fin = date_today + timedelta(days=30)  # Date par défaut (ex. 1 mois)
+#     return render(request, 'repetiteurs/souscription.html', {
+#         'repetiteur': repetiteur,
+#         'plans': plans,
+#         'date_today': date_today,
+#         'date_fin': date_fin,
+#     })
+
 @login_required
-def souscription_create(request, repetiteur_id):
-    repetiteur = get_object_or_404(Repetiteur, id=repetiteur_id)
+def creer_demande_souscription(request):
     souscripteur = get_object_or_404(Souscripteur, user=request.user)
-    plans = PlanTarifaire.objects.all()
 
     if request.method == 'POST':
-        cours_ids = request.POST.getlist('cours')
-        plan_tarifaire_id = request.POST.get('plan_tarifaire')
-        try:
-            plan_tarifaire = get_object_or_404(PlanTarifaire, id=plan_tarifaire_id)
+        form = DemandeSouscriptionForm(request.POST)
+        if form.is_valid():
+            demande = form.save(commit=False)
+            demande.souscripteur = souscripteur
+            demande.save()
+            form.save_m2m()
+            messages.success(request, "🎯 Votre demande a bien été envoyée. Nous reviendrons vers vous sous peu.")
+            return redirect('dashboard_home')
+    else:
+        form = DemandeSouscriptionForm()
 
-            date_debut = now().date()
-            date_fin = date_debut + timedelta(days=30 * plan_tarifaire.duree)
-
-            souscription = Souscription.objects.create(
-                souscripteur=souscripteur,
-                repetiteur=repetiteur,
-                plan_tarifaire=plan_tarifaire,
-                date_debut=date_debut,
-                date_fin=date_fin,
-                statut='active'
-            )
-
-            for cours_id in cours_ids:
-                cours = get_object_or_404(Cours, id=cours_id)
-                souscription.cours.add(cours)
-            # print(f"Souscription créée avec ID : {souscription.id}")
-            messages.success(request, "Souscription créée avec succès.")
-            return redirect('souscription_detail', souscription_id=souscription.id)
-        except Exception as e:
-            messages.error(request, "Erreur lors de la création de la souscription.")
-
-    # Si GET, afficher le formulaire
-    date_today = now().date()
-    date_fin = date_today + timedelta(days=30)  # Date par défaut (ex. 1 mois)
-    return render(request, 'repetiteurs/souscription.html', {
-        'repetiteur': repetiteur,
-        'plans': plans,
-        'date_today': date_today,
-        'date_fin': date_fin,
-    })
+    context = {
+        'form': form,
+        'breadcrumb': [
+            {'name': 'Dashboard', 'url': 'dashboard_home'},
+            {'name': 'Mes Souscriptions', 'url': 'dashboard_home'},
+            {'name': 'Ajouter une souscription', 'url': None},
+        ]
+    }
+    return render(request, 'souscriptions/creer_demande.html', context)

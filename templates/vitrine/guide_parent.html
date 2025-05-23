@@ -9,6 +9,7 @@
             <p class="text-lg text-gray-600 mt-4">
                 Bienvenue sur la page du guide parent. Ici, vous trouverez toutes les informations nécessaires pour accompagner votre enfant dans son parcours éducatif, à domicile.
             </p>
+
         </div>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
             <!-- Colonne gauche -->
@@ -18,9 +19,14 @@
                     Découvrez les réponses aux questions fréquentes sur notre plateforme.
                     Si vous ne trouvez pas votre réponse, n'hésitez pas à nous contacter.
                 </p>
-                <p class="text-gray-700 text-base">
+                <p class="text-gray-700 text-base mb-12">
                     Parcourez les sections ci-dessous pour des réponses détaillées adaptées à votre profil de parent.
                 </p>
+                {% if user.is_authenticated and user.souscripteur %}
+                    <a href="{% url 'creer_demande_souscription' %}" class="bg-blue-700 text-white px-6 py-3  rounded-full text-md font-medium hover:bg-blue-800 transition duration-300">
+                        📚 Demander une souscription
+                    </a>
+                {% endif %}
             </div>
             <!-- Colonne droite avec accordéon Flowbite -->
             <div>

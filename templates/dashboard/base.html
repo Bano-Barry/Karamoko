@@ -253,7 +253,18 @@
                 {% endif %}
 
                 <!-- Section Souscriptions -->
-                {% if user.is_superuser or user.role == 'parent' %}
+                {% if user.is_superuser %}
+                    <li>
+                        <a href="{% url 'liste_demandes_souscription' %}" 
+                        class="flex items-center p-2 rounded-lg group 
+                                {% if request.resolver_match.url_name == 'liste_demandes_souscription' %}bg-gray-200 dark:bg-gray-700{% else %}text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700{% endif %}">
+                            <svg class="w-5 h-5 text-lime-500 transition duration-75 dark:text-lime-400 group-hover:text-lime-900 dark:group-hover:text-lime-200" 
+                                xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M4 4h16v16H4z"/>
+                            </svg>
+                            <span class="ms-3">Demandes Souscriptions</span>
+                        </a>
+                    </li>
                     <li>
                         <a href="{% url 'souscription_list' %}" 
                         class="flex items-center p-2 rounded-lg group 

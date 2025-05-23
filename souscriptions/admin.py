@@ -19,7 +19,7 @@ class SouscriptionAdmin(admin.ModelAdmin):
         'id', 
         'souscripteur', 
         'repetiteur', 
-        'plan_tarifaire', 
+        # 'plan_tarifaire', 
         'get_cours',
         'statut', 
         'date_debut', 
@@ -28,12 +28,12 @@ class SouscriptionAdmin(admin.ModelAdmin):
     search_fields = (
         'souscripteur__nom', 
         'repetiteur__nom', 
-        'plan_tarifaire__nom',
+        # 'plan_tarifaire__nom',
         'cours__nom'
     )
     list_filter = (
         'statut',
-        'plan_tarifaire', 
+        # 'plan_tarifaire', 
         'cours',
         'date_debut', 
         'date_fin'

@@ -22,7 +22,8 @@ urlpatterns = [
     path('encadreurs/', views.vitrine_repetiteur_list, name='vitrine_repetiteur_list'),
     
     # urls pour les souscriptions 
-    path('souscription/create/<int:repetiteur_id>/', views.souscription_create, name='souscription_create'),
+    # path('souscriptions/', views.SouscriptionListView.as_view(), name='souscription_list'),
+    path('souscription/create/', views.creer_demande_souscription, name='creer_demande_souscription'),
     # path('souscription/<int:repetiteur_id>/detail/', views.souscription_detail, name='souscription_detail'),
     # path('souscription/<int:repetiteur_id>/update/', views.souscription_update, name='souscription_update'),
     # path('souscription/<int:repetiteur_id>/delete/', views.souscription_delete, name='souscription_delete'),

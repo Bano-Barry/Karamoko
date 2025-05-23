@@ -57,7 +57,7 @@ class RepetiteurCreateForm(forms.ModelForm):
         widgets = {
             'avatar': get_widget(forms.ClearableFileInput, "", "py-4 px-3"),
             'biographie': get_widget(forms.Textarea, "Ex : professeur de mathematiques dans les écoles x, y ...", "rows-4"),
-            'competences': get_widget(forms.SelectMultiple, ""),
+            'competences': forms.CheckboxSelectMultiple(),
         }
 
     def save(self, commit=True):
@@ -174,8 +174,8 @@ class RepetiteurProfileForm(forms.ModelForm):
         widgets = {
             'avatar': get_widget(forms.ClearableFileInput, "", "py-4 px-3"),
             'biographie': get_widget(forms.Textarea, "Entrez une biographie", "rows-4"),
-            'competences': get_widget(forms.SelectMultiple, ""),
-            'cours': get_widget(forms.SelectMultiple, ""),
+            'competences': forms.CheckboxSelectMultiple(),
+            'cours': forms.CheckboxSelectMultiple(),
             # 'zone': get_widget(forms.TextInput, "Votre zone géographique"),
             'prix_par_seance': get_widget(forms.NumberInput, "Votre tarif par séance"),
             'diplome': get_widget(forms.ClearableFileInput, "", "py-2"),

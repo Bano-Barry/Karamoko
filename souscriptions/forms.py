@@ -1,5 +1,5 @@
 from django import forms
-from .models import Souscription
+from .models import DemandeSouscription, Souscription
 
 def get_widget(input_type, placeholder, additional_classes=""):
     base_classes = (
@@ -24,4 +24,16 @@ class SouscriptionForm(forms.ModelForm):
             'date_debut': get_widget(forms.DateInput, "Sélectionnez une date de début", additional_classes="px-2", ),
             'date_fin': get_widget(forms.DateInput, "Sélectionnez une date de fin", additional_classes="px-2", ),
             'statut': get_widget(forms.Select, "Sélectionnez un statut"),
+        }
+
+class DemandeSouscriptionForm(forms.ModelForm):
+    class Meta:
+        model = DemandeSouscription
+        fields = ['nombre_enfants', 'niveau', 'matieres',  'moyen_paiement', 'commentaire']
+        widgets = {
+            'niveau': get_widget(forms.Select, "Niveau Scolaire"),
+            'matieres': forms.CheckboxSelectMultiple(),
+            'nombre_enfants': get_widget(forms.NumberInput, "Nombre d'enfants", additional_classes="px-2"),
+            'moyen_paiement': get_widget(forms.Select, "Sélectionnez un moyen de paiement"),
+            'commentaire': get_widget(forms.Textarea, "Commentaire", additional_classes="px-2"),
         }

@@ -25,7 +25,7 @@ class PaiementAdmin(admin.ModelAdmin):
         'id', 
         'get_souscripteur', 
         'get_repetiteur',
-        'plan_tarifaire', 
+        # 'plan_tarifaire', 
         'methode', 
         'montant', 
         'date'
@@ -38,7 +38,7 @@ class PaiementAdmin(admin.ModelAdmin):
     list_filter = (
         'methode', 
         'date',
-        'souscription__plan_tarifaire'
+        # 'souscription__plan_tarifaire'
     )
     ordering = ('-date',)
 
@@ -50,6 +50,6 @@ class PaiementAdmin(admin.ModelAdmin):
         return obj.souscription.repetiteur.nom
     get_repetiteur.short_description = 'Répetiteur'
 
-    def plan_tarifaire(self, obj):
-        return obj.souscription.plan_tarifaire.nom
-    plan_tarifaire.short_description = 'Plan Tarifaire'
+    # def plan_tarifaire(self, obj):
+    #     return obj.souscription.plan_tarifaire.nom
+    # plan_tarifaire.short_description = 'Plan Tarifaire'

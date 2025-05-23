@@ -1,0 +1,63 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+
+{% block title %}Détails de la Demande de Souscription | Karamoko{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto mt-8 bg-white p-6 rounded-lg shadow-md dark:bg-gray-800">
+    <h1 class="text-2xl font-bold text-center text-gray-800 dark:text-white mb-6">Détails de la Demande de Souscription</h1>
+
+    <!-- Informations de la demande -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+        <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg shadow">
+            <h2 class="text-xl font-bold text-gray-800 dark:text-white mb-4">Informations Générales</h2>
+            <p class="mb-2"><strong>Souscripteur :</strong> {{ demande.souscripteur.user.first_name }} {{ demande.souscripteur.user.last_name }}</p>
+            <p class="mb-2"><strong>Nombre d'enfants :</strong> {{ demande.nombre_enfants }}</p>
+            <p class="mb-2"><strong>Niveau scolaire :</strong> {{ demande.niveau }}</p>
+            <p class="mb-2"><strong>Date de soumission :</strong> {{ demande.date_demande|date:"d/m/Y H:i" }}</p>
+        </div>
+        <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg shadow">
+            <h2 class="text-xl font-bold text-gray-800 dark:text-white mb-4">Détails Supplémentaires</h2>
+            <p class="mb-2"><strong>Matières demandées :</strong>
+                {% for matiere in demande.matieres.all %}
+                    <span class="inline-block bg-blue-100 text-blue-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300">
+                        {{ matiere.titre }}
+                    </span>
+                {% empty %}
+                    <span class="text-gray-500">Aucune matière sélectionnée</span>
+                {% endfor %}
+            </p>
+            <p class="mb-2"><strong>Moyen de paiement :</strong> {{ demande.moyen_paiement }}</p>
+            <p class="mb-2"><strong>Commentaire :</strong> {{ demande.commentaire|default:"Aucun commentaire" }}</p>
+        </div>
+    </div>
+
+    <!-- Statut de la demande -->
+    <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg shadow">
+        <h2 class="text-xl font-bold text-gray-800 dark:text-white mb-4">Statut de la Demande</h2>
+        <ul class="space-y-2">
+            <li>
+                <strong>Statut :</strong>
+                {% if demande.statut == 'affectée' %}
+                    <span class="inline-block bg-green-100 text-green-800 px-3 py-1 rounded-full">✅ Affectée</span>
+                {% else %}
+                    <span class="inline-block bg-orange-500 text-white px-3 py-1 rounded-full">⏳ En attente</span>
+                {% endif %}
+            </li>
+        </ul>
+        {% if demande.statut == 'affectée' and souscription.souscripteur %}
+            <div class="mt-4">
+            <strong>Répétiteur affecté :</strong>
+            <div class="flex items-center bg-gray-200 text-gray-800 px-3 py-2 rounded-lg dark:bg-gray-900 dark:text-white">
+                <span class="font-semibold mr-2">
+                {{ souscription.repetiteur.user.first_name }} {{ souscription.repetiteur.user.last_name }}
+                </span>
+                <span class="ml-auto text-sm text-gray-600 dark:text-gray-300">
+                Téléphone : {{ souscription.repetiteur.user.phone }}
+                </span>
+            </div>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

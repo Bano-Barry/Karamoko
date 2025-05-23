@@ -1,14 +1,13 @@
 {% extends 'dashboard/base.html' %}
 
 {% block content %}
-    {% comment %} <h1>Bienvenue sur le tableau de bord</h1> {% endcomment %}
-    {% if request.user.role == "repetiteur" and not request.user.repetiteur.is_soumis %}
-        <div class="bg-blue-100 text-blue-500 p-4 rounded mb-4 text-center">
-            ⚠️ Veuillez compléter votre profil pour soumettre votre candidature.
-        </div>
-    {% endif %}
-    {% if request.user.role == "repetiteur" and request.user.repetiteur.is_soumis %}
-        {% if request.user.repetiteur.user.is_validated %}
+    {# Affichage des alertes selon le rôle et l'état du profil #}
+    {% if request.user.role == "repetiteur" %}
+        {% if not request.user.repetiteur.is_soumis %}
+            <div class="bg-blue-100 text-blue-500 p-4 rounded mb-4 text-center">
+                ⚠️ Veuillez compléter votre profil pour soumettre votre candidature.
+            </div>
+        {% elif request.user.repetiteur.user.is_validated %}
             <div class="bg-green-100 text-green-500 p-4 rounded mb-4 text-center">
                 ✅ Votre profil a été validé. Vous pouvez commencer à travailler.
             </div>
@@ -19,4 +18,15 @@
         {% endif %}
     {% endif %}
 
+    <div class=" ">
+        {% if dashboard_type == 'repetiteur' %}
+            {% include 'dashboard/partials/repetiteur_overview.html' %}
+        {% elif dashboard_type == 'parent' %}
+            {% include 'dashboard/partials/parent_overview.html' %}
+        {% elif dashboard_type == 'admin' %}
+            {% include 'dashboard/partials/admin_overview.html' %}
+        {% else %}
+            <p>Rôle non reconnu.</p>
+        {% endif %}
+    </div>
 {% endblock %}

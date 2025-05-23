@@ -1,6 +1,8 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 
+from souscriptions.models import DemandeSouscription
+
 @login_required
 def dashboard_home(request):
     user = request.user
@@ -11,6 +13,8 @@ def dashboard_home(request):
         # tu peux précharger des stats, cours, etc.
     elif user.role == 'parent':
         context['dashboard_type'] = 'parent'
+        demandes = DemandeSouscription.objects.filter(souscripteur__user=user)
+        context['demandes'] = demandes
         # tu peux charger les souscriptions, enfants, etc.
     elif user.is_superuser:
         context['dashboard_type'] = 'admin'

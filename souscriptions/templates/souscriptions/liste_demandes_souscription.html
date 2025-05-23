@@ -1,0 +1,76 @@
+{% extends "dashboard/base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="">
+    <div class="mt-3 max-w-4xl mx-auto flex items-center space-x-2">
+        <span class="text-sm font-medium text-gray-600 dark:text-gray-300">Filtrer :</span>
+        <a href="{% url 'liste_demandes_souscription' %}" class="px-3 py-1 rounded-lg text-sm {% if not statut %}bg-blue-600 text-white{% else %}bg-gray-200{% endif %}">Tous</a>
+        <a href="?statut=acceptee" class="px-3 py-1 rounded-lg text-sm {% if statut == 'acceptee' %}bg-blue-600 text-white{% else %}bg-gray-200{% endif %}">Affectées</a>
+        <a href="?statut=en_attente" class="px-3 py-1 rounded-lg text-sm {% if statut == 'en_attente' %}bg-blue-600 text-white{% else %}bg-gray-200{% endif %}">En attente</a>
+        <a href="?statut=refusee" class="px-3 py-1 rounded-lg text-sm {% if statut == 'refusee' %}bg-blue-600 text-white{% else %}bg-gray-200{% endif %}">Refusées</a>
+    </div>
+
+    <div class="flex justify-between items-center my-8 max-w-4xl mx-auto">
+        <h1 class="text-2xl font-bold text-gray-800 dark:text-white">Liste des demandes de souscription</h1>
+      
+    </div>
+</div>
+
+<div class="overflow-x-auto relative shadow-md sm:rounded-lg max-w-4xl mx-auto">
+    <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 text-center">
+            <tr>
+                <th class="px-6 py-3">#</th>
+                <th class="px-6 py-3">Nom Souscripteur </th>
+                <th class="px-6 py-3">Statut</th>
+                <th class="px-6 py-3">Date de demande</th>
+                <th class="px-6 py-3">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for demande in demandes %}
+            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 text-center">
+                <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ forloop.counter }}</td>
+                <td class="px-6 py-4 font-semibold text-gray-900 dark:text-white">
+                    {{ demande.souscripteur }}
+                </td>
+                <td class="px-6 py-4">
+                    {% if demande.statut == "en_attente" %}
+                        <span class="px-3 py-1 bg-orange-500 text-white rounded-full text-sm">En attente</span>
+                    {% elif demande.statut == "affectée" %}
+                        <span class="px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm">Affectée</span>
+                    {% elif demande.statut == "rejetée" %}
+                        <span class="px-3 py-1 bg-red-100 text-red-800 rounded-full text-sm">Refusée</span>
+                    {% else %}
+                        <span class="px-3 py-1 bg-gray-200 text-gray-700 rounded-full text-sm">{{ demande.get_statut_display }}</span>
+                    {% endif %}
+                </td>
+                <td class="px-6 py-4">{{ demande.date_demande|date:"d/m/Y H:i" }}</td>
+                <td class="px-6 py-4 flex justify-center space-x-4">
+                    {% if user.is_superuser and demande.statut == "en_attente" %}
+                        <a href="{% url 'affecter_demande_souscription' demande.id %}" class="text-blue-600 hover:underline flex items-center">
+                            <svg class="w-5 h-5 mr-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/>
+                            </svg>
+                            Affecter
+                        </a>
+                    {% endif %}
+                    <a href="{% url 'demande_souscription_detail' demande.id %}" class="text-gray-600 hover:underline flex items-center">
+                        <svg class="w-5 h-5 mr-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 2.943 9.542 7-.274 1.057-.732 2.057-1.342 3-1.274 2.057-3.732 4-8.2 4-4.477 0-8.268-2.943-9.542-7z"/>
+                        </svg>
+                        Détails
+                    </a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="5" class="text-center py-4">Aucune demande trouvée.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
