@@ -1,6 +1,95 @@
-<h2 class="text-lg font-semibold">Aperçu du Répétiteur</h2>
+{% comment %} <h2 class="text-lg font-semibold">Aperçu du Répétiteur</h2>
 <div class="mt-4">
     <p><strong>Nom:</strong> {{ user.first_name }} {{ user.last_name }}</p>
     <p><strong>Téléphone:</strong> {{ user.phone }}</p>
     <p><strong>Profil:</strong> {{ user.role | default:"Inconnu" }}</p>
+</div> {% endcomment %}
+
+<div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+    <!-- En-tête -->
+    <div class="flex items-center justify-between mb-6">
+        <h2 class="text-2xl font-bold text-gray-800 dark:text-white">Aperçu du Répétiteur</h2>
+        <span class="inline-block bg-green-100 dark:bg-green-100 text-green-800 dark:text-green-800 text-xs px-3 py-1 rounded-full">
+            {{ user.get_role_display|default:"Répétiteur" }}
+        </span>
+    </div>
+    <!-- Infos personnelles -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+        <div>
+                <p class="text-gray-600 dark:text-gray-300"><span class="font-semibold">Nom :</span> {{ user.first_name }} {{ user.last_name }}</p>
+                <p class="text-gray-600 dark:text-gray-300"><span class="font-semibold">Téléphone :</span> {{ user.phone }}</p>
+                <p class="text-gray-600 dark:text-gray-300"><span class="font-semibold">Adresse :</span> {{ user.adresse|default:"Non spécifiée" }}</p>
+            </div>
+            <div>
+                <p class="text-gray-600 dark:text-gray-300"><span class="font-semibold">Statut du profil :</span>
+                    {% if user.is_validated %}
+                        <span class="inline-block bg-green-100 text-green-800 px-2 py-1 rounded-full">Validé</span>
+                        {% else %}
+                        <span class="inline-block bg-orange-100 text-orange-800 px-2 py-1 rounded-full">En attente</span>
+                    {% endif %}
+                    </p>
+                    {% comment %} <p class="text-gray-600 dark:text-gray-300"><span class="font-semibold">Expérience :</span> {{ user.repetiteur.experience|default:"-" }} an(s)</p> {% endcomment %}
+                </div>
+            </div>
+
+        {% if user.is_validated %}
+            <!-- Bloc actions rapides -->
+            <div class="flex flex-wrap gap-4 mb-4">
+                <a href="{% url 'complete_repetiteur_profile' %}" class="px-4 py-2 ms-3 bg-blue-600 text-white rounded-full shadow hover:bg-blue-700">Modifier mon profil</a>
+                <a href="#" class="px-4 py-2 ms-3 bg-green-100 text-green-800 rounded-full shadow ">Voir mes paiements</a>
+                <a href="#" class="px-4 py-2 ms-3 bg-orange-500 text-white rounded-full shadow">Gérer mes disponibilités</a>
+                {% comment %} <a href="#" class="px-4 py-2 ms-3 bg-yellow-500 text-white rounded-full shadow hover:bg-yellow-600">Mes avis</a> {% endcomment %}
+            </div>
+
+            <!-- Souscriptions affectées -->
+            <div class="flex items-center justify-between mb-6">
+                <h2 class="text-xl font-bold text-gray-800 dark:text-white">Mes souscriptions affectées</h2>
+            </div>
+            <div class="overflow-x-auto relative shadow-md sm:rounded-lg mx-auto">
+                <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                    <thead>
+                        <tr class="bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200">
+                            <th class="px-6 py-3">Parent</th>
+                            {% comment %} <th class="px-6 py-3">Enfants</th> {% endcomment %}
+                            <th class="px-6 py-3">Matières</th>
+                            <th class="px-6 py-3">Statut</th>
+                            <th class="px-6 py-3">Début</th>
+                            <th class="px-6 py-3">Fin</th>
+                            {% comment %} <th class="px-6 py-3">Actions</th> {% endcomment %}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for souscription in souscriptions %}
+                        <tr class="hover:bg-gray-50 dark:hover:bg-gray-600">
+                            <td class="px-6 py-3">{{ souscription.souscripteur.user.first_name }} {{ souscription.souscripteur.user.last_name }}</td>
+                            {% comment %} <td class="px-6 py-3">{{ souscription.demande.nombre_enfants|default:"-" }}</td> {% endcomment %}
+                            <td class="px-6 py-3">
+                                {% for cours in souscription.cours.all %}
+                                    <span class="inline-block bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded">{{ cours.titre }}</span>
+                                {% empty %}
+                                    <span class="text-gray-500 text-xs">-</span>
+                                {% endfor %}
+                            </td>
+                            <td class="px-6 py-3">
+                                {% if souscription.statut == 'active' %}
+                                    <span class="inline-flex items-center px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs font-medium">Active</span>
+                                {% else %}
+                                    <span class="inline-flex items-center px-2 py-1 bg-gray-200 text-gray-700 rounded-full text-xs font-medium">{{ souscription.get_statut_display }}</span>
+                                {% endif %}
+                            </td>
+                            <td class="px-6 py-3">{{ souscription.date_debut|date:"d/m/Y" }}</td>
+                            <td class="px-6 py-3">{{ souscription.date_fin|date:"d/m/Y" }}</td>
+                            {% comment %} <td class="px-6 py-3">
+                                <a href="{% url 'demande_souscription_detail' souscription.id %}" class="text-blue-600 hover:underline">Détails</a>
+                            </td> {% endcomment %}
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="7" class="text-center text-gray-400 dark:text-gray-500 py-4">Aucune souscription affectée pour le moment.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+    {% endif %}
 </div>

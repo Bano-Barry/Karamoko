@@ -26,7 +26,7 @@
                         <span class="text-gray-500 text-sm ml-2">({{ repetiteur.avis_count|default:"0" }} avis)</span>
                     </div>
                 </div>
-                <p class="text-gray-600 mt-4">A aidé plus de <span class="font-semibold">{{ repetiteur.etudiants_aides|default:"0" }}</span> élèves</p>
+                {% comment %} <p class="text-gray-600 mt-4">A aidé plus de <span class="font-semibold">{{ repetiteur.etudiants_aides|default:"0" }}</span> élèves</p> {% endcomment %}
                 <p class="text-gray-600">Prix par heure : <span class="font-semibold">{{ repetiteur.prix_par_seance|default:"Non spécifié" }} GNF</span></p>
             </div>
         </div>

@@ -44,7 +44,7 @@ def repetiteur_list(request):
 
     context = {
         'breadcrumb': [
-            {'name': 'Mes souscriptions', 'url': 'dashboard_home'},
+            {'name': 'Dashboard', 'url': 'dashboard_home'},
             {'name': 'Liste des Répétiteurs', 'url': None},
         ],
         'repetiteurs': repetiteurs,
@@ -54,7 +54,7 @@ def repetiteur_list(request):
     return render(request, 'repetiteurs/list.html', context)
 
 
-@user_passes_test(is_superuser)
+# @user_passes_test(is_superuser)
 def vitrine_repetiteur_list(request):
     # Récupérer les paramètres GET
     adresse = request.GET.get('adresse', '').strip()

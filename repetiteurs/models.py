@@ -18,18 +18,18 @@ class Cours(models.Model):
 
 class Repetiteur(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, related_name="repetiteur")
-    avatar = models.ImageField(upload_to='avatars/repetiteurs/', blank=True, null=True)
-    biographie = models.TextField(blank=True, null=True)
-    competences = models.ManyToManyField('repetiteurs.Competence', blank=True, related_name="repetiteurs")
+    avatar = models.ImageField(upload_to='avatars/repetiteurs/', )
+    biographie = models.TextField()
+    competences = models.ManyToManyField('repetiteurs.Competence', related_name="repetiteurs")
     # formations = models.ManyToManyField('repetiteurs.Formation', blank=True, related_name="repetiteurs")
-    cours = models.ManyToManyField('repetiteurs.Cours', blank=True, related_name="repetiteurs")
-    piece_identite = models.FileField(upload_to="documents/pieces_id/", blank=True, null=True)
-    diplome = models.FileField(upload_to="documents/diplomes/", blank=True, null=True)
-    contrat_ecole = models.FileField(upload_to="documents/contrats/", blank=True, null=True)
+    cours = models.ManyToManyField('repetiteurs.Cours', related_name="repetiteurs")
+    piece_identite = models.FileField(upload_to="documents/pieces_id/", )
+    diplome = models.FileField(upload_to="documents/diplomes/", )
+    contrat_ecole = models.FileField(upload_to="documents/contrats/", )
     # annees d'experience
-    # experience = models.IntegerField(default=0, blank=True, null=True)
-    prix_par_seance = models.IntegerField(null=True, blank=True)
-    # zone = models.CharField(max_length=100, blank=True, null=True)
+    experience = models.IntegerField(null=True, blank=True)  # Nombre d'années d'expérience
+    prix_par_seance = models.IntegerField(null=True, blank=True)  # Prix par séance en FCFA
+    # zone = models.CharField(max_length=100, )
     date_soumission = models.DateTimeField(auto_now_add=True)
     is_soumis = models.BooleanField(default=False)
 
@@ -43,6 +43,8 @@ class Repetiteur(models.Model):
             self.diplome,
             self.piece_identite,
             # self.zone,
+            self.experience is not None,
+            self.contrat_ecole,
             self.prix_par_seance is not None,
         ])
 

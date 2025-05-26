@@ -9,7 +9,20 @@
     {% endif %}
     <form method="POST" action="{{ request.path }}" enctype="multipart/form-data">
         {% csrf_token %}
-        {{ form.as_p }}
+        {% for field in form %}
+            <div>
+                <label class="block text-gray-700 font-semibold mb-1" for="{{ field.id_for_label }}">
+                    {{ field.label }}{% if field.field.required %}<span class="text-red-500">*</span>{% endif %}
+                </label>
+                {{ field }}
+                {% if field.help_text %}
+                    <p class="text-xs text-gray-500">{{ field.help_text }}</p>
+                {% endif %}
+                {% for error in field.errors %}
+                    <p class="text-sm text-red-600">{{ error }}</p>
+                {% endfor %}
+            </div>
+        {% endfor %}
         <button type="submit" class="px-4 py-2 mt-3 text-white bg-blue-600 hover:bg-blue-700 rounded-lg shadow">
             {% if form.instance.pk %}
                 Modifier

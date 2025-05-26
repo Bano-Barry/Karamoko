@@ -41,6 +41,7 @@ class RepetiteurCreateForm(forms.ModelForm):
         widget=get_widget(forms.TextInput, "Entrez votre adresse")
     )
     role = forms.ChoiceField(
+        required=True,
         choices=[('parent', 'Parent'), ('repetiteur', 'Répétiteur')],
         label="Rôle", 
         widget=get_widget(forms.Select, "")
@@ -165,12 +166,28 @@ class RepetiteurProfileForm(forms.ModelForm):
             'biographie',
             'competences',
             'cours',
-            # 'zone',
+            'experience',  
             'prix_par_seance',
             'diplome',
             'contrat_ecole',
             'piece_identite',
         ]
+        labels = {
+            'first_name': "Prénom",
+            'last_name': "Nom",
+            'phone': "Numéro de téléphone",
+            'adresse': "Lieu de résidence",
+            'avatar': "Avatar",
+            'biographie': "Biographie",
+            'competences': "Compétences",
+            'cours': "Cours enseignés",
+            # 'zone': "Zone géographique",
+            'prix_par_seance': "Prix par séance",
+            'diplome': "Diplôme",
+            'contrat_ecole': "Contrat école ou document justificatif",
+            'piece_identite': "Pièce d'identité",
+            'experience': "Années d'expérience",
+        }
         widgets = {
             'avatar': get_widget(forms.ClearableFileInput, "", "py-4 px-3"),
             'biographie': get_widget(forms.Textarea, "Entrez une biographie", "rows-4"),
@@ -181,6 +198,7 @@ class RepetiteurProfileForm(forms.ModelForm):
             'diplome': get_widget(forms.ClearableFileInput, "", "py-2"),
             'contrat_ecole': get_widget(forms.ClearableFileInput, "", "py-2"),
             'piece_identite': get_widget(forms.ClearableFileInput, "", "py-2"),
+            'experience': get_widget(forms.NumberInput, "Entrez vos années d'expérience"),
         }
 
     def __init__(self, *args, **kwargs):
@@ -201,9 +219,11 @@ class RepetiteurProfileForm(forms.ModelForm):
             'competences',
             'cours',
             # 'zone',
+            'contrat_ecole',
             'prix_par_seance',
             'diplome',
             'piece_identite',
+            'experience',
         ]
         for field in required_fields:
             value = cleaned_data.get(field)
@@ -229,7 +249,7 @@ class RepetiteurProfileForm(forms.ModelForm):
         repetiteur.diplome = self.cleaned_data.get('diplome', repetiteur.diplome)
         repetiteur.contrat_ecole = self.cleaned_data.get('contrat_ecole', repetiteur.contrat_ecole)
         repetiteur.prix_par_seance = self.cleaned_data.get('prix_par_seance', repetiteur.prix_par_seance)
-
+        repetiteur.experience = self.cleaned_data.get('experience', repetiteur.experience)
         if commit:
             repetiteur.save()
 

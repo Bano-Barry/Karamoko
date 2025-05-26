@@ -10,7 +10,7 @@
     <!-- Inclusion du fichier CSS généré par Tailwind -->
     <link href="{% static 'src/output.css' %}" rel="stylesheet">
 </head>
-<body class="flex bg-blue-50">
+<body class="flex min-h-screen bg-blue-50">
     <div class="flex flex-1">
         <!-- Section Image -->
         <div class="hidden md:flex flex-1 bg-cover bg-center" style="background-image: url('{% static 'images/login-image.jpeg' %}');">
@@ -47,7 +47,9 @@
                     <!-- Champs du formulaire -->
                     {% for field in form %}
                     <div>
-                        <label for="{{ field.id_for_label }}" class="block text-sm font-medium text-gray-900">{{ field.label }}</label>
+                        <label for="{{ field.id_for_label }}" class="block text-sm font-medium text-gray-900">
+                            {{ field.label }}{% if field.field.required %}<span class="text-red-500">*</span>{% endif %}
+                        </label>
                         <div class="mt-2">
                             {{ field|add_class:"block w-full rounded-md bg-white px-4 py-2 text-base text-orange-900 border border-blue-300 placeholder-blue-400 focus:ring-2 focus:ring-blue-500 focus:border-blue-500" }}
                             {% if field.errors %}

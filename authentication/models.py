@@ -49,7 +49,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     last_name = models.CharField(max_length=100)
     email = models.EmailField(max_length=100, unique=True, null=True, blank=True)
     role = models.CharField(max_length=20, choices=ROLE_CHOICES)
-    adresse = models.CharField(max_length=100, default='Matam')
+    adresse = models.CharField(max_length=100)
     date_joined = models.DateTimeField(default=timezone.now)
 
     is_active = models.BooleanField(default=True)

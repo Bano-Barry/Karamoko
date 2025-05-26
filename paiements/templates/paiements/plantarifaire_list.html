@@ -26,7 +26,9 @@
             <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 text-center">
                 <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ forloop.counter }}</td>
                 <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ plan.nom }}</td>
-                <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ plan.prix }} GNF</td>
+                <td class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                    {{ plan.prix|floatformat:0 }} GNF
+                </td>
                 <td class="px-6 py-4 flex justify-center space-x-4">
                     <a href="{% url 'plantarifaire_update' plan.id %}" class="text-blue-600 hover:underline flex items-center">
                         <svg class="w-5 h-5 mr-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">

@@ -10,7 +10,7 @@
     <!-- Inclusion du fichier CSS généré par Tailwind -->
     <link href="{% static 'src/output.css' %}" rel="stylesheet">
 </head>
-<body class="flex h-screen">
+<body class="flex min-h-screen">
 
     <div class="flex flex-1">
         <!-- Section Image -->
@@ -47,7 +47,7 @@
                     {% csrf_token %}
                     <!-- Champ pour le numéro de téléphone -->
                     <div>
-                        <label for="phone" class="block text-sm font-medium text-gray-900">Numéro de Téléphone</label>
+                        <label for="phone" class="block text-sm font-medium text-gray-900">Numéro de Téléphone <span class="text-red-500">*</span></label>
                         <div class="mt-2">
                             {{ form.phone|add_class:"block w-full rounded-md bg-white px-4 py-2 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm" }}
                             {% if form.phone.errors %}
@@ -58,7 +58,7 @@
                     <!-- Champ pour le mot de passe -->
                     <div>
                         <div class="flex items-center justify-between">
-                            <label for="password" class="block text-sm font-medium text-gray-900">Mot de passe</label>
+                            <label for="password" class="block text-sm font-medium text-gray-900">Mot de passe <span class="text-red-500">*</span></label>
                             <div class="text-sm">
                                 <a href="#" class="font-semibold text-indigo-600 hover:text-indigo-500">Mot de passe oublié ?</a>
                             </div>

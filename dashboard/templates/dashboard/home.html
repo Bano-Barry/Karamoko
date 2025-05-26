@@ -5,15 +5,19 @@
     {% if request.user.role == "repetiteur" %}
         {% if not request.user.repetiteur.is_soumis %}
             <div class="bg-blue-100 text-blue-500 p-4 rounded mb-4 text-center">
-                ⚠️ Veuillez compléter votre profil pour soumettre votre candidature.
+                ⚠️ Veuillez
+                <a href="{% url 'complete_repetiteur_profile' %}" class="font-semibold text-blue-600 hover:bg-blue-700 hover:text-white">compléter votre profil</a>
+                pour soumettre votre candidature et pouvoir naviguer dans tout le site.
             </div>
         {% elif request.user.repetiteur.user.is_validated %}
             <div class="bg-green-100 text-green-500 p-4 rounded mb-4 text-center">
-                ✅ Votre profil a été validé. Vous pouvez commencer à travailler.
+                ✅ Votre
+                <a href="{% url 'complete_repetiteur_profile' %}" class="font-semibold text-green-800 hover:bg-green-100 hover:underline">profil</a>
+                a été validé. Vous pouvez commencer à travailler.
             </div>
         {% else %}
             <div class="bg-green-100 text-green-500 p-4 rounded mb-4 text-center">
-                ✅ Votre profil a été soumis. Il est en attente de validation par notre équipe.
+                ✅ Votre <a href="{% url 'complete_repetiteur_profile' %}" class="font-semibold text-green-500 hover:bg-green-100  hover:underline">profil</a> a été soumis. Il est en attente de validation par notre équipe.
             </div>
         {% endif %}
     {% endif %}

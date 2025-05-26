@@ -66,7 +66,7 @@
                         <img class="w-full h-full object-cover object-center rounded-t-lg" src="{% static 'images/default_avatar.webp' %}" alt="Default avatar" />
                         {% endif %}
                         <div class="absolute top-2 right-2 bg-orange-500 text-white text-xs px-2 py-1 rounded-full">
-                            {{ repetiteur.experience|default:"1" }} an{% if repetiteur.experience|default:1 > 1 %}s{% endif %} d'expérience
+                            {{ repetiteur.experience|default:"0" }} an{% if repetiteur.experience|default:1 > 1 %}s{% endif %} d'expérience
                         </div>
                     </div>
                     <!-- Contenu -->

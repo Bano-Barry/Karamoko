@@ -30,10 +30,17 @@ class DemandeSouscriptionForm(forms.ModelForm):
     class Meta:
         model = DemandeSouscription
         fields = ['nombre_enfants', 'niveau', 'matieres',  'moyen_paiement', 'commentaire']
+        labels = {
+            'niveau': "Niveau Scolaire",
+            'matieres': "Matières",
+            'nombre_enfants': "Nombre d'enfants",
+            'moyen_paiement': "Moyen de Paiement",
+            'commentaire': "Besoin spécifique (facultatif)",
+        }
         widgets = {
             'niveau': get_widget(forms.Select, "Niveau Scolaire"),
             'matieres': forms.CheckboxSelectMultiple(),
             'nombre_enfants': get_widget(forms.NumberInput, "Nombre d'enfants", additional_classes="px-2"),
             'moyen_paiement': get_widget(forms.Select, "Sélectionnez un moyen de paiement"),
-            'commentaire': get_widget(forms.Textarea, "Commentaire", additional_classes="px-2"),
+            'commentaire': get_widget(forms.Textarea, "Besoin spécifique ...", additional_classes="px-2"),
         }
