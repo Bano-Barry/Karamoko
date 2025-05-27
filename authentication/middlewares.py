@@ -25,7 +25,7 @@ class CheckRepetiteurValidationMiddleware:
                     reverse('guide_repetiteur'),  # page d'accueil répétiteur
                 ]
                 if request.path not in allowed_paths:
-                    return redirect('complete_repetiteur_profile')
+                    return redirect('dashboard_home')
 
             # Étape 2 : profil complet mais pas encore validé par l’admin
             elif not user.is_validated:
