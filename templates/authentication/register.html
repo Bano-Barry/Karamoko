@@ -73,130 +73,243 @@
             </div>
         </div>
     </div>
+    
     <!-- Modal CGU -->
     <div id="cgu-modal" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
-    <div class="relative p-4 w-full max-w-2xl max-h-full">
-        <div class="relative bg-white rounded-lg shadow-sm">
-            <!-- Modal header -->
-            <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t border-gray-200">
-                <h3 class="text-xl font-semibold text-gray-900">
-                    Conditions Générales d'Utilisation
-                </h3>
-                <button type="button" id="close-cgu-modal" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center">
-                    <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
-                    </svg>
-                    <span class="sr-only">Fermer</span>
-                </button>
-            </div>
-            <!-- Modal body -->
-            <div class="p-4 md:p-5 space-y-4 max-h-96 overflow-y-auto text-sm text-gray-700" style="white-space: pre-line;">
-                CONDITIONS GÉNÉRALES D'UTILISATION DE LA PLATEFORME KARAMOKO
+        <div class="relative p-4 w-full max-w-4xl max-h-full">
+            <div class="relative bg-white rounded-lg shadow-lg border border-gray-200">
+                <!-- Modal header -->
+                <div class="flex items-center justify-between p-6 border-b border-gray-200 bg-gradient-to-r from-blue-600 to-blue-700 rounded-t-lg">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 bg-white rounded-full flex items-center justify-center">
+                            <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold ml-1">
+                            Conditions Générales d'Utilisation
+                        </h3>
+                    </div>
+                    <button type="button" id="close-cgu-modal" class="text-white hover:bg-white hover:bg-opacity-20 rounded-lg text-sm w-8 h-8 inline-flex justify-center items-center transition-all duration-200">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                        <span class="sr-only">Fermer</span>
+                    </button>
+                </div>
+                
+                <!-- Modal body -->
+                <div class="p-6 max-h-96 overflow-y-auto">
+                    <!-- Préambule avec mise en avant -->
+                    <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mb-6 rounded-r-lg">
+                        <div class="flex items-center mb-2">
+                            <svg class="w-5 h-5 text-blue-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                            <h4 class="font-semibold text-blue-800">Préambule</h4>
+                        </div>
+                        <p class="text-sm text-blue-700 leading-relaxed">
+                            La plateforme Karamoko est un service de mise en relation entre des souscripteurs (Parents) et des répétiteurs pour des prestations de cours à domicile ou en ligne, opérant sur le territoire de la République de Guinée.
+                        </p>
+                        <p class="text-xs text-blue-600 mt-2 font-medium">Date de mise à jour : 20 mai 2025</p>
+                    </div>
 
-                Date de mise à jour : 20 mai 2025
+                    <!-- Navigation par sections -->
+                    <div class="mb-6">
+                        <div class="flex flex-wrap gap-2">
+                            <button onclick="scrollToSection('section-1')" class="px-3 py-1 text-xs bg-gray-100 hover:bg-blue-100 text-gray-700 hover:text-blue-700 rounded-full transition-colors">
+                                1. Objet
+                            </button>
+                            <button onclick="scrollToSection('section-2')" class="px-3 py-1 text-xs bg-gray-100 hover:bg-blue-100 text-gray-700 hover:text-blue-700 rounded-full transition-colors">
+                                2. Inscription
+                            </button>
+                            <button onclick="scrollToSection('section-3')" class="px-3 py-1 text-xs bg-gray-100 hover:bg-blue-100 text-gray-700 hover:text-blue-700 rounded-full transition-colors">
+                                3. Engagements
+                            </button>
+                            <button onclick="scrollToSection('section-4')" class="px-3 py-1 text-xs bg-gray-100 hover:bg-blue-100 text-gray-700 hover:text-blue-700 rounded-full transition-colors">
+                                4. Paiements
+                            </button>
+                        </div>
+                    </div>
 
-                Préambule
-                La plateforme Karamoko (ci-après "la Plateforme") est un service de mise en relation entre des souscripteurs (ci-après "Parents") et des répétiteurs (ci-après "Répétiteurs") pour des prestations de cours à domicile ou en ligne, opérant sur le territoire de la République de Guinée. L'accès et l'utilisation de la Plateforme impliquent l'acceptation sans réserve des présentes Conditions Générales d'Utilisation (CGU).
+                    <!-- Section 1 -->
+                    <div id="section-1" class="mb-6">
+                        <div class="flex items-center mb-3">
+                            <div class="w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-bold mr-3">1</div>
+                            <h4 class="text-lg font-semibold text-gray-800 ml-1">Objet des CGU</h4>
+                        </div>
+                        <div class="ml-11 p-4 bg-gray-50 rounded-lg">
+                            <p class="text-sm text-gray-700 leading-relaxed">
+                                Les CGU ont pour objet de définir les droits et obligations des utilisateurs de la Plateforme, qu'ils soient Parents ou Répétiteurs.
+                            </p>
+                        </div>
+                    </div>
 
-                ---
+                    <!-- Section 2 -->
+                    <div id="section-2" class="mb-6">
+                        <div class="flex items-center mb-3">
+                            <div class="w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-bold mr-3">2</div>
+                            <h4 class="text-lg font-semibold text-gray-800 ml-1">Accès au Service et Inscription</h4>
+                        </div>
+                        <div class="ml-11 space-y-4">
+                            <div class="border-l-2 border-green-300 pl-4">
+                                <h5 class="font-medium text-green-700 mb-2">📚 Pour les Répétiteurs</h5>
+                                <ul class="text-sm text-gray-700 space-y-1">
+                                    <li>• Inscription gratuite avec validation du profil</li>
+                                    <li>• Dépôt de pièces justificatives obligatoire</li>
+                                    <li>• Acceptation du contrat d'engagement</li>
+                                </ul>
+                            </div>
+                            <div class="border-l-2 border-orange-300 pl-4">
+                                <h5 class="font-medium text-orange-700 mb-2">👨‍👩‍👧‍👦 Pour les Parents</h5>
+                                <ul class="text-sm text-gray-700 space-y-1">
+                                    <li>• Inscription libre et gratuite</li>
+                                    <li>• Soumission de demandes de cours</li>
+                                </ul>
+                            </div>
+                            <div class="bg-yellow-50 p-3 rounded-lg border border-yellow-200">
+                                <p class="text-sm text-yellow-800">
+                                    <strong>⚠️ Important :</strong> L'acceptation des CGU est obligatoire pour accéder au service.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
 
-                1. OBJET DES CGU
-                Les CGU ont pour objet de définir les droits et obligations des utilisateurs de la Plateforme, qu'ils soient Parents ou Répétiteurs.
+                    <!-- Section 3 -->
+                    <div id="section-3" class="mb-6">
+                        <div class="flex items-center mb-3">
+                            <div class="w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-bold mr-3">3</div>
+                            <h4 class="text-lg font-semibold text-gray-800 ml-1">Engagements des Utilisateurs</h4>
+                        </div>
+                        <div class="ml-11 grid md:grid-cols-2 gap-4">
+                            <div class="bg-blue-50 p-4 rounded-lg border border-blue-200">
+                                <h5 class="font-medium text-blue-800 mb-3 flex items-center">
+                                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                                    </svg>
+                                    Parents
+                                </h5>
+                                <ul class="text-sm text-blue-700 space-y-1">
+                                    <li>✓ Respecter les répétiteurs</li>
+                                    <li>✓ Utilisation loyale de la plateforme</li>
+                                    <li>✓ Paiement via les canaux officiels</li>
+                                </ul>
+                            </div>
+                            <div class="bg-green-50 p-4 rounded-lg border border-green-200">
+                                <h5 class="font-medium text-green-800 mb-3 flex items-center">
+                                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+                                    </svg>
+                                    Répétiteurs
+                                </h5>
+                                <ul class="text-sm text-green-700 space-y-1">
+                                    <li>✓ Cours de qualité et ponctualité</li>
+                                    <li>✓ Prestations uniquement via la plateforme</li>
+                                    <li>✓ Prévenir les retards 24h à l'avance</li>
+                                    <li>✓ Confidentialité des données</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
 
-                ---
+                    <!-- Section 4 -->
+                    <div id="section-4" class="mb-6">
+                        <div class="flex items-center mb-3">
+                            <div class="w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-bold mr-3">4</div>
+                            <h4 class="text-lg font-semibold text-gray-800 ml-1">Modalités de Paiement</h4>
+                        </div>
+                        <div class="ml-11 bg-red-50 p-4 rounded-lg border border-red-200">
+                            <div class="flex items-start space-x-2">
+                                <svg class="w-5 h-5 text-red-500 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"></path>
+                                </svg>
+                                <div>
+                                    <p class="text-sm text-red-800 font-medium">Paiements obligatoires via la plateforme</p>
+                                    <p class="text-sm text-red-700 mt-1">
+                                        Tout contournement (paiement direct, arrangement privé) entraîne la suspension immédiate du compte.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-                2. ACCÈS AU SERVICE ET INSCRIPTION
+                    <!-- Sections complémentaires en accordéon -->
+                    <div class="space-y-2">
+                        <details class="group">
+                            <summary class="flex items-center justify-between p-3 bg-gray-100 rounded-lg cursor-pointer hover:bg-gray-200 transition-colors">
+                                <span class="font-medium text-gray-800">5. Suspension et Radiation</span>
+                                <svg class="w-4 h-4 text-gray-600 group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                </svg>
+                            </summary>
+                            <div class="p-4 text-sm text-gray-700 bg-gray-50 rounded-b-lg">
+                                En cas de comportement inapproprié, manquement aux engagements, ou fraude, suspension ou suppression définitive du compte avec notification préalable.
+                            </div>
+                        </details>
 
-                2.1. Pour les Répétiteurs :
+                        <details class="group">
+                            <summary class="flex items-center justify-between p-3 bg-gray-100 rounded-lg cursor-pointer hover:bg-gray-200 transition-colors">
+                                <span class="font-medium text-gray-800">6-9. Autres Dispositions</span>
+                                <svg class="w-4 h-4 text-gray-600 group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                </svg>
+                            </summary>
+                            <div class="p-4 text-sm text-gray-700 bg-gray-50 rounded-b-lg space-y-2">
+                                <p><strong>Responsabilité :</strong> Karamoko agit comme intermédiaire uniquement.</p>
+                                <p><strong>Données :</strong> Protection conforme à la loi guinéenne L/2016/037/AN.</p>
+                                <p><strong>Modifications :</strong> CGU modifiables avec notification.</p>
+                                <p><strong>Droit applicable :</strong> Lois de la République de Guinée.</p>
+                            </div>
+                        </details>
+                    </div>
 
-                * L'inscription est gratuite mais conditionnée par la complétion d'un profil, le dépôt de pièces justificatives (diplôme, pièce d'identité...) et la soumission à un processus de validation par l'équipe Karamoko.
-                * Le Répétiteur accepte, en fin de complétion de profil, un contrat d'engagement disponible depuis son dashboard.
-
-                2.2. Pour les Parents :
-
-                * L'inscription est libre. Elle permet la soumission de demandes de souscription de cours pour leurs enfants.
-
-                2.3. Acceptation des CGU :
-
-                * Tout utilisateur doit cocher la case "J'accepte les Conditions Générales d'Utilisation" lors de son inscription. À défaut, l'accès au service est bloqué.
-
-                ---
-
-                3. ENGAGEMENTS DES UTILISATEURS
-
-                3.1. Parents
-
-                * Respecter les répétiteurs dans leurs missions.
-                * Utiliser la Plateforme de façon loyale, uniquement pour les besoins d'apprentissage de leurs enfants.
-                * Effectuer les paiements via les canaux de la Plateforme.
-
-                3.2. Répétiteurs
-
-                * Assurer des cours de qualité, avec ponctualité, engagement et bienveillance.
-                * Ne pas proposer ou accepter de prestations hors Plateforme.
-                * Prévenir tout retard ou indisponibilité au moins 24h à l'avance.
-                * Maintenir la confidentialité des données personnelles des parents et enfants.
-
-                ---
-
-                4. MODALITÉS DE PAIEMENT
-
-                * Les paiements se font uniquement via les moyens autorisés par la Plateforme.
-                * Toute tentative de contournement (paiement en main propre, arrangement direct) entraînera la suspension immédiate du compte concerné.
-
-                ---
-
-                5. SUSPENSION ET RADIATION
-
-                * En cas de comportement inapproprié, manquement aux engagements, ou fraude, la Plateforme se réserve le droit de suspendre temporairement ou de supprimer définitivement un compte.
-                * Une notification sera préalablement envoyée à l'utilisateur concerné, sauf cas de fraude manifeste.
-
-                ---
-
-                6. RESPONSABILITÉ DE LA PLATEFORME
-
-                * Karamoko agit uniquement en tant qu'intermédiaire entre Parents et Répétiteurs.
-                * La responsabilité de la Plateforme ne saurait être engagée en cas de conflit entre les parties, de non-exécution d’un cours, ou d'incident intervenu lors d’une session.
-
-                ---
-
-                7. PROTECTION DES DONNÉES PERSONNELLES
-
-                * Karamoko s’engage à protéger les données personnelles de ses utilisateurs conformément à la Loi L/2016/037/AN sur la protection des données à caractère personnel en Guinée.
-                * Chaque utilisateur peut demander la modification ou la suppression de ses données.
-
-                ---
-
-                8. MODIFICATIONS DES CGU
-
-                * La Plateforme peut modifier les présentes CGU à tout moment. L’utilisateur en sera informé par e-mail ou notification sur son espace personnel.
-
-                ---
-
-                9. DROIT APPLICABLE
-
-                * Les présentes CGU sont régies par les lois de la République de Guinée.
-                * En cas de litige, les parties s’engagent à rechercher une solution amiable avant toute action en justice.
-
-                ---
-
-                Merci d’avoir choisi Karamoko.
-                Pour toute question, veuillez nous contacter à l’adresse : support@karamoko.edu.gn
-            </div>
-            <!-- Modal footer -->
-            <div class="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b">
-                <button id="accept-cgu-btn" type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-3 text-center">J’accepte</button>
-                <button id="close-cgu-modal-footer" type="button" class="py-3 px-4 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100">Fermer</button>
+                    <!-- Contact -->
+                    <div class="mt-6 p-4 bg-blue-50 rounded-lg border border-blue-200">
+                        <div class="flex items-center space-x-2 mb-2">
+                            <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                            </svg>
+                            <h5 class="font-medium text-blue-800">Besoin d'aide ?</h5>
+                        </div>
+                        <p class="text-sm text-blue-700">
+                            Contactez-nous : <a href="mailto:support@karamoko.edu.gn" class="underline font-medium">support@karamoko.edu.gn</a>
+                        </p>
+                    </div>
+                </div>
+                
+                <!-- Modal footer -->
+                <div class="flex items-center justify-between p-6 border-t border-gray-200 bg-gray-50 rounded-b-lg">
+                    <div class="text-sm text-gray-600">
+                        En cliquant sur "J'accepte", vous acceptez ces conditions.
+                    </div>
+                    <div class="flex space-x-3">
+                        <button id="close-cgu-modal-footer" type="button" class="px-4 py-2 me-3 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-200 transition-colors">
+                            Fermer
+                        </button>
+                        <button id="accept-cgu-btn" type="button" class="px-6 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 rounded-lg transition-colors">
+                            J'accepte les CGU
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
     <script>
-    // Ouvre le modal
+        // Fonction pour faire défiler vers une section
+        function scrollToSection(sectionId) {
+            const element = document.getElementById(sectionId);
+            if (element) {
+                element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
+
+        // Ouvre le modal
         document.getElementById('open-cgu-modal').onclick = function(e) {
             e.preventDefault();
             document.getElementById('cgu-modal').classList.remove('hidden');
         };
+        
         // Ferme le modal (croix ou bouton footer)
         document.getElementById('close-cgu-modal').onclick = function() {
             document.getElementById('cgu-modal').classList.add('hidden');
@@ -204,13 +317,15 @@
         document.getElementById('close-cgu-modal-footer').onclick = function() {
             document.getElementById('cgu-modal').classList.add('hidden');
         };
-        // Quand on clique sur "J’accepte", on coche la case et ferme le modal
+        
+        // Quand on clique sur "J'accepte", on coche la case et ferme le modal
         document.getElementById('accept-cgu-btn').onclick = function() {
             document.getElementById('id_cgu_acceptees').checked = true;
             document.getElementById('cgu-modal').classList.add('hidden');
             // Déclenche l'événement change pour activer le bouton submit si besoin
             document.getElementById('id_cgu_acceptees').dispatchEvent(new Event('change'));
         };
+        
         // Désactiver le bouton tant que la case n'est pas cochée (optionnel)
         const cguCheckbox = document.getElementById('id_cgu_acceptees');
         const submitBtn = document.getElementById('submit-btn');
