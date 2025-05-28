@@ -32,6 +32,7 @@ class Repetiteur(models.Model):
     # zone = models.CharField(max_length=100, )
     date_soumission = models.DateTimeField(auto_now_add=True)
     is_soumis = models.BooleanField(default=False)
+    cgu_acceptees = models.BooleanField(default=False)  # Acceptation des CGU 
 
     def is_profile_complete(self):
         """Vérifie que tous les champs obligatoires sont remplis"""

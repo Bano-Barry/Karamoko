@@ -40,10 +40,14 @@ class CustomUserCreationForm(UserCreationForm):
         label="Confirmer le mot de passe",
         widget=get_widget(forms.PasswordInput, "Confirmez votre mot de passe")
     )
-
+    cgu_acceptees = forms.BooleanField(
+        required=True, 
+        label="J'accepte les Conditions Générales d'Utilisation", 
+        widget=forms.CheckboxInput(attrs={'class': 'form-checkbox h-4 w-4 text-blue-600 focus:ring-blue-500'})
+    )
     class Meta:
         model = CustomUser
-        fields = ['phone', 'first_name', 'last_name', 'role', 'password1', 'password2']
+        fields = ['phone', 'first_name', 'last_name', 'role', 'password1', 'password2', 'cgu_acceptees']
 
 class CustomLoginForm(forms.Form):
     phone = forms.CharField(

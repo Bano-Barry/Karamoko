@@ -7,17 +7,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inscription | Karamoko</title>
-    <!-- Inclusion du fichier CSS généré par Tailwind -->
     <link href="{% static 'src/output.css' %}" rel="stylesheet">
 </head>
 <body class="flex min-h-screen bg-blue-50">
     <div class="flex flex-1">
-        <!-- Section Image -->
-        <div class="hidden md:flex flex-1 bg-cover bg-center" style="background-image: url('{% static 'images/login-image.jpeg' %}');">
-            <!-- Cette section affiche une image de fond pour les écrans moyens et plus grands -->
-        </div>
-
-        <!-- Section Formulaire -->
+        <div class="hidden md:flex flex-1 bg-cover bg-center" style="background-image: url('{% static 'images/login-image.jpeg' %}');"></div>
         <div class="flex flex-1 items-center justify-center bg-blue-500">
             <div class="w-full max-w-md bg-white p-6 rounded-lg shadow-lg mt-3 mb-3">
                 {% if messages %}
@@ -33,39 +27,45 @@
                         {% endfor %}
                     </div>
                 {% endif %}
-                <!-- Logo -->
                 <div class="text-center ">
                     <a href="{% url 'home' %}">
                         <img src="{% static 'images/logo.jpg' %}" alt="Karamoko Logo" class="w-24 mx-auto">
                     </a>
                 </div>
-                <!-- Titre -->
                 <h2 class="text-center text-2xl font-bold tracking-tight text-gray-900 ">Créer un compte</h2>
-                <!-- Formulaire -->
-                <form method="post" class="space-y-2">
+                <form method="post" class="space-y-2" id="register-form">
                     {% csrf_token %}
-                    <!-- Champs du formulaire -->
                     {% for field in form %}
                     <div>
                         <label for="{{ field.id_for_label }}" class="block text-sm font-medium text-gray-900">
                             {{ field.label }}{% if field.field.required %}<span class="text-red-500">*</span>{% endif %}
                         </label>
-                        <div class="mt-2">
-                            {{ field|add_class:"block w-full rounded-md bg-white px-4 py-2 text-base text-orange-900 border border-blue-300 placeholder-blue-400 focus:ring-2 focus:ring-blue-500 focus:border-blue-500" }}
-                            {% if field.errors %}
-                            <p class="text-red-500 text-sm mt-1">{{ field.errors|join:", " }}</p>
-                            {% endif %}
-                        </div>
+                        {% if field.name == "cgu_acceptees" %}
+                                <span class="text-sm text-gray-500">
+                                    ( <a href="#" id="open-cgu-modal" class="text-blue-600 underline">Lire les CGU</a> )
+                                </span>
+                            <div class="mt-2 flex items-center gap-2">
+                                {{ field|add_class:"rounded border-gray-300 text-blue-600 focus:ring-blue-500" }}
+                                {% if field.errors %}
+                                <p class="text-red-500 text-sm mt-1">{{ field.errors|join:", " }}</p>
+                                {% endif %}
+                            </div>
+                        {% else %}
+                            <div class="mt-2">
+                                {{ field|add_class:"block w-full rounded-md bg-white px-4 py-2 text-base text-orange-900 border border-blue-300 placeholder-blue-400 focus:ring-2 focus:ring-blue-500 focus:border-blue-500" }}
+                                {% if field.errors %}
+                                <p class="text-red-500 text-sm mt-1">{{ field.errors|join:", " }}</p>
+                                {% endif %}
+                            </div>
+                        {% endif %}
                     </div>
                     {% endfor %}
-                    <!-- Bouton de soumission -->
                     <div>
-                        <button type="submit" class="flex w-full justify-center rounded-md bg-blue-600 px-4 py-2 mt-3 text-lg font-semibold text-white shadow-md hover:bg-blue-500 focus:ring-2 focus:ring-green-600 focus:ring-offset-2">
+                        <button type="submit" id="submit-btn" class="flex w-full justify-center rounded-md bg-blue-600 px-4 py-2 mt-3 text-lg font-semibold text-white shadow-md hover:bg-blue-500 focus:ring-2 focus:ring-green-600 focus:ring-offset-2">
                             S'inscrire
                         </button>
                     </div>
                 </form>
-                <!-- Lien pour se connecter -->
                 <p class="mt-8 text-center text-sm text-gray-500">
                     Déjà membre ?
                     <a href="{% url 'login' %}" class="font-semibold text-orange-600 hover:text-orange-500">Se connecter</a>
@@ -73,5 +73,156 @@
             </div>
         </div>
     </div>
+    <!-- Modal CGU -->
+    <div id="cgu-modal" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+    <div class="relative p-4 w-full max-w-2xl max-h-full">
+        <div class="relative bg-white rounded-lg shadow-sm">
+            <!-- Modal header -->
+            <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t border-gray-200">
+                <h3 class="text-xl font-semibold text-gray-900">
+                    Conditions Générales d'Utilisation
+                </h3>
+                <button type="button" id="close-cgu-modal" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center">
+                    <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                    </svg>
+                    <span class="sr-only">Fermer</span>
+                </button>
+            </div>
+            <!-- Modal body -->
+            <div class="p-4 md:p-5 space-y-4 max-h-96 overflow-y-auto text-sm text-gray-700" style="white-space: pre-line;">
+                CONDITIONS GÉNÉRALES D'UTILISATION DE LA PLATEFORME KARAMOKO
+
+                Date de mise à jour : 20 mai 2025
+
+                Préambule
+                La plateforme Karamoko (ci-après "la Plateforme") est un service de mise en relation entre des souscripteurs (ci-après "Parents") et des répétiteurs (ci-après "Répétiteurs") pour des prestations de cours à domicile ou en ligne, opérant sur le territoire de la République de Guinée. L'accès et l'utilisation de la Plateforme impliquent l'acceptation sans réserve des présentes Conditions Générales d'Utilisation (CGU).
+
+                ---
+
+                1. OBJET DES CGU
+                Les CGU ont pour objet de définir les droits et obligations des utilisateurs de la Plateforme, qu'ils soient Parents ou Répétiteurs.
+
+                ---
+
+                2. ACCÈS AU SERVICE ET INSCRIPTION
+
+                2.1. Pour les Répétiteurs :
+
+                * L'inscription est gratuite mais conditionnée par la complétion d'un profil, le dépôt de pièces justificatives (diplôme, pièce d'identité...) et la soumission à un processus de validation par l'équipe Karamoko.
+                * Le Répétiteur accepte, en fin de complétion de profil, un contrat d'engagement disponible depuis son dashboard.
+
+                2.2. Pour les Parents :
+
+                * L'inscription est libre. Elle permet la soumission de demandes de souscription de cours pour leurs enfants.
+
+                2.3. Acceptation des CGU :
+
+                * Tout utilisateur doit cocher la case "J'accepte les Conditions Générales d'Utilisation" lors de son inscription. À défaut, l'accès au service est bloqué.
+
+                ---
+
+                3. ENGAGEMENTS DES UTILISATEURS
+
+                3.1. Parents
+
+                * Respecter les répétiteurs dans leurs missions.
+                * Utiliser la Plateforme de façon loyale, uniquement pour les besoins d'apprentissage de leurs enfants.
+                * Effectuer les paiements via les canaux de la Plateforme.
+
+                3.2. Répétiteurs
+
+                * Assurer des cours de qualité, avec ponctualité, engagement et bienveillance.
+                * Ne pas proposer ou accepter de prestations hors Plateforme.
+                * Prévenir tout retard ou indisponibilité au moins 24h à l'avance.
+                * Maintenir la confidentialité des données personnelles des parents et enfants.
+
+                ---
+
+                4. MODALITÉS DE PAIEMENT
+
+                * Les paiements se font uniquement via les moyens autorisés par la Plateforme.
+                * Toute tentative de contournement (paiement en main propre, arrangement direct) entraînera la suspension immédiate du compte concerné.
+
+                ---
+
+                5. SUSPENSION ET RADIATION
+
+                * En cas de comportement inapproprié, manquement aux engagements, ou fraude, la Plateforme se réserve le droit de suspendre temporairement ou de supprimer définitivement un compte.
+                * Une notification sera préalablement envoyée à l'utilisateur concerné, sauf cas de fraude manifeste.
+
+                ---
+
+                6. RESPONSABILITÉ DE LA PLATEFORME
+
+                * Karamoko agit uniquement en tant qu'intermédiaire entre Parents et Répétiteurs.
+                * La responsabilité de la Plateforme ne saurait être engagée en cas de conflit entre les parties, de non-exécution d’un cours, ou d'incident intervenu lors d’une session.
+
+                ---
+
+                7. PROTECTION DES DONNÉES PERSONNELLES
+
+                * Karamoko s’engage à protéger les données personnelles de ses utilisateurs conformément à la Loi L/2016/037/AN sur la protection des données à caractère personnel en Guinée.
+                * Chaque utilisateur peut demander la modification ou la suppression de ses données.
+
+                ---
+
+                8. MODIFICATIONS DES CGU
+
+                * La Plateforme peut modifier les présentes CGU à tout moment. L’utilisateur en sera informé par e-mail ou notification sur son espace personnel.
+
+                ---
+
+                9. DROIT APPLICABLE
+
+                * Les présentes CGU sont régies par les lois de la République de Guinée.
+                * En cas de litige, les parties s’engagent à rechercher une solution amiable avant toute action en justice.
+
+                ---
+
+                Merci d’avoir choisi Karamoko.
+                Pour toute question, veuillez nous contacter à l’adresse : support@karamoko.edu.gn
+            </div>
+            <!-- Modal footer -->
+            <div class="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b">
+                <button id="accept-cgu-btn" type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-3 text-center">J’accepte</button>
+                <button id="close-cgu-modal-footer" type="button" class="py-3 px-4 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100">Fermer</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    // Ouvre le modal
+        document.getElementById('open-cgu-modal').onclick = function(e) {
+            e.preventDefault();
+            document.getElementById('cgu-modal').classList.remove('hidden');
+        };
+        // Ferme le modal (croix ou bouton footer)
+        document.getElementById('close-cgu-modal').onclick = function() {
+            document.getElementById('cgu-modal').classList.add('hidden');
+        };
+        document.getElementById('close-cgu-modal-footer').onclick = function() {
+            document.getElementById('cgu-modal').classList.add('hidden');
+        };
+        // Quand on clique sur "J’accepte", on coche la case et ferme le modal
+        document.getElementById('accept-cgu-btn').onclick = function() {
+            document.getElementById('id_cgu_acceptees').checked = true;
+            document.getElementById('cgu-modal').classList.add('hidden');
+            // Déclenche l'événement change pour activer le bouton submit si besoin
+            document.getElementById('id_cgu_acceptees').dispatchEvent(new Event('change'));
+        };
+        // Désactiver le bouton tant que la case n'est pas cochée (optionnel)
+        const cguCheckbox = document.getElementById('id_cgu_acceptees');
+        const submitBtn = document.getElementById('submit-btn');
+        if (cguCheckbox && submitBtn) {
+            function toggleSubmit() {
+                submitBtn.disabled = !cguCheckbox.checked;
+                submitBtn.classList.toggle('opacity-50', !cguCheckbox.checked);
+                submitBtn.classList.toggle('cursor-not-allowed', !cguCheckbox.checked);
+            }
+            toggleSubmit();
+            cguCheckbox.addEventListener('change', toggleSubmit);
+        }
+    </script>
 </body>
 </html>
