@@ -26,6 +26,7 @@
             <p class="mb-2"><strong>Adresse :</strong> {{ repetiteur.user.adresse }}</p>
             <p class="mb-2"><strong>Rôle :</strong> {{ repetiteur.user.get_role_display }}</p>
             <p class="mb-2"><strong>Date de soumission :</strong> {{ repetiteur.date_soumission|date:"d/m/Y H:i" }}</p>
+            <p class="mb-2"><strong>Conditions Générales d'Utilisation :</strong> {{ repetiteur.cgu_acceptees|yesno:"Acceptées,Non acceptées" }}</p>
         </div>
         <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg shadow">
             <h2 class="text-xl font-bold text-gray-800 dark:text-white mb-4">Documents</h2>

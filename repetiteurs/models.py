@@ -53,3 +53,13 @@ class Repetiteur(models.Model):
         return f"{self.user.last_name} {self.user.first_name}"  # Combine le nom et le prénom
 
 
+class ContratRepetiteur(models.Model):
+    repetiteur = models.OneToOneField('Repetiteur', on_delete=models.CASCADE, related_name='contrat')
+    fichier_pdf = models.FileField(upload_to='contrats_repetiteurs/', blank=True, null=True)
+    date_generation = models.DateTimeField(auto_now_add=True)
+    date_signature = models.DateTimeField(blank=True, null=True)
+    accepte = models.BooleanField(default=False)
+    version = models.CharField(max_length=10, default="1.0")
+
+    def __str__(self):
+        return f"Contrat {self.repetiteur.user.last_name} {self.repetiteur.user.first_name} (v{self.version})"
