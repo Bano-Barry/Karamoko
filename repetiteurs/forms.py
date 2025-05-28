@@ -161,7 +161,6 @@ class RepetiteurProfileForm(forms.ModelForm):
     class Meta:
         model = Repetiteur
         fields = [
-            'first_name', 'last_name', 'phone', 'adresse',  # pas dans Repetiteur, mais gérés via user_instance
             'avatar',
             'biographie',
             'competences',
@@ -173,16 +172,11 @@ class RepetiteurProfileForm(forms.ModelForm):
             'piece_identite',
         ]
         labels = {
-            'first_name': "Prénom",
-            'last_name': "Nom",
-            'phone': "Numéro de téléphone",
-            'adresse': "Lieu de résidence",
             'avatar': "Avatar",
             'biographie': "Biographie",
             'competences': "Compétences",
             'cours': "Cours enseignés",
-            # 'zone': "Zone géographique",
-            'prix_par_seance': "Prix par séance",
+            'prix_par_seance': "Prix par séance (en GNF)",
             'diplome': "Diplôme",
             'contrat_ecole': "Contrat école ou document justificatif",
             'piece_identite': "Pièce d'identité",
@@ -193,23 +187,12 @@ class RepetiteurProfileForm(forms.ModelForm):
             'biographie': get_widget(forms.Textarea, "Entrez une biographie", "rows-4"),
             'competences': forms.CheckboxSelectMultiple(),
             'cours': forms.CheckboxSelectMultiple(),
-            # 'zone': get_widget(forms.TextInput, "Votre zone géographique"),
             'prix_par_seance': get_widget(forms.NumberInput, "Votre tarif par séance"),
             'diplome': get_widget(forms.ClearableFileInput, "", "py-2"),
             'contrat_ecole': get_widget(forms.ClearableFileInput, "", "py-2"),
             'piece_identite': get_widget(forms.ClearableFileInput, "", "py-2"),
             'experience': get_widget(forms.NumberInput, "Entrez vos années d'expérience"),
         }
-
-    def __init__(self, *args, **kwargs):
-        self.user_instance = kwargs.pop('user_instance', None)
-        super().__init__(*args, **kwargs)
-
-        if self.user_instance:
-            self.fields['first_name'].initial = self.user_instance.first_name
-            self.fields['last_name'].initial = self.user_instance.last_name
-            self.fields['phone'].initial = self.user_instance.phone
-            self.fields['adresse'].initial = self.user_instance.adresse
 
     def clean(self):
         cleaned_data = super().clean()
@@ -218,7 +201,6 @@ class RepetiteurProfileForm(forms.ModelForm):
             'biographie',
             'competences',
             'cours',
-            # 'zone',
             'contrat_ecole',
             'prix_par_seance',
             'diplome',
@@ -229,37 +211,5 @@ class RepetiteurProfileForm(forms.ModelForm):
             value = cleaned_data.get(field)
             if not value or (hasattr(value, 'exists') and not value.exists()):
                 self.add_error(field, "Ce champ est obligatoire.")
-
-    def save(self, commit=True, submit_final=False):
-        repetiteur = super().save(commit=False)
-
-        # Update les champs du user
-        if self.user_instance:
-            self.user_instance.first_name = self.cleaned_data['first_name']
-            self.user_instance.last_name = self.cleaned_data['last_name']
-            self.user_instance.phone = self.cleaned_data['phone']
-            self.user_instance.adresse = self.cleaned_data['adresse']
-            if commit:
-                self.user_instance.save()
-
-        # Update les champs Repetiteur
-        repetiteur.avatar = self.cleaned_data.get('avatar', repetiteur.avatar)
-        repetiteur.biographie = self.cleaned_data.get('biographie', repetiteur.biographie)
-        repetiteur.piece_identite = self.cleaned_data.get('piece_identite', repetiteur.piece_identite)
-        repetiteur.diplome = self.cleaned_data.get('diplome', repetiteur.diplome)
-        repetiteur.contrat_ecole = self.cleaned_data.get('contrat_ecole', repetiteur.contrat_ecole)
-        repetiteur.prix_par_seance = self.cleaned_data.get('prix_par_seance', repetiteur.prix_par_seance)
-        repetiteur.experience = self.cleaned_data.get('experience', repetiteur.experience)
-        if commit:
-            repetiteur.save()
-
-        repetiteur.competences.set(self.cleaned_data.get('competences', repetiteur.competences.all()))
-        repetiteur.cours.set(self.cleaned_data.get('cours', repetiteur.cours.all()))
-
-        # 👉 Gère ici la soumission finale
-        if submit_final and repetiteur.is_profile_complete():
-            repetiteur.is_soumis = True
-            if commit:
-                repetiteur.save()
-
-        return repetiteur
+        
+        return cleaned_data

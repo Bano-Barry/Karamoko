@@ -15,17 +15,26 @@ def get_widget(input_type, placeholder, additional_classes=""):
     })
 
 class CustomUserCreationForm(UserCreationForm):
-    phone = forms.CharField(
+    phone = forms.CharField (
         label="Téléphone",
-        widget=get_widget(forms.TextInput, "Entrez votre numéro de téléphone")
+        widget=get_widget(forms.TextInput, "Entrez votre numéro de téléphone"),
+        error_messages={
+            'unique': "Un utilisateur avec ce numéro de téléphone existe déjà."
+        }
     )
     first_name = forms.CharField(
         label="Prénom",
-        widget=get_widget(forms.TextInput, "Entrez votre prénom")
+        widget=get_widget(forms.TextInput, "Entrez votre prénom"),
+        error_messages={
+            'required': "Ce champ est obligatoire.",
+        }
     )
     last_name = forms.CharField(
         label="Nom de famille",
-        widget=get_widget(forms.TextInput, "Entrez votre nom de famille")
+        widget=get_widget(forms.TextInput, "Entrez votre nom de famille"),
+        error_messages={
+            'required': "Ce champ est obligatoire.",
+        }
     )
     role = forms.ChoiceField(
         label="Rôle",
@@ -34,15 +43,23 @@ class CustomUserCreationForm(UserCreationForm):
     )
     password1 = forms.CharField(
         label="Mot de passe",
-        widget=get_widget(forms.PasswordInput, "Entrez votre mot de passe")
+        widget=get_widget(forms.PasswordInput, "Entrez votre mot de passe"), 
+        error_messages={
+            'required': "Ce champ est obligatoire.",
+            'min_length': "Le mot de passe doit comporter au moins 8 caractères.",
+        },
     )
     password2 = forms.CharField(
         label="Confirmer le mot de passe",
-        widget=get_widget(forms.PasswordInput, "Confirmez votre mot de passe")
+        widget=get_widget(forms.PasswordInput, "Confirmez votre mot de passe"),
+        error_messages={
+            'required': "Ce champ est obligatoire.",
+            'min_length': "Le mot de passe doit comporter au moins 8 caractères.",
+        },
     )
     cgu_acceptees = forms.BooleanField(
-        required=True, 
-        label="J'accepte les Conditions Générales d'Utilisation", 
+        required=True,
+        label="J'accepte les Conditions Générales d'Utilisation",
         widget=forms.CheckboxInput(attrs={'class': 'form-checkbox h-4 w-4 text-blue-600 focus:ring-blue-500'})
     )
     class Meta:

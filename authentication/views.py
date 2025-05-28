@@ -35,9 +35,11 @@ def register(request):
         if form.is_valid():  # Vérifie si le formulaire est valide
             user = form.save()  # Enregistre le nouvel utilisateur
             messages.success(request, 'Votre compte a été créé avec succès !')  # Message de succès
+            # Récupère la valeur de cgu_acceptees du formulaire
+            cgu_acceptees = form.cleaned_data.get('cgu_acceptees', False)
             # Vérifie le rôle choisi et crée l'enregistrement correspondant
             if user.role == 'repetiteur':
-                Repetiteur.objects.create(user=user)  # Crée un répétiteur lié à l'utilisateur
+                Repetiteur.objects.create(user=user, cgu_acceptees=cgu_acceptees)  # Crée un répétiteur lié à l'utilisateur
             elif user.role == 'parent':
                 Souscripteur.objects.create(user=user)  # Crée un souscripteur lié à l'utilisateur
             else:  # Si le rôle n'est pas reconnu, on ne fait rien
@@ -66,18 +68,36 @@ def register(request):
 @login_required
 def complete_repetiteur_profile(request):
     repetiteur = get_object_or_404(Repetiteur, user=request.user)
-
+    
     if request.method == 'POST':
+        # La vue gère maintenant la récupération et la liaison des instances
         form = RepetiteurProfileForm(
-            request.POST, request.FILES,
-            instance=repetiteur,
-            user_instance=request.user
+            request.POST, 
+            request.FILES,
+            instance=repetiteur
         )
-
+        
         if form.is_valid():
             submit_final = 'submit_final' in request.POST
-            form.save(submit_final=submit_final)  
-
+            
+            # Mise à jour des données utilisateur directement dans la vue
+            user = request.user
+            user.first_name = form.cleaned_data.get('first_name', user.first_name)
+            user.last_name = form.cleaned_data.get('last_name', user.last_name)
+            user.email = form.cleaned_data.get('email', user.email)
+            user.phone = form.cleaned_data.get('phone', user.phone)
+            user.save()
+            
+            # Sauvegarde du repetiteur
+            repetiteur_instance = form.save(commit=False)
+            if submit_final:
+                repetiteur_instance.is_soumis = True
+            repetiteur_instance.save()
+            
+            # Sauvegarde des relations Many-to-Many
+            form.save_m2m()
+            
+            # Messages de feedback
             if submit_final:
                 if repetiteur.is_profile_complete():
                     messages.success(request, '✅ Votre profil a été soumis pour validation.')
@@ -85,11 +105,21 @@ def complete_repetiteur_profile(request):
                     messages.warning(request, '⚠️ Votre profil est incomplet, la soumission est bloquée.')
             else:
                 messages.success(request, '💾 Vos informations ont été mises à jour avec succès !')
-
+            
             return redirect('complete_repetiteur_profile')
     else:
-        form = RepetiteurProfileForm(instance=repetiteur, user_instance=request.user)
-
+        # Initialisation du formulaire avec les données existantes
+        initial_data = {
+            'first_name': request.user.first_name,
+            'last_name': request.user.last_name,
+            'email': request.user.email,
+            'phone': getattr(request.user, 'phone', ''),
+        }
+        form = RepetiteurProfileForm(
+            instance=repetiteur,
+            initial=initial_data
+        )
+    
     return render(request, 'repetiteurs/complete_profile.html', {
         'form': form,
         'repetiteur': repetiteur
