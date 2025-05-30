@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from django.contrib.admin.views.decorators import staff_member_required
-from django.views.generic import ListView, CreateView, UpdateView, DeleteView
+from django.views.generic import ListView, CreateView, UpdateView, DeleteView, DetailView
 
 from repetiteurs.models import Repetiteur
 from .models import DemandeSouscription, Souscription
@@ -25,7 +25,21 @@ class SouscriptionListView(ListView):
             {'name': 'Souscriptions', 'url': None},
         ]
         return context
+# details d'une souscription
+class SouscriptionDetailView(DetailView):
+    model = Souscription
+    template_name = 'souscriptions/souscription_detail.html'
+    context_object_name = 'souscription'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['breadcrumb'] = [
+            {'name': 'Dashboard', 'url': 'dashboard_home'},
+            {'name': 'Souscriptions', 'url': 'souscription_list'},
+            {'name': 'Détails', 'url': None},
+        ]
+        return context
+    
 @login_required
 def affecter_demande_souscription(request, demande_id):
     """
