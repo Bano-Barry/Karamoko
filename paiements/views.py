@@ -1,8 +1,8 @@
 from django.shortcuts import render
 from django.urls import reverse_lazy
-from django.views.generic import ListView, CreateView, UpdateView, DeleteView
-from .models import MethodePaiement, PlanTarifaire, Paiement
-from .forms import MethodePaiementForm, PlanTarifaireForm, PaiementForm
+from django.views.generic import ListView, CreateView, UpdateView, DeleteView, DetailView
+from .models import MethodePaiement, OffreTarifaire, Paiement
+from .forms import MethodePaiementForm, OffreTarifaireForm, PaiementForm
 
 # Vues pour MethodePaiement
 class MethodePaiementListView(ListView):
@@ -64,7 +64,7 @@ class MethodePaiementDeleteView(DeleteView):
 
 # Vues pour PlanTarifaire
 class PlanTarifaireListView(ListView):
-    model = PlanTarifaire
+    model = OffreTarifaire
     template_name = 'paiements/plantarifaire_list.html'
     context_object_name = 'plans'
 
@@ -76,10 +76,24 @@ class PlanTarifaireListView(ListView):
         ]
         return context
 
+class PlanTarifaireDetailView(DetailView):
+    model = OffreTarifaire
+    template_name = 'paiements/plantarifaire_detail.html'
+    context_object_name = 'offertarifaire'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['breadcrumb'] = [
+            {'name': 'Dashboard', 'url': 'dashboard_home'},
+            {'name': 'Plans Tarifaires', 'url': 'plantarifaire_list'},
+            {'name': 'Détails', 'url': None},
+        ]
+        return context
+    
 class PlanTarifaireCreateView(CreateView):
-    model = PlanTarifaire
+    model = OffreTarifaire
     template_name = 'paiements/plantarifaire_form.html'
-    form_class = PlanTarifaireForm
+    form_class = OffreTarifaireForm
     success_url = reverse_lazy('plantarifaire_list')
 
     def get_context_data(self, **kwargs):
@@ -92,9 +106,9 @@ class PlanTarifaireCreateView(CreateView):
         return context
 
 class PlanTarifaireUpdateView(UpdateView):
-    model = PlanTarifaire
+    model = OffreTarifaire
     template_name = 'paiements/plantarifaire_form.html'
-    form_class = PlanTarifaireForm
+    form_class = OffreTarifaireForm
     success_url = reverse_lazy('plantarifaire_list')
 
     def get_context_data(self, **kwargs):
@@ -107,7 +121,7 @@ class PlanTarifaireUpdateView(UpdateView):
         return context
 
 class PlanTarifaireDeleteView(DeleteView):
-    model = PlanTarifaire
+    model = OffreTarifaire
     template_name = 'paiements/plantarifaire_confirm_delete.html'
     success_url = reverse_lazy('plantarifaire_list')
 

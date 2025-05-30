@@ -2,7 +2,11 @@ from django.db import models
 
 class Niveau(models.Model):
     nom = models.CharField(max_length=100)
-
+    ordre = models.IntegerField(default=0, help_text="Ordre d'affichage (0=plus bas niveau)")
+    
+    class Meta:
+        ordering = ['ordre']
+    
     def __str__(self):
         return self.nom
     

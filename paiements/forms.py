@@ -1,5 +1,5 @@
 from django import forms
-from .models import MethodePaiement, PlanTarifaire, Paiement
+from .models import MethodePaiement, OffreTarifaire, PlanTarifaire, Paiement
 
 # Utilitaire pour les widgets communs
 def get_widget(input_type, placeholder, additional_classes=""):
@@ -21,6 +21,39 @@ class MethodePaiementForm(forms.ModelForm):
             'nom': get_widget(forms.TextInput, 'Entrez le nom de la méthode de paiement'),
             'description': get_widget(forms.Textarea, 'Entrez la description de la méthode de paiement'),
         }
+
+class OffreTarifaireForm(forms.ModelForm):
+    class Meta:
+        model = OffreTarifaire
+        fields = '__all__'
+        labels = {
+            'nom': 'Nom de l\'offre tarifaire',
+            'description': 'Description de l\'offre tarifaire',
+            'prix_unitaire': 'Prix unitaire (en GNF)',
+            'prix_combine': 'Prix combiné (optionnel, en GNF)',
+            'nombre_seances_mois': 'Nombre de séances par mois',
+            'duree_seance_max': 'Durée maximale d\'une séance (en minutes)',
+            'jours_par_semaine': 'Nombre de jours par semaine',
+            'type_offre': 'Type d\'offre',
+            'niveaux': 'Niveaux concernés',
+        }
+        widgets = {
+            'nom': get_widget(forms.TextInput, 'Entrez le nom de l\'offre tarifaire'),
+            'description': get_widget(forms.Textarea, 'Entrez la description de l\'offre tarifaire'),
+            'prix_unitaire': get_widget(forms.NumberInput, 'Entrez le prix unitaire'),
+            'prix_combine': get_widget(forms.NumberInput, 'Entrez le prix combiné (optionnel)'),
+            'nombre_seances_mois': get_widget(forms.NumberInput, 'Entrez le nombre de séances par mois'),
+            'duree_seance_max': get_widget(forms.NumberInput, 'Entrez la durée maximale d\'une séance en minutes'),
+            'jours_par_semaine': get_widget(forms.NumberInput, 'Entrez le nombre de jours par semaine'),
+            'type_offre': get_widget(forms.Select, '', additional_classes='select-type-offre'),
+            'niveaux': forms.CheckboxSelectMultiple(attrs={
+                'class': 'form-control px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500'
+            }),
+            'matieres_incluses': forms.CheckboxSelectMultiple(attrs={
+                'class': 'form-control px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500'
+            }),
+        }
+        
 
 class PlanTarifaireForm(forms.ModelForm):
     class Meta:

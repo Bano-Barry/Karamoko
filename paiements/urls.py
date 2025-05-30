@@ -13,6 +13,7 @@ urlpatterns = [
     path('plans-tarifaires/create/', views.PlanTarifaireCreateView.as_view(), name='plantarifaire_create'),
     path('plans-tarifaires/<int:pk>/update/', views.PlanTarifaireUpdateView.as_view(), name='plantarifaire_update'),
     path('plans-tarifaires/<int:pk>/delete/', views.PlanTarifaireDeleteView.as_view(), name='plantarifaire_delete'),
+    path('plans-tarifaires/<int:pk>/details/', views.PlanTarifaireDetailView.as_view(), name='plantarifaire_detail'),
 
     # URLs pour Paiement
     path('paiements/', views.PaiementListView.as_view(), name='paiement_list'),

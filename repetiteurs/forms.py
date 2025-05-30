@@ -143,10 +143,18 @@ class CompetenceForm(forms.ModelForm):
 class CoursForm(forms.ModelForm):
     class Meta:
         model = Cours
-        fields = '__all__'
+        fields = ['titre', 'niveaux', 'description']
+        labels = {
+            'titre': "Titre du cours",
+            'description': "Description du cours",
+            'niveaux': "Niveaux d'enseignement",
+        }
         widgets = {
             'titre': get_widget(forms.TextInput, "Entrez le titre du cours"),
             'description': get_widget(forms.Textarea, "Entrez la description du cours", "rows-4"),
+            'niveaux': forms.CheckboxSelectMultiple(attrs={
+                'class': 'form-control px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500'
+            }),
         }
 
 

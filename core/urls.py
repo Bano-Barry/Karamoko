@@ -19,4 +19,18 @@ urlpatterns = [
     path('repetiteur/<int:id>/', repetiteur_public_detail, name='repetiteur_public_detail'),
 
     path('karamoko/test-404/', views.trigger_404, name='test_404'),
+    
+    path('ajax/matieres-par-niveau/<int:niveau_id>/', 
+         views.ajax_matieres_par_niveau, 
+         name='ajax_matieres_par_niveau'),
+    
+    # Offres par niveau avec matières sélectionnées
+    path('ajax/offres-par-niveau/<int:niveau_id>/', 
+         views.ajax_offres_par_niveau, 
+         name='ajax_offres_par_niveau'),
+    
+    # Debug (optionnel - pour développement)
+    path('ajax/debug-niveau/<int:niveau_id>/', 
+         views.ajax_debug_niveau, 
+         name='ajax_debug_niveau'),
 ]

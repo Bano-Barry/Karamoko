@@ -1,37 +1,263 @@
 {% extends 'dashboard/base.html' %}
 {% block content %}
-    <div class="max-w-lg mx-auto bg-white p-6 mt-3 rounded shadow dark:bg-gray-800 dark:text-gray-200">
+    <div class="max-w-4xl mx-auto bg-white p-8 mt-3 rounded-lg shadow-lg dark:bg-gray-800 dark:text-gray-200">
         {% if messages %}
-            <div class="mb-4">
+            <div class="mb-6">
                 {% for message in messages %}
-                    <div class="text-sm text-red-600">{{ message }}</div>
+                    <div class="p-4 mb-4 text-sm text-red-800 bg-red-50 rounded-lg dark:bg-red-900 dark:text-red-200">
+                        {{ message }}
+                    </div>
                 {% endfor %}
             </div>
         {% endif %}
-        {% if form.instance.pk %}
-            <h1 class="text-2xl font-bold text-gray-800 mb-6 text-center">Modifier la demande de souscription</h1>
-        {% else %}
-            <h1 class="text-2xl font-bold text-gray-800 mb-6 text-center">Ajouter une demande de souscription</h1>
-        {% endif %}
-        <form method="POST" class="space-y-6">
+
+        <div class="text-center mb-8">
+            {% if form.instance.pk %}
+                <h1 class="text-3xl font-bold text-gray-800 dark:text-white">Modifier la demande de souscription</h1>
+            {% else %}
+                <h1 class="text-3xl font-bold text-gray-800 dark:text-white">Nouvelle demande de souscription</h1>
+            {% endif %}
+            <p class="text-gray-600 dark:text-gray-400 mt-2">Remplissez le formulaire pour créer votre demande</p>
+        </div>
+
+        <form method="POST" class="space-y-8" id="demande-form">
             {% csrf_token %}
-            {% for field in form %}
-                <div>
-                    <label class="block text-gray-700 font-semibold mb-1" for="{{ field.id_for_label }}">
-                        {{ field.label }}{% if field.field.required %}<span class="text-red-500">*</span>{% endif %}
-                    </label>
-                    {{ field }}
-                    {% if field.help_text %}
-                        <p class="text-xs text-gray-500">{{ field.help_text }}</p>
-                    {% endif %}
-                    {% for error in field.errors %}
-                        <p class="text-sm text-red-600">{{ error }}</p>
+            
+            <!-- Informations de base -->
+            <div class="bg-gray-50 dark:bg-gray-700 p-6 rounded-lg">
+                <h3 class="text-lg font-semibold text-gray-800 dark:text-white mb-4">📋 Informations de base</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Nombre d'enfants -->
+                    <div>
+                        <label class="block text-gray-700 dark:text-gray-300 font-semibold mb-2" for="{{ form.nombre_enfants.id_for_label }}">
+                            {{ form.nombre_enfants.label }}
+                            <span class="text-red-500">*</span>
+                        </label>
+                        {{ form.nombre_enfants }}
+                        {% for error in form.nombre_enfants.errors %}
+                            <p class="text-sm text-red-600 mt-1">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+
+                    <!-- Niveau scolaire -->
+                    <div>
+                        <label class="block text-gray-700 dark:text-gray-300 font-semibold mb-2" for="{{ form.niveau.id_for_label }}">
+                            {{ form.niveau.label }}
+                            <span class="text-red-500">*</span>
+                        </label>
+                        {{ form.niveau }}
+                        {% for error in form.niveau.errors %}
+                            <p class="text-sm text-red-600 mt-1">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Matières (s'affiche après sélection du niveau) -->
+            <div class="bg-gray-50 dark:bg-gray-700 p-6 rounded-lg" id="matieres-section" style="display: none;">
+                <h3 class="text-lg font-semibold text-gray-800 dark:text-white mb-4">📚 Matières souhaitées</h3>
+                <div id="matieres-container">
+                    {{ form.matieres }}
+                </div>
+                {% for error in form.matieres.errors %}
+                    <p class="text-sm text-red-600 mt-2">{{ error }}</p>
+                {% endfor %}
+            </div>
+
+            <!-- Offres tarifaires (s'affiche après sélection des matières) -->
+            <div class="bg-gray-50 dark:bg-gray-700 p-6 rounded-lg" id="offres-section" style="display: none;">
+                <h3 class="text-lg font-semibold text-gray-800 dark:text-white mb-4">💰 Choisissez votre offre</h3>
+                <div id="offres-container" class="space-y-4">
+                    <!-- Les offres seront chargées dynamiquement -->
+                </div>
+                <div id="prix-estimation" class="mt-4 p-4 bg-blue-50 dark:bg-blue-900 rounded-lg hidden">
+                    <h4 class="font-semibold text-blue-800 dark:text-blue-200">💳 Estimation du coût</h4>
+                    <p class="text-blue-700 dark:text-blue-300" id="prix-detail"></p>
+                    <p class="text-xl font-bold text-blue-900 dark:text-blue-100" id="prix-total"></p>
+                </div>
+                {% for error in form.offre_tarifaire.errors %}
+                    <p class="text-sm text-red-600 mt-2">{{ error }}</p>
+                {% endfor %}
+            </div>
+
+            <!-- Créneaux et préférences -->
+            <div class="bg-gray-50 dark:bg-gray-700 p-6 rounded-lg">
+                <h3 class="text-lg font-semibold text-gray-800 dark:text-white mb-4">⏰ Préférences horaires</h3>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    {% for choice in form.creneaux_preferes %}
+                        <label class="flex items-center space-x-2 cursor-pointer">
+                            {{ choice.tag }}
+                            <span class="text-gray-700 dark:text-gray-300">{{ choice.choice_label }}</span>
+                        </label>
                     {% endfor %}
                 </div>
-            {% endfor %}
-            <button type="submit" class="w-full bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">
-                📬 Envoyer la demande
-            </button>
+                {% for error in form.creneaux_preferes.errors %}
+                    <p class="text-sm text-red-600 mt-2">{{ error }}</p>
+                {% endfor %}
+            </div>
+
+            <!-- Paiement et commentaires -->
+            <div class="bg-gray-50 dark:bg-gray-700 p-6 rounded-lg">
+                <h3 class="text-lg font-semibold text-gray-800 dark:text-white mb-4">💳 Finalisation</h3>
+                <div class="space-y-6">
+                    <!-- Moyen de paiement -->
+                    <div>
+                        <label class="block text-gray-700 dark:text-gray-300 font-semibold mb-2" for="{{ form.moyen_paiement.id_for_label }}">
+                            {{ form.moyen_paiement.label }}
+                            <span class="text-red-500">*</span>
+                        </label>
+                        {{ form.moyen_paiement }}
+                        {% for error in form.moyen_paiement.errors %}
+                            <p class="text-sm text-red-600 mt-1">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+
+                    <!-- Commentaires -->
+                    <div>
+                        <label class="block text-gray-700 dark:text-gray-300 font-semibold mb-2" for="{{ form.commentaire.id_for_label }}">
+                            {{ form.commentaire.label }}
+                        </label>
+                        {{ form.commentaire }}
+                        {% for error in form.commentaire.errors %}
+                            <p class="text-sm text-red-600 mt-1">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bouton de soumission -->
+            <div class="text-center">
+                <button type="submit" class="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-8 py-3 rounded-lg font-semibold text-lg hover:from-blue-700 hover:to-purple-700 transition duration-300 shadow-lg">
+                    📬 Envoyer la demande
+                </button>
+            </div>
         </form>
     </div>
+
+    <!-- JavaScript pour la logique dynamique -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const niveauSelect = document.getElementById('id_niveau');
+            const matieresSection = document.getElementById('matieres-section');
+            const offresSection = document.getElementById('offres-section');
+            const nombreEnfantsInput = document.getElementById('id_nombre_enfants');
+
+            // Gestion du changement de niveau
+            niveauSelect.addEventListener('change', function() {
+                const niveauId = this.value;
+                
+                if (niveauId) {
+                    // Charger les matières pour ce niveau
+                    chargerMatieres(niveauId);
+                    matieresSection.style.display = 'block';
+                } else {
+                    matieresSection.style.display = 'none';
+                    offresSection.style.display = 'none';
+                }
+            });
+
+            // Gestion du changement de matières
+            document.addEventListener('change', function(e) {
+                if (e.target.classList.contains('matiere-checkbox')) {
+                    const niveauId = niveauSelect.value;
+                    if (niveauId) {
+                        chargerOffres(niveauId);
+                    }
+                }
+            });
+
+            // Gestion du changement d'offre
+            document.addEventListener('change', function(e) {
+                if (e.target.classList.contains('offre-radio')) {
+                    calculerPrix();
+                }
+            });
+
+            // Gestion du changement du nombre d'enfants
+            nombreEnfantsInput.addEventListener('change', calculerPrix);
+
+            function chargerMatieres(niveauId) {
+                fetch(`/ajax/matieres-par-niveau/${niveauId}/`)
+                    .then(response => response.json())
+                    .then(data => {
+                        const container = document.getElementById('matieres-container');
+                        container.innerHTML = '';
+                        
+                        data.matieres.forEach(matiere => {
+                            const div = document.createElement('div');
+                            div.className = 'flex items-center space-x-2 mb-2';
+                            div.innerHTML = `
+                                <input type="checkbox" name="matieres" value="${matiere.id}" 
+                                       class="matiere-checkbox rounded focus:ring-blue-500" id="matiere_${matiere.id}">
+                                <label for="matiere_${matiere.id}" class="text-gray-700 dark:text-gray-300">
+                                    ${matiere.titre}
+                                </label>
+                            `;
+                            container.appendChild(div);
+                        });
+                    });
+            }
+
+            function chargerOffres(niveauId) {
+                const matieresSelectionnees = Array.from(document.querySelectorAll('.matiere-checkbox:checked')).map(cb => cb.value);
+                
+                if (matieresSelectionnees.length === 0) {
+                    offresSection.style.display = 'none';
+                    return;
+                }
+
+                fetch(`/ajax/offres-par-niveau/${niveauId}/`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+                    },
+                    body: JSON.stringify({matieres: matieresSelectionnees})
+                })
+                .then(response => response.json())
+                .then(data => {
+                    const container = document.getElementById('offres-container');
+                    container.innerHTML = '';
+                    
+                    data.offres.forEach(offre => {
+                        const div = document.createElement('div');
+                        div.className = 'border border-gray-200 dark:border-gray-600 p-4 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-600';
+                        div.innerHTML = `
+                            <label class="flex items-start space-x-3 cursor-pointer">
+                                <input type="radio" name="offre_tarifaire" value="${offre.id}" 
+                                       class="offre-radio mt-1" data-prix="${offre.prix_calcule}">
+                                <div class="flex-1">
+                                    <h4 class="font-semibold text-gray-800 dark:text-white">${offre.nom}</h4>
+                                    <p class="text-gray-600 dark:text-gray-400 text-sm">${offre.description}</p>
+                                    <p class="text-lg font-bold text-blue-600 dark:text-blue-400">${offre.prix_calcule.toLocaleString()} GNF/mois</p>
+                                    <p class="text-xs text-gray-500">${offre.nombre_seances_mois} séances • ${offre.duree_seance_max/60}h max par séance</p>
+                                </div>
+                            </label>
+                        `;
+                        container.appendChild(div);
+                    });
+                    
+                    offresSection.style.display = 'block';
+                });
+            }
+
+            function calculerPrix() {
+                const offreSelectionnee = document.querySelector('.offre-radio:checked');
+                const nombreEnfants = parseInt(nombreEnfantsInput.value) || 1;
+                
+                if (offreSelectionnee) {
+                    const prixUnitaire = parseInt(offreSelectionnee.dataset.prix);
+                    const prixTotal = prixUnitaire * nombreEnfants;
+                    
+                    document.getElementById('prix-detail').textContent = 
+                        `${prixUnitaire.toLocaleString()} GNF × ${nombreEnfants} enfant(s)`;
+                    document.getElementById('prix-total').textContent = 
+                        `Total: ${prixTotal.toLocaleString()} GNF/mois`;
+                    document.getElementById('prix-estimation').classList.remove('hidden');
+                } else {
+                    document.getElementById('prix-estimation').classList.add('hidden');
+                }
+            }
+        });
+    </script>
 {% endblock %}

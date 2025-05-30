@@ -10,29 +10,36 @@ class Competence(models.Model):
         return self.nom
 
 class Cours(models.Model):
-    titre = models.CharField(max_length=255, unique=True)  # Titre unique pour éviter les doublons
-    description = models.TextField(blank=True, null=True)  # Description optionnelle
-
+    titre = models.CharField(max_length=255, unique=True)
+    description = models.TextField(blank=True, null=True)
+    # Relation avec les niveaux - un cours peut être enseigné à plusieurs niveaux
+    niveaux = models.ManyToManyField(Niveau, related_name="cours", help_text="Niveaux pour lesquels ce cours est disponible")
+    
     def __str__(self):
         return self.titre
 
 class Repetiteur(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, related_name="repetiteur")
-    avatar = models.ImageField(upload_to='avatars/repetiteurs/', )
+    avatar = models.ImageField(upload_to='avatars/repetiteurs/')
     biographie = models.TextField()
     competences = models.ManyToManyField('repetiteurs.Competence', related_name="repetiteurs")
-    # formations = models.ManyToManyField('repetiteurs.Formation', blank=True, related_name="repetiteurs")
     cours = models.ManyToManyField('repetiteurs.Cours', related_name="repetiteurs")
-    piece_identite = models.FileField(upload_to="documents/pieces_id/", )
-    diplome = models.FileField(upload_to="documents/diplomes/", )
-    contrat_ecole = models.FileField(upload_to="documents/contrats/", )
-    # annees d'experience
-    experience = models.IntegerField(null=True, blank=True)  # Nombre d'années d'expérience
-    prix_par_seance = models.IntegerField(null=True, blank=True)  # Prix par séance en FCFA
-    # zone = models.CharField(max_length=100, )
+    # Niveaux que le répétiteur peut enseigner
+    niveaux = models.ManyToManyField(Niveau, related_name="repetiteurs", help_text="Niveaux que ce répétiteur peut enseigner")
+    piece_identite = models.FileField(upload_to="documents/pieces_id/")
+    diplome = models.FileField(upload_to="documents/diplomes/")
+    contrat_ecole = models.FileField(upload_to="documents/contrats/")
+    experience = models.IntegerField(null=True, blank=True)
+    prix_par_seance = models.IntegerField(null=True, blank=True)
+    # Disponibilités
+    disponibilite_matin = models.BooleanField(default=False)
+    disponibilite_apres_midi = models.BooleanField(default=False)
+    disponibilite_soir = models.BooleanField(default=False)
+    disponibilite_weekend = models.BooleanField(default=False)
+    
     date_soumission = models.DateTimeField(auto_now_add=True)
     is_soumis = models.BooleanField(default=False)
-    cgu_acceptees = models.BooleanField(default=False)  # Acceptation des CGU 
+    cgu_acceptees = models.BooleanField(default=False)
 
     def is_profile_complete(self):
         """Vérifie que tous les champs obligatoires sont remplis"""
@@ -41,17 +48,16 @@ class Repetiteur(models.Model):
             self.biographie,
             self.competences.exists(),
             self.cours.exists(),
+            self.niveaux.exists(),
             self.diplome,
             self.piece_identite,
-            # self.zone,
             self.experience is not None,
             self.contrat_ecole,
             self.prix_par_seance is not None,
         ])
 
     def __str__(self):
-        return f"{self.user.last_name} {self.user.first_name}"  # Combine le nom et le prénom
-
+        return f"{self.user.last_name} {self.user.first_name}"
 
 class ContratRepetiteur(models.Model):
     repetiteur = models.OneToOneField('Repetiteur', on_delete=models.CASCADE, related_name='contrat')
