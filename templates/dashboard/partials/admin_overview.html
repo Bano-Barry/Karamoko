@@ -1,6 +1,175 @@
-<h2 class="text-lg font-semibold">Aperçu de l'Administrateur</h2>
-<div class="mt-4 dark:text-white">
-    <p><strong>Nom:</strong> {{ user.first_name }} {{ user.last_name }}</p> 
-    <p><strong>Téléphone:</strong> {{ user.phone }}</p>
-    <p><strong>Rôle:</strong> {{ user.role | default:"Inconnu" }}</p>
+<!-- Dashboard Admin Template -->
+<h2 class="text-lg font-semibold mb-4">Aperçu de l'Administrateur</h2>
+
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+    <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
+        <p><strong>Nom:</strong> {{ user.first_name }} {{ user.last_name }}</p>
+        <p><strong>Téléphone:</strong> {{ user.phone }}</p>
+        <p><strong>Rôle:</strong> Administrateur</p>
+    </div>
+    <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
+        <h3 class="font-semibold mb-2">Actions rapides</h3>
+        <a href="{% url 'souscription_create' %}" class="btn btn-primary mb-2">➕ Nouvelle offre</a><br>
+        <a href="{% url 'liste_demandes_souscription' %}" class="btn btn-warning mb-2">⚡ Demandes à valider ({{ demandes_en_attente }})</a><br>
+        {% comment %} <a href="{% url 'admin_users' %}" class="btn btn-secondary">👥 Gérer utilisateurs</a> {% endcomment %}
+    </div>
 </div>
+
+<!-- Statistiques principales -->
+<div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+    <a href="{% url 'souscription_list' %}" class="block group">
+        <div class="bg-blue-100 hover:bg-blue-200 dark:bg-blue-900 p-4 rounded-lg text-center transition-colors cursor-pointer">
+            <div class="text-2xl font-bold text-blue-800 dark:text-blue-200">{{ total_souscriptions }}</div>
+            <div class="text-sm text-blue-600 dark:text-blue-300">Souscriptions</div>
+        </div>
+    </a>
+    <a href="{% url 'liste_demandes_souscription' %}" class="block group">
+        <div class="bg-orange-200 hover:bg-orange-200 dark:bg-orange-900 p-4 rounded-lg text-center transition-colors cursor-pointer ml-1">
+            <div class="text-2xl font-bold text-orange-800 dark:text-orange-200">{{ demandes_en_attente }}</div>
+            <div class="text-sm text-orange-600 dark:text-orange-300">Demandes en attente</div>
+        </div>
+    </a>
+    <a href="{% url 'repetiteur_list' %}" class="block group">
+        <div class="bg-green-100 hover:bg-green-200 dark:bg-green-900 p-4 rounded-lg text-center transition-colors cursor-pointer ml-1">
+            <div class="text-2xl font-bold text-green-800 dark:text-green-200">{{ repetiteurs_actifs }}</div>
+            <div class="text-sm text-green-600 dark:text-green-300">Répétiteurs actifs</div>
+        </div>
+    </a>
+    <div class="bg-red-600 hover:bg-purple-200 dark:bg-purple-900 p-4 rounded-lg text-center transition-colors cursor-pointer ml-1">
+        <div class="text-2xl font-bold text-purple-800 dark:text-purple-200">{{ montant_total|floatformat:0 }} GNF</div>
+        <div class="text-sm text-purple-600 dark:text-purple-300">Total encaissé</div>
+    </div>
+</div>
+
+<!-- Graphique d'évolution -->
+<div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow mb-6">
+    <h3 class="font-semibold mb-4 text-gray-800 dark:text-gray-200">Évolution des souscriptions</h3>
+    <div class="relative h-64">
+        <canvas id="subscriptionsChart"></canvas>
+    </div>
+</div>
+
+<!-- Alertes -->
+{% if alertes %}
+<div class="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 p-4 rounded-lg shadow mb-6">
+    <h3 class="font-semibold mb-3 text-red-800 dark:text-red-300 flex items-center">
+        <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
+        </svg>
+        Alertes
+    </h3>
+    <ul class="space-y-2">
+        {% for alerte in alertes %}
+            <li class="text-red-700 dark:text-red-300 flex items-start">
+                <span class="text-red-500 mr-2">•</span>
+                {{ alerte }}
+            </li>
+        {% endfor %}
+    </ul>
+</div>
+{% endif %}
+
+<!-- Actions récentes (optionnel) -->
+<div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow">
+    <h3 class="font-semibold mb-4 text-gray-800 dark:text-gray-200">Actions récentes</h3>
+    <div class="text-gray-500 dark:text-gray-400 text-center py-8">
+        <p>Aucune action récente à afficher</p>
+        <p class="text-sm mt-2">Les dernières activités apparaîtront ici</p>
+    </div>
+</div>
+
+<!-- Script Chart.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const ctx = document.getElementById('subscriptionsChart').getContext('2d');
+    
+    // Données du template Django converties en JSON
+    const chartData = {{ chart_data|safe }};
+    
+    const chart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: chartData.map(item => item.month),
+            datasets: [{
+                label: 'Nouvelles souscriptions',
+                data: chartData.map(item => item.count),
+                borderColor: 'rgb(59, 130, 246)',
+                backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                borderWidth: 3,
+                fill: true,
+                tension: 0.4,
+                pointBackgroundColor: 'rgb(59, 130, 246)',
+                pointBorderColor: '#fff',
+                pointBorderWidth: 2,
+                pointRadius: 6,
+                pointHoverRadius: 8
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    display: true,
+                    position: 'top',
+                    labels: {
+                        color: document.documentElement.classList.contains('dark') ? '#e5e7eb' : '#374151',
+                        usePointStyle: true,
+                        pointStyle: 'circle'
+                    }
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        color: document.documentElement.classList.contains('dark') ? '#9ca3af' : '#6b7280',
+                        stepSize: 1
+                    },
+                    grid: {
+                        color: document.documentElement.classList.contains('dark') ? '#374151' : '#e5e7eb'
+                    }
+                },
+                x: {
+                    ticks: {
+                        color: document.documentElement.classList.contains('dark') ? '#9ca3af' : '#6b7280'
+                    },
+                    grid: {
+                        color: document.documentElement.classList.contains('dark') ? '#374151' : '#e5e7eb'
+                    }
+                }
+            },
+            interaction: {
+                intersect: false,
+                mode: 'index'
+            },
+            hover: {
+                animationDuration: 300
+            },
+            animation: {
+                duration: 1000,
+                easing: 'easeOutQuart'
+            }
+        }
+    });
+});
+</script>
+
+<style>
+.btn {
+    @apply inline-block px-4 py-2 rounded font-medium text-center transition-colors;
+}
+
+.btn-primary {
+    @apply bg-blue-600 text-white hover:bg-blue-700;
+}
+
+.btn-warning {
+    @apply bg-orange-500 text-white hover:bg-orange-600;
+}
+
+.btn-secondary {
+    @apply bg-gray-600 text-white hover:bg-gray-700;
+}
+</style>
