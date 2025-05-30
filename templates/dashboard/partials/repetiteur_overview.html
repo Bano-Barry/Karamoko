@@ -55,7 +55,7 @@
                             <th class="px-6 py-3">Statut</th>
                             <th class="px-6 py-3">Début</th>
                             <th class="px-6 py-3">Fin</th>
-                            {% comment %} <th class="px-6 py-3">Actions</th> {% endcomment %}
+                            <th class="px-6 py-3">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -79,9 +79,15 @@
                             </td>
                             <td class="px-6 py-3">{{ souscription.date_debut|date:"d/m/Y" }}</td>
                             <td class="px-6 py-3">{{ souscription.date_fin|date:"d/m/Y" }}</td>
-                            {% comment %} <td class="px-6 py-3">
-                                <a href="{% url 'demande_souscription_detail' souscription.id %}" class="text-blue-600 hover:underline">Détails</a>
-                            </td> {% endcomment %}
+                            <td class="px-6 py-3">
+                            <a href="{% url 'souscription_detail' souscription.id %}" class="text-gray-600 hover:underline flex items-center dark:text-gray-300">
+                                    <svg class="w-5 h-5 mr-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 2.943 9.542 7-.274 1.057-.732 2.057-1.342 3-1.274 2.057-3.732 4-8.2 4-4.477 0-8.268-2.943-9.542-7z"/>
+                                    </svg>
+                                    Détails
+                                </a>
+                            </td>
                         </tr>
                         {% empty %}
                         <tr>

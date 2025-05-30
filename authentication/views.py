@@ -113,7 +113,7 @@ def complete_repetiteur_profile(request):
         initial_data = {
             'first_name': request.user.first_name,
             'last_name': request.user.last_name,
-            'email': request.user.email,
+            'adresse': getattr(request.user, 'adresse', ''),
             'phone': getattr(request.user, 'phone', ''),
         }
         form = RepetiteurProfileForm(

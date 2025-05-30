@@ -33,12 +33,21 @@ class SouscriptionDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        user = self.request.user
+
+        # Breadcrumb dynamique selon le rôle
+        if user.role == 'repetiteur':
+            souscription_url = 'dashboard_home'  # vers son dashboard avec ses souscriptions
+        else:
+            souscription_url = 'souscription_list'  # vers la liste générale (admin/parent)
+
         context['breadcrumb'] = [
             {'name': 'Dashboard', 'url': 'dashboard_home'},
-            {'name': 'Souscriptions', 'url': 'souscription_list'},
+            {'name': 'Souscriptions', 'url': souscription_url},
             {'name': 'Détails', 'url': None},
         ]
         return context
+
     
 @login_required
 def affecter_demande_souscription(request, demande_id):

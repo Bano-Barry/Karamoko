@@ -72,7 +72,7 @@
                 <span class="inline-block bg-orange-100 text-orange-800 px-3 py-1 rounded-full">⏳ Inconnu</span>
             {% endif %}
         </div>
-        {% if souscription.demande_origine %}
+        {% if souscription.demande_origine and user.is_superuser %}
             <div class="mt-4">
                 <strong>Demande d'origine :</strong>
                 <a href="{% url 'demande_souscription_detail' souscription.demande_origine.id %}" class="text-blue-600 hover:underline">
@@ -84,11 +84,13 @@
 
     <!-- Actions -->
     <div class="flex justify-center space-x-4">
-        <a href="{% url 'souscription_list' %}" class="bg-orange-500 hover:bg-orange-400 text-white font-bold py-2 px-4 rounded transition duration-200">
-            ← Retour à la liste
-        </a>
+        {% if user.is_superuser %}
+            <a href="{% url 'souscription_list' %}" class="bg-orange-500 hover:bg-orange-400 text-white font-bold py-2 px-4 rounded transition duration-200">
+                ← Retour à la liste
+            </a>
+        {% endif %}
         {% if user.is_staff %}
-            <!-- Ajouter d'autres actions ici si besoin -->
+        <!-- Ajouter d'autres actions ici si besoin -->
         {% endif %}
     </div>
 </div>
