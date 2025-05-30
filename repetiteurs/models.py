@@ -22,10 +22,10 @@ class Repetiteur(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, related_name="repetiteur")
     avatar = models.ImageField(upload_to='avatars/repetiteurs/')
     biographie = models.TextField()
-    competences = models.ManyToManyField('repetiteurs.Competence', related_name="repetiteurs")
+    # competences = models.ManyToManyField('repetiteurs.Competence', related_name="repetiteurs")
     cours = models.ManyToManyField('repetiteurs.Cours', related_name="repetiteurs")
     # Niveaux que le répétiteur peut enseigner
-    niveaux = models.ManyToManyField(Niveau, related_name="repetiteurs", help_text="Niveaux que ce répétiteur peut enseigner")
+    # niveaux = models.ManyToManyField(Niveau, related_name="repetiteurs", help_text="Niveaux que ce répétiteur peut enseigner")
     piece_identite = models.FileField(upload_to="documents/pieces_id/")
     diplome = models.FileField(upload_to="documents/diplomes/")
     contrat_ecole = models.FileField(upload_to="documents/contrats/")
@@ -46,9 +46,9 @@ class Repetiteur(models.Model):
         return all([
             self.avatar,
             self.biographie,
-            self.competences.exists(),
+            # self.competences.exists(),
             self.cours.exists(),
-            self.niveaux.exists(),
+            # self.niveaux.exists(),
             self.diplome,
             self.piece_identite,
             self.experience is not None,

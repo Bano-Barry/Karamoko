@@ -1,5 +1,8 @@
 from datetime import timedelta
+from django.utils import timezone
 from django.contrib import messages
+from django.db import transaction
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from django.contrib.admin.views.decorators import staff_member_required
@@ -23,37 +26,120 @@ class SouscriptionListView(ListView):
         ]
         return context
 
+@login_required
 def affecter_demande_souscription(request, demande_id):
+    """
+    Affecte un répétiteur à une demande de souscription et crée la souscription correspondante
+    """
     demande = get_object_or_404(DemandeSouscription, id=demande_id, statut='en_attente')
-    repetiteurs = Repetiteur.objects.filter(user__is_validated = True)
+    
+    # Filtrer les répétiteurs validés et potentiellement compatibles
+    repetiteurs_disponibles = Repetiteur.objects.filter(
+        user__is_validated=True,
+        user__is_active=True
+    ).select_related('user').prefetch_related('cours')
+    
+    # Filtrer par compatibilité avec les matières demandées
+    matieres_demandees = demande.matieres.all()
+    repetiteurs_compatibles = []
+    
+    for repetiteur in repetiteurs_disponibles:
+        # Vérifier si le répétiteur maîtrise au moins une des matières demandées
+        if repetiteur.cours.filter(id__in=matieres_demandees.values_list('id', flat=True)).exists():
+            repetiteurs_compatibles.append(repetiteur)
+    
     if request.method == 'POST':
         repetiteur_id = request.POST.get('repetiteur')
+        
+        if not repetiteur_id:
+            messages.error(request, "Veuillez sélectionner un répétiteur.")
+            return render(request, 'souscriptions/affecter_demande.html', {
+                'demande': demande,
+                'repetiteurs': repetiteurs_compatibles
+            })
+        
         repetiteur = get_object_or_404(Repetiteur, id=repetiteur_id)
-        souscription = Souscription.objects.create(
-            souscripteur=demande.souscripteur,
-            repetiteur=repetiteur,
-            moyen_paiement=demande.moyen_paiement,
-            date_debut=demande.date_demande,
-            date_fin=demande.date_demande + timedelta(days=30),  # Exemple de durée de 30 jours
-            statut='active'
-        )
-        souscription.cours.set(demande.matieres.all())
-        demande.statut = 'affectée'
-        demande.save()
-        messages.success(request, "Demande de souscription affectée et créée avec succès.")
-        return redirect('liste_demandes_souscription')
-
-    return render(request, 'souscriptions/affecter_demande_souscription.html', {
-            'demande': demande,
-            # 'souscription': souscription,
-            'repetiteurs': repetiteurs,
-            'breadcrumb': [
-                {'name': 'Dashboard', 'url': 'dashboard_home'},
-                {'name': 'Demandes de souscription', 'url': 'liste_demandes_souscription'},
-                {'name': 'Affecter demande', 'url': None},
-            ],
-        })
+        
+        # Vérification de compatibilité
+        if not repetiteur.cours.filter(id__in=matieres_demandees.values_list('id', flat=True)).exists():
+            messages.error(request, "Ce répétiteur ne maîtrise aucune des matières demandées.")
+            return render(request, 'souscriptions/affecter_demande.html', {
+                'demande': demande,
+                'repetiteurs': repetiteurs_compatibles
+            })
+        
+        # Validation de l'offre tarifaire
+        if not demande.offre_tarifaire:
+            messages.error(request, "La demande n'a pas d'offre tarifaire définie.")
+            return render(request, 'souscriptions/affecter_demande.html', {
+                'demande': demande,
+                'repetiteurs': repetiteurs_compatibles
+            })
+        
+        try:
+            with transaction.atomic():
+                # Calcul de la durée selon l'offre tarifaire
+                duree_mois = demande.offre_tarifaire.duree_mois if hasattr(demande.offre_tarifaire, 'duree_mois') else 1
+                date_debut = timezone.now().date()
+                date_fin = date_debut + timedelta(days=duree_mois * 30)  # Approximation
+                
+                # Calcul du nombre de séances prévues
+                # Assumons 4 séances par mois par matière (à adapter selon votre logique)
+                nombre_matieres = demande.matieres.count()
+                seances_prevues = nombre_matieres * duree_mois * 4
+                
+                # Création de la souscription
+                souscription = Souscription.objects.create(
+                    souscripteur=demande.souscripteur,
+                    repetiteur=repetiteur,
+                    offre_tarifaire=demande.offre_tarifaire,
+                    moyen_paiement=demande.moyen_paiement,
+                    date_debut=date_debut,
+                    date_fin=date_fin,
+                    statut='active',
+                    seances_prevues=seances_prevues,
+                    seances_effectuees=0,
+                    cree_par=request.user,
+                    demande_origine=demande
+                )
+                
+                # Association des matières
+                souscription.cours.set(demande.matieres.all())
+                
+                # Mise à jour de la demande
+                demande.statut = 'affectée'
+                demande.date_traitement = timezone.now()
+                demande.traite_par = request.user
+                demande.save()
+                
+                messages.success(
+                    request, 
+                    f"✅ Demande affectée avec succès à {repetiteur.user.first_name} {repetiteur.user.last_name}. "
+                    f"Souscription créée du {date_debut} au {date_fin}."
+                )
+                
+                return redirect('liste_demandes_souscription')
+                
+        except Exception as e:
+            messages.error(request, f"Erreur lors de la création de la souscription : {str(e)}")
     
+    # Calcul du coût estimé pour affichage
+    cout_estime = demande.cout_total_estime
+    
+    context = {
+        'demande': demande,
+        'repetiteurs': repetiteurs_compatibles,
+        'cout_estime': cout_estime,
+        'matieres_demandees': matieres_demandees,
+        'breadcrumb': [
+            {'name': 'Dashboard', 'url': 'dashboard_home'},
+            {'name': 'Demandes', 'url': 'liste_demandes_souscription'},
+            {'name': 'Affecter', 'url': None},
+        ]
+    }
+
+    return render(request, 'souscriptions/affecter_demande_souscription.html', context)
+
 @staff_member_required
 def liste_demandes_souscription(request):
     statut = request.GET.get('statut')

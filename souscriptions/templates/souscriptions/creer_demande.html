@@ -1,6 +1,6 @@
 {% extends 'dashboard/base.html' %}
 {% block content %}
-    <div class="max-w-4xl mx-auto bg-white p-8 mt-3 rounded-lg shadow-lg dark:bg-gray-800 dark:text-gray-200">
+    <div class="max-w-4xl mx-auto bg-white p-6 mt-3 rounded-lg shadow-lg dark:bg-gray-800 dark:text-gray-200">
         {% if messages %}
             <div class="mb-6">
                 {% for message in messages %}
@@ -67,7 +67,7 @@
             <!-- Offres tarifaires (s'affiche après sélection des matières) -->
             <div class="bg-gray-50 dark:bg-gray-700 p-6 rounded-lg" id="offres-section" style="display: none;">
                 <h3 class="text-lg font-semibold text-gray-800 dark:text-white mb-4">💰 Choisissez votre offre</h3>
-                <div id="offres-container" class="space-y-4">
+                <div id="offres-container" class="space-y-4 my-4">
                     <!-- Les offres seront chargées dynamiquement -->
                 </div>
                 <div id="prix-estimation" class="mt-4 p-4 bg-blue-50 dark:bg-blue-900 rounded-lg hidden">
@@ -127,7 +127,7 @@
 
             <!-- Bouton de soumission -->
             <div class="text-center">
-                <button type="submit" class="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-8 py-3 rounded-lg font-semibold text-lg hover:from-blue-700 hover:to-purple-700 transition duration-300 shadow-lg">
+                <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-3 mt-3 rounded-lg font-semibold text-lg transition duration-300 shadow-lg">
                     📬 Envoyer la demande
                 </button>
             </div>

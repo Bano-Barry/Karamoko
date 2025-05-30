@@ -13,9 +13,9 @@ class CompetenceAdmin(admin.ModelAdmin):
 class RepetiteurAdmin(admin.ModelAdmin):
     list_display = ('id', 'user', 'user_email', 'user_phone')  # Affiche l'ID, le nom, l'email et le contact
     search_fields = ('user__username', 'user__email', 'user__phone')  # Barre de recherche sur le nom, l'email et le contact
-    list_filter = ('competences',)  # Ajoute un filtre par compétences
+    # list_filter = ('competences',)  # Ajoute un filtre par compétences
     ordering = ('user__username',)  # Trie les résultats par nom
-    filter_horizontal = ('competences', 'cours')  # Ajoute une interface pour gérer les relations ManyToMany
+    filter_horizontal = ('cours',)  # Ajoute une interface pour gérer les relations ManyToMany
 
     # Méthodes pour afficher les champs liés
     @admin.display(description="Email")

@@ -54,11 +54,11 @@ class RepetiteurCreateForm(forms.ModelForm):
 
     class Meta:
         model = Repetiteur
-        fields = [ 'phone', 'role', 'password', 'avatar', 'first_name', 'last_name',  'adresse', 'biographie', 'competences']
+        fields = [ 'phone', 'role', 'password', 'avatar', 'first_name', 'last_name',  'adresse', 'biographie', ]
         widgets = {
             'avatar': get_widget(forms.ClearableFileInput, "", "py-4 px-3"),
             'biographie': get_widget(forms.Textarea, "Ex : professeur de mathematiques dans les écoles x, y ...", "rows-4"),
-            'competences': forms.CheckboxSelectMultiple(),
+            # 'competences': forms.CheckboxSelectMultiple(),
         }
 
     def save(self, commit=True):
@@ -92,11 +92,10 @@ class RepetiteurUpdateForm(forms.ModelForm):
 
     class Meta:
         model = Repetiteur
-        fields = ['first_name', 'last_name', 'phone', 'adresse', 'avatar', 'biographie', 'competences']
+        fields = ['first_name', 'last_name', 'phone', 'adresse', 'avatar', 'biographie']
         widgets = {
             'avatar': get_widget(forms.ClearableFileInput, "", "py-4 px-3"),
             'biographie': get_widget(forms.Textarea, "Entrez une biographie", "rows-4"),
-            'competences': get_widget(forms.SelectMultiple, ""),
         }
 
     def __init__(self, *args, **kwargs):
@@ -123,7 +122,6 @@ class RepetiteurUpdateForm(forms.ModelForm):
             if commit:
                 self.user_instance.save()
 
-        repetiteur.competences.set(self.cleaned_data.get('competences', repetiteur.competences.all()))
         if commit:
             repetiteur.save()
         return repetiteur
@@ -169,12 +167,20 @@ class RepetiteurProfileForm(forms.ModelForm):
     class Meta:
         model = Repetiteur
         fields = [
+            'first_name',
+            'last_name',
+            'phone',
+            'adresse',
             'avatar',
             'biographie',
-            'competences',
+            # 'competences',
             'cours',
             'experience',  
             'prix_par_seance',
+            'disponibilite_matin',
+            'disponibilite_apres_midi',
+            'disponibilite_soir',
+            'disponibilite_weekend',
             'diplome',
             'contrat_ecole',
             'piece_identite',
@@ -182,9 +188,13 @@ class RepetiteurProfileForm(forms.ModelForm):
         labels = {
             'avatar': "Avatar",
             'biographie': "Biographie",
-            'competences': "Compétences",
+            # 'competences': "Compétences",
             'cours': "Cours enseignés",
             'prix_par_seance': "Prix par séance (en GNF)",
+            'disponibilite_matin': "Disponible le matin",
+            'disponibilite_apres_midi': "Disponible l'après-midi",
+            'disponibilite_soir': "Disponible le soir",
+            'disponibilite_weekend': "Disponible le weekend",
             'diplome': "Diplôme",
             'contrat_ecole': "Contrat école ou document justificatif",
             'piece_identite': "Pièce d'identité",
@@ -193,9 +203,14 @@ class RepetiteurProfileForm(forms.ModelForm):
         widgets = {
             'avatar': get_widget(forms.ClearableFileInput, "", "py-4 px-3"),
             'biographie': get_widget(forms.Textarea, "Entrez une biographie", "rows-4"),
-            'competences': forms.CheckboxSelectMultiple(),
-            'cours': forms.CheckboxSelectMultiple(),
+            'cours': forms.CheckboxSelectMultiple(attrs={
+                'class': 'form-control px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500'
+            }),
             'prix_par_seance': get_widget(forms.NumberInput, "Votre tarif par séance"),
+            'disponibilite_matin': get_widget(forms.CheckboxInput, "Disponible le matin", "form-check-input"),
+            'disponibilite_apres_midi': get_widget(forms.CheckboxInput, "Disponible l'après-midi", "form-check-input"),
+            'disponibilite_soir': get_widget(forms.CheckboxInput, "Disponible le soir", "form-check-input"),
+            'disponibilite_weekend': get_widget(forms.CheckboxInput, "Disponible le weekend", "form-check-input"),
             'diplome': get_widget(forms.ClearableFileInput, "", "py-2"),
             'contrat_ecole': get_widget(forms.ClearableFileInput, "", "py-2"),
             'piece_identite': get_widget(forms.ClearableFileInput, "", "py-2"),
@@ -207,7 +222,7 @@ class RepetiteurProfileForm(forms.ModelForm):
         required_fields = [
             'avatar',
             'biographie',
-            'competences',
+            # 'competences',
             'cours',
             'contrat_ecole',
             'prix_par_seance',

@@ -86,6 +86,7 @@ def complete_repetiteur_profile(request):
             user.last_name = form.cleaned_data.get('last_name', user.last_name)
             user.email = form.cleaned_data.get('email', user.email)
             user.phone = form.cleaned_data.get('phone', user.phone)
+            user.adresse = form.cleaned_data.get('adresse', user.adresse)
             user.save()
             
             # Sauvegarde du repetiteur
