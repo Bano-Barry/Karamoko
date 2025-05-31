@@ -35,62 +35,94 @@ def create_test_data():
         if created:
             print(f"✅ Niveau créé: {niveau.nom}")
     
-    # 2. CRÉER LES COURS/MATIÈRES
-    cours_data = {
-        # Primaire (1ère-5ème)
-        'Français': ['1ère année', '2ème année', '3ème année', '4ème année', '5ème année'],
-        'Mathématiques': ['1ère année', '2ème année', '3ème année', '4ème année', '5ème année'],
-        'Sciences': ['3ème année', '4ème année', '5ème année'],
-        'Histoire-Géographie': ['4ème année', '5ème année'],
-        
-        # Collège (6ème-9ème)
-        'Français': ['6ème année', '7ème année', '8ème année', '9ème année'],
-        'Mathématiques': ['6ème année', '7ème année', '8ème année', '9ème année'],
-        'Sciences Physiques': ['6ème année', '7ème année', '8ème année', '9ème année'],
-        'Sciences de la Vie et de la Terre': ['6ème année', '7ème année', '8ème année', '9ème année'],
-        'Histoire-Géographie': ['6ème année', '7ème année', '8ème année', '9ème année'],
-        'Anglais': ['6ème année', '7ème année', '8ème année', '9ème année'],
-        
-        # Lycée (10ème-12ème)
-        'Mathématiques': ['10ème année', '11ème année', '12ème année'],
-        'Physique': ['10ème année', '11ème année', '12ème année'],
-        'Chimie': ['10ème année', '11ème année', '12ème année'],
-        'Biologie': ['11ème année', '12ème année'],
-        'Français': ['10ème année', '11ème année', '12ème année'],
-        'Philosophie': ['11ème année', '12ème année'],
-        'Histoire-Géographie': ['10ème année', '11ème année', '12ème année'],
-        'Anglais': ['10ème année', '11ème année', '12ème année'],
-    }
+    # 2. CRÉER LES COURS/MATIÈRES - NOUVELLE APPROCHE
+    # D'abord créer tous les cours uniques
+    tous_les_cours = [
+        # primaire 
+        'Dictée', 
+        'Rédaction',
+        'Calcul Ecrit', 
+        'SVT',
+        'Histoire', 
+        'Géographie',
+        'Education Civique et Morale',
+        # collège
+        'Mathématiques', 
+        'Physique',
+        'Chimie',
+        'Français',
+        'Anglais',
+        'Biologie',
+        'Histoire',
+        'Géographie',
+        # lycée
+        'Economie',
+        'Philosophie'
+    ]
     
     cours_objects = {}
-    for titre, niveaux_liste in cours_data.items():
+    for titre_cours in tous_les_cours:
         cours, created = Cours.objects.get_or_create(
-            titre=titre,
-            defaults={'description': f'Cours de {titre}'}
+            titre=titre_cours,
+            defaults={'description': f'Cours de {titre_cours}'}
         )
-        cours_objects[titre] = cours
-        
-        # Associer aux niveaux
-        for niveau_nom in niveaux_liste:
-            if niveau_nom in niveaux:
-                cours.niveaux.add(niveaux[niveau_nom])
-        
+        cours_objects[titre_cours] = cours
         if created:
             print(f"✅ Cours créé: {cours.titre}")
     
-    # 3. CRÉER LES OFFRES TARIFAIRES
+    # 3. ASSOCIER LES COURS AUX NIVEAUX
+    # Maintenant on associe chaque cours aux bons niveaux
+    cours_niveaux_mapping = [
+        # PRIMAIRE
+        ('Dictée', ['1ère année', '2ème année', '3ème année', '4ème année', '5ème année', '6ème année']),
+        ('Rédaction', ['1ère année', '2ème année', '3ème année', '4ème année', '5ème année', '6ème année']),
+        ('Calcul Ecrit', ['1ère année', '2ème année', '3ème année', '4ème année', '5ème année', '6ème année']),
+        ('SVT', ['1ère année', '2ème année', '3ème année', '4ème année', '5ème année', '6ème année']),
+        ('Histoire', ['1ère année', '2ème année', '3ème année', '4ème année', '5ème année', '6ème année']),
+        ('Géographie', ['1ère année', '2ème année', '3ème année', '4ème année', '5ème année', '6ème année']),
+        ('Education Civique et Morale', ['1ère année', '2ème année', '3ème année', '4ème année', '5ème année', '6ème année']),
+        # COLLÈGE
+        ('Français', ['7ème année', '8ème année', '9ème année', '10ème année']),
+        ('Anglais', ['6ème année', '7ème année', '8ème année', '9ème année', '10ème année']),
+        ('Mathématiques', ['7ème année', '8ème année', '9ème année', '10ème année']),
+        ('Physique', ['7ème année', '8ème année', '9ème année', '10ème année']),
+        ('Chimie', ['7ème année', '8ème année', '9ème année', '10ème année']),
+        ('Biologie', ['7ème année', '8ème année', '9ème année', '10ème année']),
+        ('Histoire', ['7ème année', '8ème année', '9ème année', '10ème année']),
+        ('Géographie', ['7ème année', '8ème année', '9ème année', '10ème année']),
+        # LYCÉE
+        ('Mathématiques', ['11ème année', '12ème année']),
+        ('Physique', ['11ème année', '12ème année']),
+        ('Chimie', ['11ème année', '12ème année']),
+        ('Français', ['11ème année', '12ème année']),
+        ('Anglais', ['10ème année', '11ème année', '12ème année']),
+        ('Biologie', ['11ème année', '12ème année']),
+        ('Philosophie', ['11ème année', '12ème année']),
+        ('Histoire', ['11ème année', '12ème année']),
+        ('Géographie', ['11ème année', '12ème année']),
+    ]
+    
+    # Associer cours et niveaux
+    for titre_cours, niveaux_liste in cours_niveaux_mapping:
+        cours = cours_objects[titre_cours]
+        for niveau_nom in niveaux_liste:
+            if niveau_nom in niveaux:
+                cours.niveaux.add(niveaux[niveau_nom])
+                print(f"✅ {titre_cours} associé au niveau {niveau_nom}")
+    
+    # 4. CRÉER LES OFFRES TARIFAIRES
     offres_data = [
         # PRIMAIRE - Forfait global
         {
             'nom': 'Forfait Primaire Complet',
             'description': 'Toutes les matières du primaire incluses',
             'type_offre': 'forfait_global',
-            'prix_unitaire': 150000,  # 150k GNF
-            'niveaux': ['1ère année', '2ème année', '3ème année', '4ème année', '5ème année'],
-            'matieres': ['Français', 'Mathématiques', 'Sciences', 'Histoire-Géographie'],
+            'prix_unitaire': 500000,  # 500k GNF
+            'niveaux': ['1ère année', '2ème année', '3ème année', '4ème année', '5ème année', '6ème année'],
+            'matieres': ['Dictée', 'Rédaction', 'Calcul Ecrit', 'SVT', 'Histoire', 'Géographie', 'Education Civique et Morale'],
             'nombre_seances_mois': 12,
             'duree_seance_max': 120,  # 2h
-            'jours_par_semaine': 3,
+            'jours_par_semaine': 4,
         },
         
         # COLLÈGE - Par matière
@@ -98,21 +130,21 @@ def create_test_data():
             'nom': 'Collège - Par Matière',
             'description': 'Tarif unitaire par matière pour le collège',
             'type_offre': 'par_matiere',
-            'prix_unitaire': 80000,  # 80k GNF par matière
-            'niveaux': ['6ème année', '7ème année', '8ème année', '9ème année'],
-            'matieres': ['Français', 'Mathématiques', 'Sciences Physiques', 'Sciences de la Vie et de la Terre', 'Histoire-Géographie', 'Anglais'],
-            'nombre_seances_mois': 8,
+            'prix_unitaire': 200000,  # 200k GNF par matière
+            'niveaux': ['7ème année', '8ème année', '9ème année'],
+            'matieres': ['Français', 'Anglais', 'Mathématiques', 'Physique', 'Chimie', 'Histoire', 'Géographie', 'Biologie'],
+            'nombre_seances_mois': 12,
             'duree_seance_max': 180,  # 3h
-            'jours_par_semaine': 2,
+            'jours_par_semaine': 3,
         },
         
-        # LYCÉE 10ème - Pack Examen (Maths + Physique + Chimie)
+        # 10ème - Pack Examen (Maths + Physique + Chimie)
         {
             'nom': 'Pack Examen 10ème',
-            'description': 'Pack spécial Maths + Physique + Chimie pour la 10ème',
+            'description': 'Pack spécial Maths + Physique + Chimie pour la 10ème + autre matière',
             'type_offre': 'pack_examen',
             'prix_unitaire': 100000,  # Prix unitaire
-            'prix_combine': 250000,   # Prix combiné pour les 3 matières
+            'prix_combine': 350000,   # Prix combiné pour les 3 matières
             'niveaux': ['10ème année'],
             'matieres': ['Mathématiques', 'Physique', 'Chimie'],
             'nombre_seances_mois': 12,
@@ -125,12 +157,12 @@ def create_test_data():
             'nom': 'Lycée Supérieur - Par Matière',
             'description': 'Tarif par matière pour 11ème et 12ème',
             'type_offre': 'par_matiere',
-            'prix_unitaire': 120000,  # 120k GNF par matière
+            'prix_unitaire': 200000,  # 200k GNF par matière
             'niveaux': ['11ème année', '12ème année'],
-            'matieres': ['Mathématiques', 'Physique', 'Chimie', 'Biologie', 'Français', 'Philosophie', 'Histoire-Géographie', 'Anglais'],
-            'nombre_seances_mois': 10,
+            'matieres': ['Mathématiques', 'Physique', 'Chimie', 'Biologie', 'Français', 'Philosophie', 'Histoire', 'Géographie', 'Anglais', 'Economie'],
+            'nombre_seances_mois': 12,
             'duree_seance_max': 180,
-            'jours_par_semaine': 2,
+            'jours_par_semaine': 3,
         },
         
         # LYCÉE 11-12ème - Pack Spécialité Sciences
@@ -140,10 +172,10 @@ def create_test_data():
             'type_offre': 'pack_specialite',
             'prix_unitaire': 400000,  # Prix fixe pour le pack
             'niveaux': ['11ème année', '12ème année'],
-            'matieres': ['Mathématiques', 'Physique', 'Chimie', 'Biologie'],
-            'nombre_seances_mois': 16,
-            'duree_seance_max': 240,  # 4h
-            'jours_par_semaine': 4,
+            'matieres': ['Mathématiques', 'Physique', 'Chimie', 'Biologie', 'Français'],
+            'nombre_seances_mois': 12,
+            'duree_seance_max': 180,  # 3h
+            'jours_par_semaine': 3,
         }
     ]
     
@@ -181,6 +213,12 @@ def create_test_data():
     print(f"   - {Niveau.objects.count()} niveaux")
     print(f"   - {Cours.objects.count()} cours")
     print(f"   - {OffreTarifaire.objects.count()} offres tarifaires")
+    
+    # Affichage des associations pour vérification
+    print("\n🔍 Vérification des associations cours-niveaux:")
+    for cours in Cours.objects.all():
+        niveaux_associes = cours.niveaux.values_list('nom', flat=True)
+        print(f"   - {cours.titre}: {', '.join(niveaux_associes)}")
 
 
 # Si c'est une commande de management

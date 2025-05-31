@@ -58,7 +58,7 @@ def repetiteur_list(request):
 def vitrine_repetiteur_list(request):
     # Récupérer les paramètres GET
     adresse = request.GET.get('adresse', '').strip()
-    competence = request.GET.get('competences', '').strip()
+    # competence = request.GET.get('competences', '').strip()
 
     # Récupérer tous les répétiteurs
     repetiteurs = Repetiteur.objects.all()
@@ -67,8 +67,8 @@ def vitrine_repetiteur_list(request):
     if adresse:
         repetiteurs = repetiteurs.filter(user__adresse__icontains=adresse)
 
-    if competence:
-        repetiteurs = repetiteurs.filter(competences__nom__icontains=competence)
+    # if competence:
+    #     repetiteurs = repetiteurs.filter(competences__nom__icontains=competence)
 
     # Éviter les doublons si un répétiteur a plusieurs compétences
     repetiteurs = repetiteurs.distinct()
@@ -77,7 +77,7 @@ def vitrine_repetiteur_list(request):
     context = {
         'repetiteurs': repetiteurs,
         'adresse': adresse,
-        'competences': competence,
+        # 'competences': competence,
     }
 
     return render(request, 'vitrine/encadreurs.html', context)
