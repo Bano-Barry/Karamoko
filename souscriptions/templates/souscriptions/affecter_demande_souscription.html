@@ -22,6 +22,9 @@
                         {% csrf_token %}
                         <td class="px-4 py-2 text-gray-900 dark:text-white">
                             {{ repetiteur.user.first_name }} {{ repetiteur.user.last_name }}
+                            <span class="ml-2 inline-block bg-green-100 text-green-800 text-xs font-semibold px-2.5 py-0.5 rounded">
+                                {{ repetiteur.nb_affectations }} affectation{{ repetiteur.nb_affectations|pluralize }}
+                            </span>
                         </td>
                         <td class="px-4 py-2 text-gray-900 dark:text-white">
                             {{ repetiteur.user.phone }}
@@ -35,10 +38,29 @@
                         </td>
                         <td class="px-4 py-2">
                             <input type="hidden" name="repetiteur" value="{{ repetiteur.id }}">
-                            <button type="submit" class="px-4 py-1 bg-blue-600 hover:bg-blue-700 text-white rounded-lg shadow">
+                            <button type="button" onclick="openModal('{{ repetiteur.id }}')" class="px-4 py-1 bg-blue-600 hover:bg-blue-700 text-white rounded-lg shadow">
                                 Affecter
                             </button>
+                            <!-- Modal -->
+                            <div id="modal-{{ repetiteur.id }}" class="fixed inset-0 z-50 flex items-center justify-center  bg-opacity-50 hidden">
+                                <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 w-full max-w-sm">
+                                    <h2 class="text-lg font-semibold mb-4 text-gray-800 dark:text-white">Confirmer l'affectation</h2>
+                                    <p class="mb-6 text-gray-700 dark:text-gray-300">Voulez-vous vraiment affecter ce répétiteur à la souscription ?</p>
+                                    <div class="flex justify-end space-x-2">
+                                        <button type="button" onclick="closeModal('{{ repetiteur.id }}')" class="px-4 py-1 bg-gray-300 hover:bg-gray-400 text-gray-800 rounded-lg">Annuler</button>
+                                        <button type="submit" class="px-4 py-1 bg-blue-600 hover:bg-blue-700 text-white rounded-lg shadow">Confirmer</button>
+                                    </div>
+                                </div>
+                            </div>
                         </td>
+                        <script>
+                            function openModal(id) {
+                                document.getElementById('modal-' + id).classList.remove('hidden');
+                            }
+                            function closeModal(id) {
+                                document.getElementById('modal-' + id).classList.add('hidden');
+                            }
+                        </script>
                     </form>
                 </tr>
                 {% endfor %}

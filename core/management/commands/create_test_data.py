@@ -1,8 +1,18 @@
 # management/commands/create_test_data.py
 
 from django.core.management.base import BaseCommand
-from paiements.models import OffreTarifaire
-from repetiteurs.models import Niveau, Cours
+from django.contrib.auth import get_user_model
+from django.utils import timezone
+from datetime import datetime, timedelta
+import random
+
+from paiements.models import OffreTarifaire, MethodePaiement
+from repetiteurs.models import Niveau, Cours, Repetiteur
+from django.core.files.uploadedfile import SimpleUploadedFile
+
+from souscripteurs.models import Souscripteur
+
+User = get_user_model()
 
 def create_test_data():
     """Crée des données de test pour le système de souscription"""
@@ -35,8 +45,7 @@ def create_test_data():
         if created:
             print(f"✅ Niveau créé: {niveau.nom}")
     
-    # 2. CRÉER LES COURS/MATIÈRES - NOUVELLE APPROCHE
-    # D'abord créer tous les cours uniques
+    # 2. CRÉER LES COURS/MATIÈRES
     tous_les_cours = [
         # primaire 
         'Dictée', 
@@ -71,7 +80,6 @@ def create_test_data():
             print(f"✅ Cours créé: {cours.titre}")
     
     # 3. ASSOCIER LES COURS AUX NIVEAUX
-    # Maintenant on associe chaque cours aux bons niveaux
     cours_niveaux_mapping = [
         # PRIMAIRE
         ('Dictée', ['1ère année', '2ème année', '3ème année', '4ème année', '5ème année', '6ème année']),
@@ -110,7 +118,26 @@ def create_test_data():
                 cours.niveaux.add(niveaux[niveau_nom])
                 print(f"✅ {titre_cours} associé au niveau {niveau_nom}")
     
-    # 4. CRÉER LES OFFRES TARIFAIRES
+    # 4. CRÉER LES MÉTHODES DE PAIEMENT
+    methodes_paiement_data = [
+        {'nom': 'Orange Money', 'description': 'Paiement via Orange Money'},
+        {'nom': 'MTN Mobile Money', 'description': 'Paiement via MTN Mobile Money'},
+        {'nom': 'Moov Money', 'description': 'Paiement via Moov Money'},
+        {'nom': 'Espèces', 'description': 'Paiement en espèces'},
+        {'nom': 'Virement bancaire', 'description': 'Virement bancaire local'},
+    ]
+    
+    methodes_paiement = {}
+    for methode_data in methodes_paiement_data:
+        methode, created = MethodePaiement.objects.get_or_create(
+            nom=methode_data['nom'],
+            defaults={'description': methode_data['description']}
+        )
+        methodes_paiement[methode_data['nom']] = methode
+        if created:
+            print(f"✅ Méthode de paiement créée: {methode.nom}")
+    
+    # 5. CRÉER LES OFFRES TARIFAIRES
     offres_data = [
         # PRIMAIRE - Forfait global
         {
@@ -138,7 +165,7 @@ def create_test_data():
             'jours_par_semaine': 3,
         },
         
-        # 10ème - Pack Examen (Maths + Physique + Chimie)
+        # 10ème - Pack Examen
         {
             'nom': 'Pack Examen 10ème',
             'description': 'Pack spécial Maths + Physique + Chimie pour la 10ème + autre matière',
@@ -165,7 +192,7 @@ def create_test_data():
             'jours_par_semaine': 3,
         },
         
-        # LYCÉE 11-12ème - Pack Spécialité Sciences
+        # LYCÉE 11-12ème - Pack Sciences
         {
             'nom': 'Pack Spécialité Sciences',
             'description': 'Pack Maths + Physique + Chimie + Biologie',
@@ -208,17 +235,302 @@ def create_test_data():
         if created:
             print(f"✅ Offre créée: {offre.nom} - {offre.prix_unitaire:,} GNF")
     
+    # 6. CRÉER DES UTILISATEURS PARENTS/SOUSCRIPTEURS
+    prenoms_hommes = ['Amadou', 'Mamadou', 'Alpha', 'Ibrahima', 'Ousmane', 'Sekou', 'Mohamed', 'Thierno', 'Boubacar', 'Aboubacar', 'Saliou', 'Elhadj', 'Lansana', 'Fodé', 'Facinet']
+    prenoms_femmes = ['Fatoumata', 'Aissatou', 'Mariama', 'Kadiatou', 'Aminata', 'Hawa', 'Ramata', 'Nènè', 'Mabinty', 'Safiatou', 'Hadja', 'Binta', 'Fanta', 'Coumba', 'Oumou']
+    noms_famille = ['Diallo', 'Barry', 'Bah', 'Camara', 'Conde', 'Souare', 'Keita', 'Toure', 'Cisse', 'Kone', 'Traore', 'Sylla', 'Bangoura', 'Doumbouya', 'Sangare', 'Fofana', 'Soumah', 'Cherif', 'Dioubate', 'Sidibe']
+    zones_conakry = ['Kaloum', 'Dixinn', 'Matam', 'Ratoma', 'Matoto', 'Kipé', 'Lambandji', 'Taouyah', 'Madina', 'Hamdallaye', 'Koloma', 'Sonfonia', 'Bambeto', 'Cosa', 'Minière', 'Belle-vue', 'Almamya', 'Sandervalia', 'Coronthie', 'Kaporo Rails']
+    
+    # Générer des numéros de téléphone guinéens
+    def generer_numero_guineen():
+        prefixes = ['622', '623', '624', '625', '626', '627', '628', '629', '655', '656', '657', '664', '665', '666', '667', '669']
+        return f"{random.choice(prefixes)}{random.randint(100000, 999999)}"
+    
+    parents = []
+    for i in range(20):  # Créer 20 parents
+        prenom = random.choice(prenoms_hommes + prenoms_femmes)
+        nom = random.choice(noms_famille)
+        phone = generer_numero_guineen()
+        adresse = f"{random.choice(zones_conakry)}, Conakry"
+        
+        # Vérifier que le numéro n'existe pas déjà
+        while User.objects.filter(phone=phone).exists():
+            phone = generer_numero_guineen()
+        
+        parent_user, created = User.objects.get_or_create(
+            phone=phone,
+            defaults={
+                'first_name': prenom,
+                'last_name': nom,
+                'role': 'parent',
+                'adresse': adresse,
+                'is_validated': True,
+            }
+        )
+        parent_user.set_password('karamoko')
+        parent_user.save()
+        
+        # Créer le profil souscripteur
+        souscripteur, created = Souscripteur.objects.get_or_create(
+            user=parent_user,
+            defaults={
+                'cgu_acceptees': True,
+            }
+        )
+        
+        parents.append(parent_user)
+        if created:
+            print(f"✅ Parent créé: {parent_user.first_name} {parent_user.last_name} ({parent_user.phone})")
+    
+    # 7. CRÉER DES RÉPÉTITEURS
+    def create_dummy_file(filename, content="Contenu du fichier test"):
+        """Crée un fichier factice pour les tests"""
+        return SimpleUploadedFile(filename, content.encode('utf-8'))
+
+    repetiteurs = []
+
+    # 5 encadrants primaire
+    matieres_primaire = ['Dictée', 'Rédaction', 'Calcul Ecrit', 'SVT', 'Histoire', 'Géographie', 'Education Civique et Morale']
+    for i in range(5):
+        prenom = random.choice(prenoms_hommes + prenoms_femmes)
+        nom = random.choice(noms_famille)
+        phone = generer_numero_guineen()
+        adresse = f"{random.choice(zones_conakry)}, Conakry"
+        while User.objects.filter(phone=phone).exists():
+            phone = generer_numero_guineen()
+        repetiteur_user, created = User.objects.get_or_create(
+            phone=phone,
+            defaults={
+                'first_name': prenom,
+                'last_name': nom,
+                'role': 'repetiteur',
+                'adresse': adresse,
+                'is_validated': True,
+            }
+        )
+        repetiteur_user.set_password('karamoko')
+        repetiteur_user.save()
+        repetiteur, created = Repetiteur.objects.get_or_create(
+            user=repetiteur_user,
+            defaults={
+                'biographie': "Encadrant toutes matières du primaire.",
+                'experience': random.randint(5, 20),
+                'prix_par_seance': 200000,
+                'disponibilite_matin': True,
+                'disponibilite_apres_midi': True,
+                'disponibilite_soir': True,
+                'disponibilite_weekend': True,
+                'is_soumis': True,
+                'cgu_acceptees': True,
+                'avatar': create_dummy_file(f"avatar_primaire_{i}.jpg", "Image avatar"),
+                'piece_identite': create_dummy_file(f"carte_id_primaire_{i}.pdf", "Carte d'identité"),
+                'diplome': create_dummy_file(f"diplome_primaire_{i}.pdf", "Diplôme universitaire"),
+                'contrat_ecole': create_dummy_file(f"contrat_primaire_{i}.pdf", "Contrat école"),
+            }
+        )
+        cours_selectionnes = [cours_objects[m] for m in matieres_primaire if m in cours_objects]
+        repetiteur.cours.set(cours_selectionnes)
+        repetiteurs.append(repetiteur_user)
+        print(f"✅ Répétiteur PRIMAIRE créé: {repetiteur_user.first_name} {repetiteur_user.last_name} ({repetiteur_user.phone})")
+
+    # 5 encadrants collège
+    matieres_college = ['Français', 'Anglais', 'Mathématiques', 'Physique', 'Chimie', 'Histoire', 'Géographie', 'Biologie']
+    for i in range(5):
+        prenom = random.choice(prenoms_hommes + prenoms_femmes)
+        nom = random.choice(noms_famille)
+        phone = generer_numero_guineen()
+        adresse = f"{random.choice(zones_conakry)}, Conakry"
+        while User.objects.filter(phone=phone).exists():
+            phone = generer_numero_guineen()
+        repetiteur_user, created = User.objects.get_or_create(
+            phone=phone,
+            defaults={
+                'first_name': prenom,
+                'last_name': nom,
+                'role': 'repetiteur',
+                'adresse': adresse,
+                'is_validated': True,
+            }
+        )
+        repetiteur_user.set_password('karamoko')
+        repetiteur_user.save()
+        repetiteur, created = Repetiteur.objects.get_or_create(
+            user=repetiteur_user,
+            defaults={
+                'biographie': "Encadrant toutes matières du collège.",
+                'experience': random.randint(5, 20),
+                'prix_par_seance': 250000,
+                'disponibilite_matin': True,
+                'disponibilite_apres_midi': True,
+                'disponibilite_soir': True,
+                'disponibilite_weekend': True,
+                'is_soumis': True,
+                'cgu_acceptees': True,
+                'avatar': create_dummy_file(f"avatar_college_{i}.jpg", "Image avatar"),
+                'piece_identite': create_dummy_file(f"carte_id_college_{i}.pdf", "Carte d'identité"),
+                'diplome': create_dummy_file(f"diplome_college_{i}.pdf", "Diplôme universitaire"),
+                'contrat_ecole': create_dummy_file(f"contrat_college_{i}.pdf", "Contrat école"),
+            }
+        )
+        cours_selectionnes = [cours_objects[m] for m in matieres_college if m in cours_objects]
+        repetiteur.cours.set(cours_selectionnes)
+        repetiteurs.append(repetiteur_user)
+        print(f"✅ Répétiteur COLLÈGE créé: {repetiteur_user.first_name} {repetiteur_user.last_name} ({repetiteur_user.phone})")
+
+    # 5 encadrants lycée
+    matieres_lycee = ['Mathématiques', 'Physique', 'Chimie', 'Biologie', 'Français', 'Philosophie', 'Histoire', 'Géographie', 'Anglais', 'Economie']
+    for i in range(5):
+        prenom = random.choice(prenoms_hommes + prenoms_femmes)
+        nom = random.choice(noms_famille)
+        phone = generer_numero_guineen()
+        adresse = f"{random.choice(zones_conakry)}, Conakry"
+        while User.objects.filter(phone=phone).exists():
+            phone = generer_numero_guineen()
+        repetiteur_user, created = User.objects.get_or_create(
+            phone=phone,
+            defaults={
+                'first_name': prenom,
+                'last_name': nom,
+                'role': 'repetiteur',
+                'adresse': adresse,
+                'is_validated': True,
+            }
+        )
+        repetiteur_user.set_password('karamoko')
+        repetiteur_user.save()
+        repetiteur, created = Repetiteur.objects.get_or_create(
+            user=repetiteur_user,
+            defaults={
+                'biographie': "Encadrant toutes matières du lycée.",
+                'experience': random.randint(5, 20),
+                'prix_par_seance': 300000,
+                'disponibilite_matin': True,
+                'disponibilite_apres_midi': True,
+                'disponibilite_soir': True,
+                'disponibilite_weekend': True,
+                'is_soumis': True,
+                'cgu_acceptees': True,
+                'avatar': create_dummy_file(f"avatar_lycee_{i}.jpg", "Image avatar"),
+                'piece_identite': create_dummy_file(f"carte_id_lycee_{i}.pdf", "Carte d'identité"),
+                'diplome': create_dummy_file(f"diplome_lycee_{i}.pdf", "Diplôme universitaire"),
+                'contrat_ecole': create_dummy_file(f"contrat_lycee_{i}.pdf", "Contrat école"),
+            }
+        )
+        cours_selectionnes = [cours_objects[m] for m in matieres_lycee if m in cours_objects]
+        repetiteur.cours.set(cours_selectionnes)
+        repetiteurs.append(repetiteur_user)
+        print(f"✅ Répétiteur LYCÉE créé: {repetiteur_user.first_name} {repetiteur_user.last_name} ({repetiteur_user.phone})")
+
+    # 15 répétiteurs classiques
+    for i in range(15):
+        prenom = random.choice(prenoms_hommes + prenoms_femmes)
+        nom = random.choice(noms_famille)
+        phone = generer_numero_guineen()
+        adresse = f"{random.choice(zones_conakry)}, Conakry"
+        while User.objects.filter(phone=phone).exists():
+            phone = generer_numero_guineen()
+        repetiteur_user, created = User.objects.get_or_create(
+            phone=phone,
+            defaults={
+                'first_name': prenom,
+                'last_name': nom,
+                'role': 'repetiteur',
+                'adresse': adresse,
+                'is_validated': True,
+            }
+        )
+        repetiteur_user.set_password('karamoko')
+        repetiteur_user.save()
+        repetiteur, created = Repetiteur.objects.get_or_create(
+            user=repetiteur_user,
+            defaults={
+                'biographie': "Répétiteur généraliste.",
+                'experience': random.randint(2, 20),
+                'prix_par_seance': random.choice([150000, 200000, 250000, 300000]),
+                'disponibilite_matin': random.choice([True, False]),
+                'disponibilite_apres_midi': True,
+                'disponibilite_soir': random.choice([True, False]),
+                'disponibilite_weekend': random.choice([True, False]),
+                'is_soumis': True,
+                'cgu_acceptees': True,
+                'avatar': create_dummy_file(f"avatar_{i}.jpg", "Image avatar"),
+                'piece_identite': create_dummy_file(f"carte_id_{i}.pdf", "Carte d'identité"),
+                'diplome': create_dummy_file(f"diplome_{i}.pdf", "Diplôme universitaire"),
+                'contrat_ecole': create_dummy_file(f"contrat_{i}.pdf", "Contrat école"),
+            }
+        )
+        cours_disponibles = list(cours_objects.values())
+        nb_cours = random.randint(2, 5)
+        cours_selectionnes = random.sample(cours_disponibles, nb_cours)
+        repetiteur.cours.set(cours_selectionnes)
+        repetiteurs.append(repetiteur_user)
+        if created:
+            print(f"✅ Répétiteur créé: {repetiteur_user.first_name} {repetiteur_user.last_name} ({repetiteur_user.phone})")
+
+    # 8. CRÉER 20 DEMANDES DE SOUSCRIPTION
+    from souscriptions.models import DemandeSouscription
+    for i in range(20):
+        souscripteur = random.choice(Souscripteur.objects.all())
+        niveau = random.choice(list(niveaux.values()))
+        matieres = random.sample(list(cours_objects.values()), random.randint(1, 3))
+        offre_tarifaire = random.choice(list(OffreTarifaire.objects.all()))
+        moyen_paiement = random.choice(list(MethodePaiement.objects.all()))
+        creneaux = random.sample(['matin', 'apres_midi', 'soir', 'weekend'], random.randint(1, 3))
+        demande = DemandeSouscription.objects.create(
+            souscripteur=souscripteur,
+            niveau=niveau,
+            nombre_enfants=random.randint(1, 3),
+            offre_tarifaire=offre_tarifaire,
+            creneaux_preferes=creneaux,
+            moyen_paiement=moyen_paiement,
+            commentaire="Demande de test auto-générée.",
+            statut='en_attente'
+        )
+        demande.matieres.set(matieres)
+        print(f"✅ Demande de souscription créée pour {souscripteur}")
+
+    # 9. CRÉER UN ADMINISTRATEUR
+    admin_phone = "627116354"
+    if not User.objects.filter(phone=admin_phone).exists():
+        admin_user = User.objects.create_superuser(
+            phone=admin_phone,
+            first_name="Administrateur",
+            last_name="Système",
+            password="karamoko",
+            adresse="Kaloum, Conakry",
+        )
+        admin_user.role = 'parent'  # ou créer un rôle admin si nécessaire
+        admin_user.save()
+        print(f"✅ Administrateur créé: {admin_user.phone}")
+    
     print("\n🎉 Données de test créées avec succès!")
     print(f"📊 Résumé:")
     print(f"   - {Niveau.objects.count()} niveaux")
     print(f"   - {Cours.objects.count()} cours")
     print(f"   - {OffreTarifaire.objects.count()} offres tarifaires")
+    print(f"   - {MethodePaiement.objects.count()} méthodes de paiement")
+    print(f"   - {User.objects.filter(role='parent').count()} parents")
+    print(f"   - {User.objects.filter(role='repetiteur').count()} répétiteurs")
+    print(f"   - {Repetiteur.objects.count()} profils répétiteurs")
+    print(f"   - {Souscripteur.objects.count()} profils souscripteurs")
     
     # Affichage des associations pour vérification
     print("\n🔍 Vérification des associations cours-niveaux:")
     for cours in Cours.objects.all():
         niveaux_associes = cours.niveaux.values_list('nom', flat=True)
         print(f"   - {cours.titre}: {', '.join(niveaux_associes)}")
+    
+    print("\n📱 Comptes créés:")
+    print("   PARENTS/SOUSCRIPTEURS:")
+    for parent in User.objects.filter(role='parent')[:5]:
+        print(f"   - {parent.first_name} {parent.last_name}: {parent.phone}")
+    
+    print("   RÉPÉTITEURS:")
+    for repetiteur in User.objects.filter(role='repetiteur')[:5]:
+        print(f"   - {repetiteur.first_name} {repetiteur.last_name}: {repetiteur.phone}")
+    
+    print(f"\n   ADMIN: {admin_phone} (mot de passe: admin123)")
+    print("   TOUS LES AUTRES: karamoko")
 
 
 # Si c'est une commande de management

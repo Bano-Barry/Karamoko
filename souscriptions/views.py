@@ -2,6 +2,7 @@ from datetime import timedelta
 from django.utils import timezone
 from django.contrib import messages
 from django.db import transaction
+from django.db.models import Count, Q
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
@@ -60,16 +61,19 @@ def affecter_demande_souscription(request, demande_id):
     repetiteurs_disponibles = Repetiteur.objects.filter(
         user__is_validated=True,
         user__is_active=True
-    ).select_related('user').prefetch_related('cours')
+    ).select_related('user').prefetch_related('cours') \
+     .annotate(nb_affectations=Count('souscriptions', filter=Q(souscriptions__statut='active')))
     
     # Filtrer par compatibilité avec les matières demandées
     matieres_demandees = demande.matieres.all()
     repetiteurs_compatibles = []
     
     for repetiteur in repetiteurs_disponibles:
-        # Vérifier si le répétiteur maîtrise au moins une des matières demandées
-        if repetiteur.cours.filter(id__in=matieres_demandees.values_list('id', flat=True)).exists():
+        # vérifier si le répétiteur maîtrise toutes les matières demandées
+        if repetiteur.cours.filter(id__in=matieres_demandees.values_list('id', flat=True)).count() == matieres_demandees.count():
             repetiteurs_compatibles.append(repetiteur)
+        # if repetiteur.cours.filter(id__in=matieres_demandees.values_list('id', flat=True)).exists():
+        #     repetiteurs_compatibles.append(repetiteur)
     
     if request.method == 'POST':
         repetiteur_id = request.POST.get('repetiteur')

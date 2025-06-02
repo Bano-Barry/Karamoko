@@ -13,7 +13,7 @@
             </p>
         </div>
        <!-- Formulaire de Recherche -->
-        <form method="GET" action="{% url 'vitrine_repetiteur_list' %}" class="mb-12">
+        {% comment %} <form method="GET" action="{% url 'vitrine_repetiteur_list' %}" class="mb-12">
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <!-- Recherche par Adresse -->
                 <div>
@@ -50,7 +50,7 @@
                     </button>
                 </div>
             </div>
-        </form>
+        </form> {% endcomment %}
 
         <!-- Grille des encadreurs -->
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
