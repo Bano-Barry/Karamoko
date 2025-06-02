@@ -10,7 +10,7 @@
             <!-- Photo de profil -->
             <div class="flex-shrink-0 mb-4 md:mb-0">
                 {% if repetiteur.avatar %}
-                    <img class="w-32 h-32 rounded-full mx-auto md:mx-0" src="{{ repetiteur.avatar.url|default:'images/default_avatar.webp' }}" alt="{{ repetiteur.user.first_name }}">
+                    <img class="w-32 h-32 rounded-full mx-auto md:mx-0" src="{% static 'images/default_avatar.webp' %}" alt="{{ repetiteur.user.first_name }}">
                 {% else %}
                     <img class="w-32 h-32 rounded-full mx-auto md:mx-0" src="{% static 'images/default_avatar.webp' %}" alt="Photo de {{ repetiteur.user.first_name }}">
                 {% endif %}

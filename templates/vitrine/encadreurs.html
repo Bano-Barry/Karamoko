@@ -61,7 +61,7 @@
                     <!-- Avatar -->
                     <div class="relative h-80">
                         {% if repetiteur.avatar %}
-                        <img class="w-full h-full object-cover object-center rounded-t-lg" src="{{ repetiteur.avatar.url }}" alt="{{ repetiteur.nom }} image" />
+                        <img class="w-full h-full object-cover object-center rounded-t-lg" src="{% static 'images/default_avatar.webp' %}" alt="{{ repetiteur.nom }} image" />
                         {% else %}
                         <img class="w-full h-full object-cover object-center rounded-t-lg" src="{% static 'images/default_avatar.webp' %}" alt="Default avatar" />
                         {% endif %}
